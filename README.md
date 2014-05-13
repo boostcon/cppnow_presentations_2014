@@ -2,7 +2,7 @@
 
 ## Tuesday, May 13
 
-* [Library in a Week - c++ templating engine](https://github.com/boostcon/cppnow_presentations_2014/blob/master/liaw/template-engine-day1.pdf)
+* [Library in a Week - c++ templating engine](https://github.com/boostcon/cppnow_presentations_2014/blob/master/liaw/template-engine-day1.pdf?raw=true)
 * Keynote: Axiomatic Programming: From Euclidean Deductions to C++ Templates and Beyond
 * C++14: Through the Looking Glass 
 * Coroutines, Fibers, and Threads, Oh My 
