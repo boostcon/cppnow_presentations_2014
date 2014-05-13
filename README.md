@@ -1,4 +1,2 @@
-cppnow_presentations_2014
-=========================
+# C++Now 2014 Presentations
 
-Presentation materials presented at C++Now 2014
