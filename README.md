@@ -43,7 +43,7 @@
 * UI. Aesthetics. C++ 
 * Accelerator Programming with C++ AMP
 * Designing XML API for Modern C++ 
-* Modern C++ as Concurrent Assembly 
+* [Modern C++ as Concurrent Assembly](https://github.com/diegoperini/cppnow2014-doppl)
 * Understanding &&
 * Boost Library Incubator
  
