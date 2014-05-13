@@ -1,5 +1,7 @@
 # C++Now 2014 Presentations
 
+* [Library in a Week Repo](https://github.com/JeffGarland/liaw2014.git)
+
 ## Tuesday, May 13
 
 * [Library in a Week - c++ templating engine](https://github.com/boostcon/cppnow_presentations_2014/blob/master/liaw/template-engine-day1.pdf?raw=true)
