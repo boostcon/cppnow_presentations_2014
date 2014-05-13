@@ -2,13 +2,13 @@
 
 ## Tuesday, May 13
 
-* Library in a Week - c++ templating engine
+* [Library in a Week - c++ templating engine](https://github.com/boostcon/cppnow_presentations_2014/blob/master/liaw/template-engine-day1.pdf)
 * Keynote: Axiomatic Programming: From Euclidean Deductions to C++ Templates and Beyond
 * C++14: Through the Looking Glass 
 * Coroutines, Fibers, and Threads, Oh My 
 * The Canonical Class
 * ConceptClang: Theoretical Advances with Full C++ Concepts 
-* Generic Programming of Generic Spaces: Compile-Time Geometric Algebra with C++11 
+* Generic Programming of Generic Spaces: Compile-Time Geometric Algebra with C++11
 * Test-Driven Development With Boost.Test and Turtle Mock, Part I
 * Removing undefined behavior from integer operations: the bounded::integer library 
 * Value Semantics and Range Algorithms - Composability and Efficiency 
