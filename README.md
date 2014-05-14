@@ -4,7 +4,7 @@
 
 ## Tuesday, May 13
 
-* [Library in a Week - c++ templating engine](https://github.com/boostcon/cppnow_presentations_2014/blob/master/liaw_template_engine_day1.pdf?raw=true)
+* [Library in a Week - c++ templating engine](https://github.com/boostcon/cppnow_presentations_2014/files/blob/master/liaw_template_engine_day1.pdf?raw=true)
 * Keynote: Axiomatic Programming: From Euclidean Deductions to C++ Templates and Beyond
 * C++14: Through the Looking Glass 
 * Coroutines, Fibers, and Threads, Oh My 
@@ -12,7 +12,7 @@
 * ConceptClang: Theoretical Advances with Full C++ Concepts 
 * Generic Programming of Generic Spaces: Compile-Time Geometric Algebra with C++11
 * Test-Driven Development With Boost.Test and Turtle Mock, Part I
-* Removing undefined behavior from integer operations: the bounded::integer library | [OPD File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/optimization_boost_asio.opd?raw=true) 
+* Removing undefined behavior from integer operations: the bounded::integer library | [OPD File](https://github.com/boostcon/cppnow_presentations_2014/files/blob/master/optimization_boost_asio.opd?raw=true) 
 * Value Semantics and Range Algorithms - Composability and Efficiency 
 * Test-Driven Development With Boost.Test and Turtle Mock, Part II
 * Preparing the C++11 Library AFIO for Boost Peer Review
@@ -22,14 +22,14 @@
  
 * Library in a Week - c++ templating engine Release Management
 * MPL11: A New Metaprogramming Library for C++11
-* [The Optimization of a Boost.Asio-Based Networking Server](https://github.com/boostcon/cppnow_presentations_2014/blob/master/optimization_boost_asio.pdf?raw=true) | [Keynote File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/optimization_boost_asio.pdf?raw=true)
+* [The Optimization of a Boost.Asio-Based Networking Server](https://github.com/boostcon/cppnow_presentations_2014/files/blob/master/optimization_boost_asio.pdf?raw=true) | [Keynote File](https://github.com/boostcon/cppnow_presentations_2014/files/blob/master/optimization_boost_asio.pdf?raw=true)
 * Undefined Behavior in C++; what is it, and why should I care
 * Mach7: The Design and Evolution of a Pattern Matching Library for C++
 * Practical Type Erasure: A boost::any Based Configuration Framework 
-* [A Tutorial Introduction to C++11/14 Part I](https://github.com/boostcon/cppnow_presentations_2014/blob/master/tutorial_intro_cpp_11_14.pdf?raw=true)
+* [A Tutorial Introduction to C++11/14 Part I](https://github.com/boostcon/cppnow_presentations_2014/files/blob/master/tutorial_intro_cpp_11_14.pdf?raw=true)
 * C++11 in Space Plasma Model Development 
 * C++11 Library Design 
-* [A Tutorial Introduction to C++11/14 Part II](https://github.com/boostcon/cppnow_presentations_2014/blob/master/tutorial_intro_cpp_11_14.pdf?raw=true)
+* [A Tutorial Introduction to C++11/14 Part II](https://github.com/boostcon/cppnow_presentations_2014/files/blob/master/tutorial_intro_cpp_11_14.pdf?raw=true)
 * Goals for Better Code: Implement Complete Types 
 * Multiplatform C++ 
 * Octopus: A Policy-Driven Framework for CFD Simulations
@@ -59,7 +59,7 @@
 * Intro to Functional Programming in C++ 
 * Managing Object Lifetimes
 * 0xBADC0DE 
-* [Expected — An Exception-friendly Error Monad](https://github.com/boostcon/cppnow_presentations_2014/blob/master/tutorial_intro_cpp_11_14.pdf?raw=true)
+* [Expected — An Exception-friendly Error Monad](https://github.com/boostcon/cppnow_presentations_2014/files/blob/master/tutorial_intro_cpp_11_14.pdf?raw=true)
 * Lifetime and Usage of Global, Thread-local, and Static Data
 * Functional Data Structures in C++ 
 * Asynchronous Programming Using Boost.MetaStateMachine and the Upcoming Asynchronous Library 
