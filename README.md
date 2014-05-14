@@ -22,7 +22,7 @@
  
 * Library in a Week - c++ templating engine Release Management
 * MPL11: A New Metaprogramming Library for C++11
-* The Optimization of a Boost.Asio-Based Networking Server 
+* [The Optimization of a Boost.Asio-Based Networking Server](https://github.com/boostcon/cppnow_presentations_2014/blob/master/optimization_boost_asio.pdf?raw=true) | [Keynote File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/optimization_boost_asio.pdf?raw=true)
 * Undefined Behavior in C++; what is it, and why should I care
 * Mach7: The Design and Evolution of a Pattern Matching Library for C++
 * Practical Type Erasure: A boost::any Based Configuration Framework 
