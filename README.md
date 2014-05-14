@@ -26,10 +26,10 @@
 * Undefined Behavior in C++; what is it, and why should I care
 * Mach7: The Design and Evolution of a Pattern Matching Library for C++
 * Practical Type Erasure: A boost::any Based Configuration Framework 
-* A Tutorial Introduction to C++11/14 Part I
+* [A Tutorial Introduction to C++11/14 Part I](https://github.com/boostcon/cppnow_presentations_2014/blob/master/liaw/tutorial_intro_cpp_11_14.pdf?raw=true)
 * C++11 in Space Plasma Model Development 
 * C++11 Library Design 
-* A Tutorial Introduction to C++11/14 Part II
+* [A Tutorial Introduction to C++11/14 Part II](https://github.com/boostcon/cppnow_presentations_2014/blob/master/liaw/tutorial_intro_cpp_11_14.pdf?raw=true)
 * Goals for Better Code: Implement Complete Types 
 * Multiplatform C++ 
 * Octopus: A Policy-Driven Framework for CFD Simulations
