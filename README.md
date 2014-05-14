@@ -2,6 +2,9 @@
 
 * [Library in a Week Repo](https://github.com/JeffGarland/liaw2014.git)
 
+Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending on your browser you may need to right click on the link and select save.
+
+
 ## Tuesday, May 13
 
 * [Library in a Week - c++ templating engine](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/liaw_template_engine_day1.pdf?raw=true)
