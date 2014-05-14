@@ -59,7 +59,7 @@
 * Intro to Functional Programming in C++ 
 * Managing Object Lifetimes
 * 0xBADC0DE 
-* [Expected — An Exception-friendly Error Monad](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/tutorial_intro_cpp_11_14.pdf?raw=true)
+* [Expected — An Exception-friendly Error Monad](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/expected.pdf?raw=true)
 * Lifetime and Usage of Global, Thread-local, and Static Data
 * Functional Data Structures in C++ 
 * Asynchronous Programming Using Boost.MetaStateMachine and the Upcoming Asynchronous Library 
