@@ -16,7 +16,7 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
 * Generic Programming of Generic Spaces: Compile-Time Geometric Algebra with C++11
 * Test-Driven Development With Boost.Test and Turtle Mock, Part I
 * Removing undefined behavior from integer operations: the bounded::integer library | [OPD File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/optimization_boost_asio.opd?raw=true) 
-* Value Semantics and Range Algorithms - Composability and Efficiency 
+* [Value Semantics and Range Algorithms - Composability and Efficiency](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/range_algos.pdf?raw=true)
 * Test-Driven Development With Boost.Test and Turtle Mock, Part II
 * Preparing the C++11 Library AFIO for Boost Peer Review
 * Grill the Committee
