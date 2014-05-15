@@ -74,7 +74,7 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
 * The Future of Accelerator Programming in C++ 
 * Functional Reactive Programming - Cleanly Abstracted Interactivity 
 * Disambiguation: The Black Technology
-* My Thoughts on Large Code Base Change Ripple Management in C++
+* My Thoughts on Large Code Base Change Ripple Management in C++ | [Position Paper](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/large_code_base_change_ripple_in_cpp.pdf?raw=true)
 * Future of Boost
 
 
