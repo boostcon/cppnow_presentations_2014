@@ -23,7 +23,6 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
  
 ## Wednesday, May 14
  
-* Library in a Week - c++ templating engine Release Management
 * [MPL11: A New Metaprogramming Library for C++11](https://ldionne.github.io/mpl11-cppnow-2014)
 * [The Optimization of a Boost.Asio-Based Networking Server](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/optimization_boost_asio.pdf?raw=true) | [Keynote File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/optimization_boost_asio.pdf?raw=true)
 * Undefined Behavior in C++; what is it, and why should I care
@@ -38,7 +37,6 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
  
 ## Thursday, May 15
  
-* Library in a Week - c++ templating engine Community Maintenance Team
 * Keynote: Beware of C++
 * Interactive Metaprogramming Shell Based on Clang 
 * libcppa: Type-safe Messaging Systems in C++ 
@@ -53,7 +51,6 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
  
 ## Friday, May 16
  
-* Library in a Week - c++ templating engine
 * Iterators May Stay 
 * Value Semantics: It ain't about the syntax! 
 * Create Your Own Refactoring Tool with Clang
@@ -69,7 +66,6 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
  
 ## Saturday, May 17
  
-* Library in a Week - c++ templating engine
 * The Future of Accelerator Programming in C++ 
 * Functional Reactive Programming - Cleanly Abstracted Interactivity 
 * Disambiguation: The Black Technology
