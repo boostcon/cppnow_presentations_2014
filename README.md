@@ -36,7 +36,7 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
  
 ## Thursday, May 15
  
-* Keynote: Beware of C++
+* [Keynote: Beware of C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/Josuttis_C++Now_140515_handouts.pdf?raw=true)
 * Interactive Metaprogramming Shell Based on Clang 
 * [libcppa: Type-safe Messaging Systems in C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/libcppa_part1.pdf?raw=true)  | [Part II](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/libcppa_part2.pdf?raw=true)
 * [Unicode in C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/unicode-cpp.pdf?raw=true) | [PPTX File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/unicode-cpp.pptx?raw=true)
