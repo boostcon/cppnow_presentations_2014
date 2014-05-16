@@ -14,10 +14,9 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
 * The Canonical Class
 * ConceptClang: Theoretical Advances with Full C++ Concepts 
 * Generic Programming of Generic Spaces: Compile-Time Geometric Algebra with C++11
-* [Test-Driven Development With Boost.Test and Turtle Mock, Part I/II](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/test_driven/test_driven.pdf?raw=true)
+* [Test-Driven Development With Boost.Test and Turtle Mock, Part I/II](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/test_driven/test_driven.pdf?raw=true) | [Code](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/test_driven/)
 * Removing undefined behavior from integer operations: the bounded::integer library | [OPD File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/optimization_boost_asio.opd?raw=true) 
 * [Value Semantics and Range Algorithms - Composability and Efficiency](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/range_algos.pdf?raw=true)
-* Test-Driven Development With Boost.Test and Turtle Mock, Part II
 * Preparing the C++11 Library AFIO for Boost Peer Review
 * Grill the Committee
  
@@ -39,7 +38,7 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
  
 * Keynote: Beware of C++
 * Interactive Metaprogramming Shell Based on Clang 
-* libcppa: Type-safe Messaging Systems in C++ 
+* [libcppa: Type-safe Messaging Systems in C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/libcppa_part1.pdf?raw=true)  | [Part II](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/libcppa_part2.pdf?raw=true)
 * [Unicode in C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/unicode-cpp.pdf?raw=true) | [PPTX File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/unicode-cpp.pptx?raw=true)
 * CppComponents: A Modern Portable C++11 Component System 
 * UI. Aesthetics. C++ 
