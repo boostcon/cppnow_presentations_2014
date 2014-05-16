@@ -1,0 +1,310 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Running Selected Tests</title>
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="up" href="../tutorials.html" title="Tutorials">
+<link rel="prev" href="testing_with_fixtures.html" title="Testing with Fixtures">
+<link rel="next" href="../guide.html" title="User's Guide">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="testing_with_fixtures.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../tutorials.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../guide.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="test.tutorials.running_selected_tests"></a><a class="link" href="running_selected_tests.html" title="Running Selected Tests">Running Selected
+      Tests</a>
+</h3></div></div></div>
+<p>
+        As we continue to add unit tests for a library, we can get quite a large
+        number of tests. If they are true unit tests and each test exercises a single
+        class isolated from its collaborators, then most of the tests are not relevant
+        to the changes we are making. The test executable accepts a number of command-line
+        arguments that allow us to control the behavior of the test framework, including
+        which tests to run.
+      </p>
+<p>
+        We can list the available tests in a test executable with <a class="link" href="../reference/runner/argument/report_level.html" title="--report_level"><code class="literal">--report_level</code></a>
+        set to detailed:
+      </p>
+<pre class="programlisting">&gt; test_hello --report_level=detailed
+Running 2 test cases...
+
+Test suite "Master Test Suite" passed with:
+  2 assertions out of 2 passed
+  2 test cases out of 2 passed
+
+  Test case "hello_world_inserts_text" passed with:
+    1 assertion out of 1 passed
+
+  Test case "hello_world_stream_with_badbit_throws_runtime_error" passed with:
+    1 assertion out of 1 passed
+
+</pre>
+<div class="caution"><table border="0" summary="Caution">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../../../../../../doc/src/images/caution.png"></td>
+<th align="left">Caution</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          The arguments to the test executable, such as <a class="link" href="../reference/runner/argument/report_level.html" title="--report_level"><code class="literal">--report_level</code></a>,
+          use an underscore (<code class="literal">_</code>) to separate words, not a dash
+          (<code class="literal">-</code>).
+        </p></td></tr>
+</table></div>
+<p>
+        Suppose we are continuing to make changes to <code class="literal">hello_world</code>
+        and we want to run only the tests that apply to that function. We can easily
+        identify the relevant tests in the output of <a class="link" href="../reference/runner/argument/report_level.html" title="--report_level"><code class="literal">--report_level</code></a>
+        because we have used a test naming convention of prefixing all test case
+        names with the name of the system under test, <code class="literal">hello_world</code>.
+      </p>
+<p>
+        Using the <a class="link" href="../reference/runner/argument/run_test.html" title="--run_test"><code class="literal">--run_test</code></a>
+        argument, we can specify a comma-separated list of test case names to run:
+      </p>
+<pre class="programlisting">&gt; test_hello --run_test=hello_world_inserts_text,hello_world_stream_with_badbit_throws_runtime_error
+Running 2 test cases...
+
+*** No errors detected
+
+EXIT STATUS: 0
+</pre>
+<p>
+        Wow, that's really a mouthfull! Even with command recall, typing this command
+        for the first time will require typing the exact names of all the test cases
+        for <code class="literal">hello_world</code>. As we add more test cases, we'll have
+        to extend the command line argument to account for each new test case.
+      </p>
+<p>
+        We can solve this problem by using test suites, which organize tests into
+        a named group:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">hello_world_fixture</span>
+<span class="special">{</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostringstream</span> <span class="identifier">dest</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="identifier">BOOST_AUTO_TEST_SUITE</span><span class="special">(</span><span class="identifier">test_hello</span><span class="special">);</span>
+
+<span class="preprocessor">#define</span> <span class="identifier">HELLO_WORLD_TEST_CASE</span><span class="special">(</span><span class="identifier">name_</span><span class="special">)</span> <span class="special">\</span>
+    <span class="identifier">BOOST_FIXTURE_TEST_CASE</span><span class="special">(</span><span class="identifier">hello_world_</span><span class="special">##</span><span class="identifier">name_</span><span class="special">,</span> <span class="identifier">hello_world_fixture</span><span class="special">)</span>
+
+<span class="identifier">HELLO_WORLD_TEST_CASE</span><span class="special">(</span><span class="identifier">inserts_text</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">hello_world</span><span class="special">(</span><span class="identifier">dest</span><span class="special">);</span>
+
+    <span class="identifier">BOOST_REQUIRE_EQUAL</span><span class="special">(</span><span class="string">"Hello, world!\n"</span><span class="special">,</span> <span class="identifier">dest</span><span class="special">.</span><span class="identifier">str</span><span class="special">());</span>
+<span class="special">}</span>
+
+<span class="identifier">HELLO_WORLD_TEST_CASE</span><span class="special">(</span><span class="identifier">stream_with_badbit_throws_runtime_error</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">dest</span><span class="special">.</span><span class="identifier">clear</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">badbit</span><span class="special">);</span>
+
+    <span class="identifier">BOOST_REQUIRE_THROW</span><span class="special">(</span><span class="identifier">hello_world</span><span class="special">(</span><span class="identifier">dest</span><span class="special">),</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">runtime_error</span><span class="special">);</span>
+<span class="special">}</span>
+
+<span class="identifier">BOOST_AUTO_TEST_SUITE_END</span><span class="special">();</span>
+</pre>
+<p>
+      </p>
+<p>
+        Now <a class="link" href="../reference/runner/argument/report_level.html" title="--report_level"><code class="literal">--report_level</code></a>
+        outputs the following:
+      </p>
+<pre class="programlisting">&gt; test_hello --report_level=detailed
+Running 2 test cases...
+
+Test suite "Master Test Suite" passed with:
+  2 assertions out of 2 passed
+  2 test cases out of 2 passed
+
+  Test suite "test_hello" passed with:
+    2 assertions out of 2 passed
+    2 test cases out of 2 passed
+
+    Test case "hello_world_inserts_text" passed with:
+      1 assertion out of 1 passed
+
+    Test case "hello_world_stream_with_badbit_throws_runtime_error" passed with:
+      1 assertion out of 1 passed
+
+</pre>
+<p>
+        The indentation shows that the test cases for <code class="literal">hello_world</code>
+        are organized under the test suite named <code class="literal">test_hello_world</code>.
+      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          We can't name the suite <code class="literal">hello_world</code> because that would
+          conflict with the name of our system under test, as both are declared in
+          the same global namespace.
+        </p></td></tr>
+</table></div>
+<p>
+        Now we can supply the name of the test suite to <a class="link" href="../reference/runner/argument/run_test.html" title="--run_test"><code class="literal">--run_test</code></a>
+        to run all the test cases in the suite:
+      </p>
+<pre class="programlisting">&gt; test_hello --run_test=test_hello
+Running 2 test cases...
+
+*** No errors detected
+
+EXIT STATUS: 0
+</pre>
+<p>
+        As we add more test cases to the suite, we don't have to change the command
+        we are using to run the tests and we don't need to remember the exact names
+        of the test cases.
+      </p>
+<p>
+        Suites arrange test cases into a hierarchy. You can have suites within suites
+        to provide larger groupings to test a collection of related classes together.
+        Once a test case is part of a suite, we must use the name of the enclosing
+        suite with the name of the test case if we wish to run a single test case
+        within the suite by name:
+      </p>
+<pre class="programlisting">&gt; test_hello --run_test=test_hello/hello_world_inserts_text
+Running 1 test case...
+
+*** No errors detected
+</pre>
+<p>
+        The names of the enclosing suites are separated from each other and from
+        the test case name with a slash (<code class="literal">/</code>). The names supplied
+        to <a class="link" href="../reference/runner/argument/run_test.html" title="--run_test"><code class="literal">--run_test</code></a>
+        also allow for wildcard matching:
+      </p>
+<pre class="programlisting">&gt; test_hello --run_test=hello_world/*inserts_text
+Running 1 test case...
+
+*** No errors detected
+</pre>
+<p>
+        Just as we can use a fixture with a test case to eliminate repeated setup
+        and tear down, we can use a fixture with a test suite. All test cases in
+        the test suite will derive from the test suite's fixture. If a test case
+        in a test suite with a fixture specifies its own fixture, then the test case
+        derives from the fixture specified on the test case and not on the test suite.
+        If you want the test case to use both fixtures, then make your test case
+        fixture derive from the test suite fixture.
+      </p>
+<p>
+        We can use a test suite fixture for <code class="literal">test_hello</code> to take
+        care of the duplicated setup between test cases. Since our test cases are
+        now within the scope of a suite, we don't need to give them a unique prefix
+        anymore. Refactoring the tests to use a suite fixture and discarding the
+        prefix gives us the following code:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#define</span> <span class="identifier">BOOST_TEST_MAIN</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">test</span><span class="special">/</span><span class="identifier">included</span><span class="special">/</span><span class="identifier">unit_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="string">"hello.hpp"</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">ios</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">sstream</span><span class="special">&gt;</span>
+
+<span class="keyword">struct</span> <span class="identifier">hello_world_fixture</span>
+<span class="special">{</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostringstream</span> <span class="identifier">dest</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="identifier">BOOST_FIXTURE_TEST_SUITE</span><span class="special">(</span><span class="identifier">test_hello</span><span class="special">,</span> <span class="identifier">hello_world_fixture</span><span class="special">);</span>
+
+<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span><span class="identifier">inserts_text</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">hello_world</span><span class="special">(</span><span class="identifier">dest</span><span class="special">);</span>
+
+    <span class="identifier">BOOST_REQUIRE_EQUAL</span><span class="special">(</span><span class="string">"Hello, world!\n"</span><span class="special">,</span> <span class="identifier">dest</span><span class="special">.</span><span class="identifier">str</span><span class="special">());</span>
+<span class="special">}</span>
+
+<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span><span class="identifier">stream_with_badbit_throws_runtime_error</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">dest</span><span class="special">.</span><span class="identifier">clear</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">badbit</span><span class="special">);</span>
+
+    <span class="identifier">BOOST_REQUIRE_THROW</span><span class="special">(</span><span class="identifier">hello_world</span><span class="special">(</span><span class="identifier">dest</span><span class="special">),</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">runtime_error</span><span class="special">);</span>
+<span class="special">}</span>
+
+<span class="identifier">BOOST_AUTO_TEST_SUITE_END</span><span class="special">();</span>
+</pre>
+<p>
+      </p>
+<p>
+        Now <a class="link" href="../reference/runner/argument/report_level.html" title="--report_level"><code class="literal">--report_level</code></a>
+        outputs the following:
+      </p>
+<pre class="programlisting">&gt; test_hello.exe --report_level=detailed
+Running 2 test cases...
+
+Test suite "Master Test Suite" passed with:
+  2 assertions out of 2 passed
+  2 test cases out of 2 passed
+
+  Test suite "test_hello" passed with:
+    2 assertions out of 2 passed
+    2 test cases out of 2 passed
+
+    Test case "inserts_text" passed with:
+      1 assertion out of 1 passed
+
+    Test case "stream_with_badbit_throws_runtime_error" passed with:
+      1 assertion out of 1 passed
+
+</pre>
+<h5>
+<a name="test.tutorials.running_selected_tests.h0"></a>
+        <span class="phrase"><a name="test.tutorials.running_selected_tests.example_source_code"></a></span><a class="link" href="running_selected_tests.html#test.tutorials.running_selected_tests.example_source_code">Example
+        Source Code</a>
+      </h5>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+            System under test:
+            <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                  <a href="../../../../../../libs/test/doc/src/tutorials/running_selected_tests/sut/hello.hpp" target="_top">hello.hpp</a>
+                </li>
+<li class="listitem">
+                  <a href="../../../../../../libs/test/doc/src/tutorials/running_selected_tests/sut/hello.cpp" target="_top">hello.cpp</a>
+                </li>
+</ul></div>
+          </li>
+<li class="listitem">
+            Tests:
+            <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">
+                  <a href="../../../../../../libs/test/doc/src/tutorials/running_selected_tests/test/test_hello.cpp" target="_top">test_hello.cpp</a>
+                </li></ul></div>
+          </li>
+</ul></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="testing_with_fixtures.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../tutorials.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../guide.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

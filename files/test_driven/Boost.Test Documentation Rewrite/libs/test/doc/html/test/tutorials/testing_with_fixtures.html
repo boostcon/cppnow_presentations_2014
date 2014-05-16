@@ -1,0 +1,204 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Testing with Fixtures</title>
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="up" href="../tutorials.html" title="Tutorials">
+<link rel="prev" href="testing_with_exceptions.html" title="Testing with Exceptions">
+<link rel="next" href="running_selected_tests.html" title="Running Selected Tests">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="testing_with_exceptions.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../tutorials.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="running_selected_tests.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="test.tutorials.testing_with_fixtures"></a><a class="link" href="testing_with_fixtures.html" title="Testing with Fixtures">Testing with Fixtures</a>
+</h3></div></div></div>
+<p>
+        When we added our second test case in the <a class="link" href="testing_with_exceptions.html" title="Testing with Exceptions">previous
+        tutorial</a>, we ended up with some duplicated setup between the two test
+        cases. This is a common occurrence in unit testing. We have some prerequisites
+        for the system under test that must be prepared in order to exercise the
+        system. In our case, it is a single output string stream that we use for
+        capturing the output of our <code class="literal">hello_world</code> function.
+      </p>
+<p>
+        Boost.Test provides a facility called a fixture for encapsulating repeated
+        setup and tear down code between test cases. In our example, there isn't
+        any explicit tear down code because the output string streams are created
+        on the stack and destroyed when execution exits the test case. We have a
+        little bit of repeated setup code that we can move to a fixture that is used
+        by both our test cases. Let's put that repeated code in a fixture:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">hello_world_fixture</span>
+<span class="special">{</span>
+    <span class="identifier">hello_world_fixture</span><span class="special">()</span>
+        <span class="special">:</span> <span class="identifier">dest</span><span class="special">()</span>
+    <span class="special">{</span> <span class="special">}</span>
+    <span class="special">~</span><span class="identifier">hello_world_fixture</span><span class="special">()</span>
+    <span class="special">{</span> <span class="special">}</span>
+
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostringstream</span> <span class="identifier">dest</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="identifier">BOOST_FIXTURE_TEST_CASE</span><span class="special">(</span><span class="identifier">hello_world_inserts_text</span><span class="special">,</span> <span class="identifier">hello_world_fixture</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">hello_world</span><span class="special">(</span><span class="identifier">dest</span><span class="special">);</span>
+
+    <span class="identifier">BOOST_REQUIRE_EQUAL</span><span class="special">(</span><span class="string">"Hello, world!\n"</span><span class="special">,</span> <span class="identifier">dest</span><span class="special">.</span><span class="identifier">str</span><span class="special">());</span>
+<span class="special">}</span>
+
+<span class="identifier">BOOST_FIXTURE_TEST_CASE</span><span class="special">(</span><span class="identifier">hello_world_stream_with_badbit_throws_runtime_error</span><span class="special">,</span> <span class="identifier">hello_world_fixture</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">dest</span><span class="special">.</span><span class="identifier">clear</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">badbit</span><span class="special">);</span>
+
+    <span class="identifier">BOOST_REQUIRE_THROW</span><span class="special">(</span><span class="identifier">hello_world</span><span class="special">(</span><span class="identifier">dest</span><span class="special">),</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">runtime_error</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<p>
+        A fixture is simply a class or struct that is inherited by the test case.
+        We connect the test case to the fixture by using <a class="link" href="../reference/test_case/boost_fixture_test_case.html" title="BOOST_FIXTURE_TEST_CASE"><code class="literal">BOOST_FIXTURE_TEST_CASE</code></a>
+        instead of <a class="link" href="../reference/test_case/boost_auto_test_case.html" title="BOOST_AUTO_TEST_CASE"><code class="literal">BOOST_AUTO_TEST_CASE</code></a>.
+        The latter simply connects each test case to an empty fixture. After refactoring
+        the test cases to use a fixture, we run the tests to make sure the tests
+        still pass.
+      </p>
+<p>
+        When using a fixture, the order of construction and destruction is as follows
+        when a test case is executed:
+      </p>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+            The fixture is constructed.
+          </li>
+<li class="listitem">
+            The test case class is constructed.
+          </li>
+<li class="listitem">
+            The test case test method is executed
+          </li>
+<li class="listitem">
+            The test case class is destroyed.
+          </li>
+<li class="listitem">
+            The fixture is destroyed.
+          </li>
+</ol></div>
+<p>
+        This process happens for each test case that is executed, ensuring that each
+        test case has a fresh fixture and remains independent of other test cases.
+      </p>
+<p>
+        In most cases, the setup will be a little more involved than just creating
+        an instance variable and there will be some work done in the constructor
+        of the fixture. We could simply use the default constructor and destructor
+        of our fixture in this case. We've written the constructor and destructor
+        explicitly to emphasize that this is where setup and tear down occur.
+      </p>
+<p>
+        Now that we've transformed the test cases to use a fixture, it seems we've
+        simply traded one piece of repetition, the construction of the output string
+        stream, for another: the repeated use of the fixture name and system under
+        test in our test cases. We can use a custom test case macro to get rid of
+        this duplication:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">hello_world_fixture</span>
+<span class="special">{</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostringstream</span> <span class="identifier">dest</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="preprocessor">#define</span> <span class="identifier">HELLO_WORLD_TEST_CASE</span><span class="special">(</span><span class="identifier">name_</span><span class="special">)</span> <span class="special">\</span>
+    <span class="identifier">BOOST_FIXTURE_TEST_CASE</span><span class="special">(</span><span class="identifier">hello_world_</span><span class="special">##</span><span class="identifier">name_</span><span class="special">,</span> <span class="identifier">hello_world_fixture</span><span class="special">)</span>
+
+<span class="identifier">HELLO_WORLD_TEST_CASE</span><span class="special">(</span><span class="identifier">inserts_text</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">hello_world</span><span class="special">(</span><span class="identifier">dest</span><span class="special">);</span>
+
+    <span class="identifier">BOOST_REQUIRE_EQUAL</span><span class="special">(</span><span class="string">"Hello, world!\n"</span><span class="special">,</span> <span class="identifier">dest</span><span class="special">.</span><span class="identifier">str</span><span class="special">());</span>
+<span class="special">}</span>
+
+<span class="identifier">HELLO_WORLD_TEST_CASE</span><span class="special">(</span><span class="identifier">stream_with_badbit_throws_runtime_error</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">dest</span><span class="special">.</span><span class="identifier">clear</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">badbit</span><span class="special">);</span>
+
+    <span class="identifier">BOOST_REQUIRE_THROW</span><span class="special">(</span><span class="identifier">hello_world</span><span class="special">(</span><span class="identifier">dest</span><span class="special">),</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">runtime_error</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<p>
+        Every test case has to have a unique name within the scope of its declaration,
+        either the global namespace or a custom namespace, which is why we've been
+        prefixing our test case names with the name of the system under test, <code class="literal">hello_world</code>.
+        Once we accumulate a few tests, the chances for a clash between test names
+        increases.
+      </p>
+<p>
+        With our custom test case macro, we reduce the chance for a test case name
+        clash by ensuring that every test case name is prefixed by the name of the
+        system under test. We ensure that every test case for <code class="literal">hello_world</code>
+        uses the same fixture and we gain some readability of the test cases by eliminating
+        the distracting repetition. If we change the name of the fixture, then we
+        need only edit the custom test case macro that supplies the fixture name.
+      </p>
+<p>
+        In the next tutorial, we'll see an alternative way of eliminating this duplication
+        of the prefixes of test case names.
+      </p>
+<h5>
+<a name="test.tutorials.testing_with_fixtures.h0"></a>
+        <span class="phrase"><a name="test.tutorials.testing_with_fixtures.example_source_code"></a></span><a class="link" href="testing_with_fixtures.html#test.tutorials.testing_with_fixtures.example_source_code">Example
+        Source Code</a>
+      </h5>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+            System under test:
+            <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                  <a href="../../../../../../libs/test/doc/src/tutorials/testing_with_fixtures/sut/hello.hpp" target="_top">hello.hpp</a>
+                </li>
+<li class="listitem">
+                  <a href="../../../../../../libs/test/doc/src/tutorials/testing_with_fixtures/sut/hello.cpp" target="_top">hello.cpp</a>
+                </li>
+</ul></div>
+          </li>
+<li class="listitem">
+            Tests:
+            <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">
+                  <a href="../../../../../../libs/test/doc/src/tutorials/testing_with_fixtures/test/test_hello.cpp" target="_top">test_hello.cpp</a>
+                </li></ul></div>
+          </li>
+</ul></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="testing_with_exceptions.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../tutorials.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="running_selected_tests.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

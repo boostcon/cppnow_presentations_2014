@@ -1,0 +1,46 @@
+# Jamfile.v2
+#
+# Copyright (c) 2013
+# Richard Thomson
+#
+# Distributed Under the Boost Software License, Version 1.0. (See
+# accompanying file LICENSE_1_0.txt or copy at
+# http://www.boost.org/LICENSE_1_0.txt)
+
+alias compilation :
+    dynamic
+    minimal
+    static
+    ;
+
+explicit dynamic_main ;
+explicit static_main ;
+
+run dynamic/main.cpp dynamic/test_hello.cpp
+    ../../system_under_test//hello /boost//unit_test_framework
+    : : : <include>../../system_under_test/hello <link>shared
+    : dynamic ;
+
+# The unit test framework needs to be compiled with BOOST_TEST_NO_MAIN
+# for this example to compile.
+run dynamic_main/main.cpp dynamic_main/test_hello.cpp
+    ../../system_under_test//hello /boost//unit_test_framework
+    : : : <include>../../system_under_test/hello <link>shared
+    : dynamic_main ;
+
+run minimal/test_hello.cpp
+    ../../system_under_test//hello /boost//unit_test_framework
+    : : : <include>../../system_under_test/hello
+    : minimal ;
+
+run static/main.cpp static/test_hello.cpp
+    ../../system_under_test//hello /boost//unit_test_framework 
+    : : : <include>../../system_under_test/hello <link>static
+    : static ;
+
+# The unit test framework needs to be compiled with BOOST_TEST_NO_MAIN
+# for this example to compile.
+run static_main/main.cpp static_main/test_hello.cpp
+    ../../system_under_test//hello /boost//unit_test_framework
+    : : : <include>../../system_under_test/hello <link>static
+    : static_main ;

@@ -1,0 +1,286 @@
+[/==============================================================================
+    Copyright (C) 2013 Richard Thomson
+
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
+    file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+===============================================================================/]
+
+[section:test_case Test Cases]
+
+A test case is a named body of code providing the three phases of a test:
+setup, exercise and verify.  A test case is most conveniently created using
+one of the provided test case macros listed in the following table.
+
+[table Test Case Macros
+[[Macro] [Description]]
+[[=BOOST_AUTO_TEST_CASE(=[~name]=)=]
+    [Creates test case [~name] and automatically registers it with the test
+    runner.]]
+[[=BOOST_AUTO_TEST_CASE_EXPECTED_FAILURES(=[~name], [~count]=)=]
+    [Informs the test runner that test case [~name] should result in
+    [~count] failures.]]
+[[=BOOST_AUTO_TEST_CASE_TEMPLATE(=[~name], [~T], [~types]=)=]
+    [Automatically registers a test case [~name] parameterized by the
+    template argument [~T] over the collection of [~types].]]
+[[=BOOST_FIXTURE_TEST_CASE(=[~name], [~fixture]=)=]
+    [Creates test case [~name] derived from the fixture [~fixture] and
+    automatically registers it with the test runner.]]
+[[=BOOST_PARAM_TEST_CASE(=[~fn], [~begin], [~end]=)=]
+    [Manually creates a parameterized test case using the supplied callable
+    object [~fn] and parameter iterators [~begin] and [~end].]]
+[[=BOOST_PARAM_CLASS_TEST_CASE(=[~fn], [~instance], [~begin], [~end]=)=]
+    [Manually creates a parameterized test case using the supplied callable
+    object [~fn], class instance [~instance] and parameter iterators
+    [~begin] and [~end].]]
+[[=BOOST_TEST_CASE(=[~fn]=)=]
+    [Manually creates a test case using the supplied callable object [~fn].]]
+[[=BOOST_TEST_CASE_TEMPLATE(=[~name], [~types]=)=]
+    [Manually creates a set of test cases from the template test case
+    [~name] for each type in [~types].]]
+[[=BOOST_TEST_CASE_TEMPLATE_FUNCTION(=[~name], [~T]=)=]
+    [Manually creates a template test case [~name] parameterized by the
+    template argument [~T].]]
+]
+
+[section:boost_auto_test_case =BOOST_AUTO_TEST_CASE=]
+
+=BOOST_AUTO_TEST_CASE(=[~name]=)= creates a test case class, a test case
+invocation function, a test case unique identifier, registers the invocation
+function as a test case and begins the definition of the test method on
+the test class.  The test case class [~name] is derived from
+=BOOST_AUTO_TEST_CASE_FIXTURE= and contains a single method named
+=test_method=.  The test invocation function instantiates the test case
+class and invokes the test case method.  Test log checkpoints are made
+before the test case class is instantiated and bracketing the test
+method invocation.  This provides diagnostic checkpoints should a runtime
+error cause a test case to be aborted before any assertions are made.
+
+[heading Example Source Code]
+
+* Tutorials:
+ * [link test.tutorials.hello_test Hello, Test!]
+* System under test:
+ * [@boost:/libs/test/doc/src/tutorials/hello_test/sut/hello.hpp hello.hpp]
+ * [@boost:/libs/test/doc/src/tutorials/hello_test/sut/hello.cpp hello.cpp]
+* Tests:
+ * [@boost:/libs/test/doc/src/tutorials/hello_test/test/test_hello.cpp test_hello.cpp]
+
+[endsect]
+
+[section:boost_auto_test_case_expected_failures =BOOST_AUTO_TEST_CASE_EXPECTED_FAILURES=]
+
+=BOOST_AUTO_TEST_CASE_EXPECTED_FAILURES(=[~name], [~n]=)= is used to
+decorate a test case with an expected failure count of [~n].  It should
+appear immediately preceding the macro that defines the test case, such as
+__boost_auto_test_case__ or __boost_fixture_test_case__.  It can be used
+for test cases declared at file scope or within a test suite.  This macro
+should only be used in the most exceptional of circumstances.  Unit tests
+are designed to provide a safety net of regression tests against our code.
+If we allow tests to stay failing, we are less motivated to correct them.
+
+As a temporary measure, we may wish to annotate certain tests as known
+failures.  The count [~n] is the number of expected failed assertions
+during the execution of the test case.  When using the [link
+test.reference.assertion.levels =CHECK=] level assertions, the total
+failure count can be larger than one since the test case continues executing
+past a failed assertion.  When using =REQUIRE= level assertions, the total
+failure count will only be one as execution of the test case terminates on
+the first failed assertion.
+
+If =CHECK= level assertions are used and the number of failures is less
+than or equal to [~n], the test runner will return a status code of =0=.
+If the number of failures is greater than [~n], the test runner will
+return a status code of =201=.  If =REQUIRE= level assertions are used,
+the number of expected failures can be at most one and the test runner
+will return a status code of =200= when one failed assertion is found.
+
+[import examples/auto_test_case_expected_failures.cpp]
+[expected_failures]
+
+[note When using the compiler formatted test output, Visual Studio
+interprets the failed assertion output as a detected error, it will fail
+the Post-Build event mechanism recommended in [link
+test.guide.test_case_design Test Case Design and Maintenance].]
+
+[heading Example Source Code]
+
+* System under test:
+ * [@boost:/libs/test/doc/src/system_under_test/hello/hello.hpp hello.hpp]
+ * [@boost:/libs/test/doc/src/system_under_test/hello/hello.cpp hello.cpp]
+* Tests:
+ * [@boost:/libs/test/doc/src/examples/auto_test_case_expected_failures.cpp auto_test_case_expected_failures.cpp]
+
+[endsect]
+
+[section:boost_auto_test_case_template =BOOST_AUTO_TEST_CASE_TEMPLATE=]
+
+=BOOST_AUTO_TEST_CASE_TEMPLATE(=[~name], [~var], [~types]=)= declares a
+test case [~name] parameterized by a single template argument [~var]
+that is evaluated for each type in [~types].  This allows you to write a
+test case that exercises an invariant across a collection of types.  The
+macro expands into one test case for each type in [~types], with the
+template argument [~var] assigned to each type.  The [~types] argument
+must be a Boost.MPL type list and must be defined as a =typedef=.
+
+[import examples/auto_test_case_template.cpp]
+[auto_test_case_template]
+
+[heading Example Source Code]
+
+* Tests:
+ * [@boost:/libs/test/doc/src/examples/auto_test_case_template.cpp auto_test_case_template.cpp]
+
+[endsect]
+
+[section:boost_fixture_test_case =BOOST_FIXTURE_TEST_CASE=]
+
+=BOOST_FIXTURE_TEST_CASE(=[~name], [~fixture]=)= defines a test case class
+[~name] that derives from [~fixture].  If the test case is declared within
+a test suite that also has a test fixture, then to get the cumulative
+effect of both fixtures the test case fixture should derive from the test
+suite's fixture.  Otherwise, the test case fixture will replace the test
+suite fixture for a test case defined with =BOOST_FIXTURE_TEST_CASE=.
+
+[heading Example Source Code]
+
+* Tutorials:
+ * [link test.tutorials.testing_with_fixtures Testing With Fixtures]
+* System under test:
+ * [@boost:/libs/test/doc/src/tutorials/testing_with_fixtures/sut/hello.hpp hello.hpp]
+ * [@boost:/libs/test/doc/src/tutorials/testing_with_fixtures/sut/hello.cpp hello.cpp]
+* Tests:
+ * [@boost:/libs/test/doc/src/tutorials/testing_with_fixtures/test/test_hello.cpp test_hello.cpp]
+
+[endsect]
+
+[section:boost_global_fixture =BOOST_GLOBAL_FIXTURE=]
+
+=BOOST_GLOBAL_FIXTURE(=[~name]=)= declares a global fixture that is
+constructed before executing any test cases and is destroyed after
+executing all test cases.  If more than one global fixture is defined in
+a single source file, the fixtures are constructed in the order they
+appear in the source file and destroyed in the reverse order.  If global
+fixtures are defined in multiple source files, the order in which global
+fixtures are initialized between source files is implementation dependent.
+
+Because global fixtures are not created and destroyed for each test case,
+they represent shared state that prevents test cases from executing
+independently from each other.  For this reason, test case fixtures
+created with __boost_fixture_test_case__ and test suite fixtures created
+with __boost_fixture_test_suite__ are preferred over global fixtures.
+
+[import examples/global_fixture.cpp][global_fixture]
+
+[heading Example Source Code]
+
+* Tests:
+ * [@boost:/libs/test/doc/src/examples/another_global_fixture.cpp another_global_fixture.cpp]
+ * [@boost:/libs/test/doc/src/examples/global_fixture.cpp global_fixture.cpp]
+
+[endsect]
+
+[section:boost_param_test_case =BOOST_PARAM_TEST_CASE=]
+
+=BOOST_PARAM_TEST_CASE(=[~fn], [~begin], [~end]=)= creates a series of
+test cases that invoking the callable object [~fn] on the items in the
+collection defined by [~begin] and [~end].  The test case returned by
+=BOOST_PARAM_TEST_CASE= must be added to a test suite in an initialization
+function for the tests to be executed.  The iterators [~begin] and [~end]
+must be valid at the time the test case executes and not just at the time
+the test case is created.
+
+[import examples/param_test_case.cpp][param_test_case]
+
+[heading Example Source Code]
+
+* System under test:
+ * [@boost:/libs/test/doc/src/system_under_test/hello/hello.hpp hello.hpp]
+ * [@boost:/libs/test/doc/src/system_under_test/hello/hello.cpp hello.cpp]
+* Tests:
+ * [@boost:/libs/test/doc/src/examples/param_test_case.cpp param_test_case.cpp]
+
+[endsect]
+
+[section:boost_param_class_test_case =BOOST_PARAM_CLASS_TEST_CASE=]
+
+=BOOST_PARAM_CLASS_TEST_CASE(=[~memfn], [~instance], [~begin], [~end]=)=
+works similarly to __boost_param_test_case__.  It creates a collection of
+test cases that invoke the member function [~memfn] on the instance pointer
+[~instance].  The member function is passed an item obtained by iterating
+the collection defined by the [~begin] and [~end] iterators.  The [~instance]
+pointer must be passed as a =boost::shared_ptr= to ensure the lifetime
+of the instance exceeds that of any test case using the instance.
+The test case returned by =BOOST_PARAM_CLASS_TEST_CASE= must be added to
+a test suite in an initialization function for the tests to be executed.  
+
+[import examples/param_class_test_case.cpp][param_class_test_case]
+
+[note The single [~instance] is shared among all test cases and therefore
+should not keep any shared state that may couple independent test cases.
+In this example, the output string stream is created fresh inside each
+test method and not shared between calls to the method.]
+
+[heading Example Source Code]
+
+* System under test:
+ * [@boost:/libs/test/doc/src/system_under_test/hello/hello.hpp hello.hpp]
+ * [@boost:/libs/test/doc/src/system_under_test/hello/hello.cpp hello.cpp]
+* Tests:
+ * [@boost:/libs/test/doc/src/examples/param_class_test_case.cpp param_class_test_case.cpp]
+
+[endsect]
+
+[section:boost_test_case =BOOST_TEST_CASE=]
+
+=BOOST_TEST_CASE(=[~fn]=)= creates a new test case named "fn" that executes
+the callable function [~fn].  The test case returned by =BOOST_TEST_CASE=
+must be added to a test suite in an initialization function for the tests
+to be executed.  
+
+[import examples/test_case.cpp][test_case]
+
+[heading Example Source Code]
+
+* System under test:
+ * [@boost:/libs/test/doc/src/system_under_test/hello/hello.hpp hello.hpp]
+ * [@boost:/libs/test/doc/src/system_under_test/hello/hello.cpp hello.cpp]
+* Tests:
+ * [@boost:/libs/test/doc/src/examples/test_case.cpp test_case.cpp]
+
+[endsect]
+
+[section:boost_test_case_template =BOOST_TEST_CASE_TEMPLATE=]
+
+=BOOST_TEST_CASE_TEMPLATE(=[~name], [~types]=)= manually creates a set of
+test cases from the template test case [~name] for each type in [~types].
+The test case returned by =BOOST_TEST_CASE_TEMPLATE= must be added to a
+test suite in an initialization function for the tests to be executed.
+The test case function is defined with the
+__boost_test_case_template_function__ macro.
+
+[import examples/test_case_template.cpp][test_case_template]
+
+[heading Example Source Code]
+
+* Tests:
+ * [@boost:/libs/test/doc/src/examples/test_case_template.cpp test_case_template.cpp]
+
+[endsect]
+
+[section:boost_test_case_template_function =BOOST_TEST_CASE_TEMPLATE_FUNCTION=]
+
+=BOOST_TEST_CASE_TEMPLATE_FUNCTION(=[~name], [~T]=)= defines a test
+case function named [~name] that is parameterized by a type parameter
+[~T].  The defined functions are then available for registration as
+parameterized test cases with __boost_test_case_template__.
+
+[test_case_template_function]
+
+[heading Example Source Code]
+
+* Tests:
+ * [@boost:/libs/test/doc/src/examples/test_case_template.cpp test_case_template.cpp]
+
+[endsect]
+
+[endsect]

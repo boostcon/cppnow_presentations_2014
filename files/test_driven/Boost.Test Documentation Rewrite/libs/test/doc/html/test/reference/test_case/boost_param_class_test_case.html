@@ -1,0 +1,157 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>BOOST_PARAM_CLASS_TEST_CASE</title>
+<link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="up" href="../test_case.html" title="Test Cases">
+<link rel="prev" href="boost_param_test_case.html" title="BOOST_PARAM_TEST_CASE">
+<link rel="next" href="boost_test_case.html" title="BOOST_TEST_CASE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="boost_param_test_case.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../test_case.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="boost_test_case.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="test.reference.test_case.boost_param_class_test_case"></a><a class="link" href="boost_param_class_test_case.html" title="BOOST_PARAM_CLASS_TEST_CASE"><code class="literal">BOOST_PARAM_CLASS_TEST_CASE</code></a>
+</h4></div></div></div>
+<p>
+          <code class="literal">BOOST_PARAM_CLASS_TEST_CASE(</code><em class="replaceable"><code>memfn</code></em>,
+          <em class="replaceable"><code>instance</code></em>, <em class="replaceable"><code>begin</code></em>,
+          <em class="replaceable"><code>end</code></em><code class="literal">)</code> works similarly to
+          <a class="link" href="boost_param_test_case.html" title="BOOST_PARAM_TEST_CASE"><code class="literal">BOOST_PARAM_TEST_CASE</code></a>.
+          It creates a collection of test cases that invoke the member function
+          <em class="replaceable"><code>memfn</code></em> on the instance pointer <em class="replaceable"><code>instance</code></em>.
+          The member function is passed an item obtained by iterating the collection
+          defined by the <em class="replaceable"><code>begin</code></em> and <em class="replaceable"><code>end</code></em>
+          iterators. The <em class="replaceable"><code>instance</code></em> pointer must be passed
+          as a <code class="literal">boost::shared_ptr</code> to ensure the lifetime of the
+          instance exceeds that of any test case using the instance. The test case
+          returned by <code class="literal">BOOST_PARAM_CLASS_TEST_CASE</code> must be added
+          to a test suite in an initialization function for the tests to be executed.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">make_shared</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">shared_ptr</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">unit_test</span><span class="special">;</span>
+
+<span class="keyword">class</span> <span class="identifier">hello_world_tester</span>
+<span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+    <span class="identifier">hello_world_tester</span><span class="special">()</span>
+    <span class="special">{</span>
+        <span class="identifier">eq_items</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="string">"Hello, world!\n"</span><span class="special">);</span>
+        <span class="identifier">eq_items</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="string">"Hello, world!\n"</span><span class="special">);</span>
+        <span class="identifier">ne_items</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="string">"shaggy"</span><span class="special">);</span>
+        <span class="identifier">ne_items</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="string">"scooby"</span><span class="special">);</span>
+    <span class="special">}</span>
+
+    <span class="keyword">void</span> <span class="identifier">inserts_text</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">text</span><span class="special">)</span>
+    <span class="special">{</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostringstream</span> <span class="identifier">dest</span><span class="special">;</span>
+
+        <span class="identifier">hello_world</span><span class="special">(</span><span class="identifier">dest</span><span class="special">);</span>
+
+        <span class="identifier">BOOST_REQUIRE_EQUAL</span><span class="special">(</span><span class="identifier">text</span><span class="special">,</span> <span class="identifier">dest</span><span class="special">.</span><span class="identifier">str</span><span class="special">());</span>
+    <span class="special">};</span>
+
+    <span class="keyword">void</span> <span class="identifier">does_not_insert_text</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">text</span><span class="special">)</span>
+    <span class="special">{</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostringstream</span> <span class="identifier">dest</span><span class="special">;</span>
+
+        <span class="identifier">hello_world</span><span class="special">(</span><span class="identifier">dest</span><span class="special">);</span>
+
+        <span class="identifier">BOOST_REQUIRE_NE</span><span class="special">(</span><span class="identifier">text</span><span class="special">,</span> <span class="identifier">dest</span><span class="special">.</span><span class="identifier">str</span><span class="special">());</span>
+    <span class="special">}</span>
+
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">eq_items</span><span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">ne_items</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">hello_world_tester</span><span class="special">&gt;</span> <span class="identifier">tester</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">make_shared</span><span class="special">&lt;</span><span class="identifier">hello_world_tester</span><span class="special">&gt;());</span>
+
+<span class="keyword">static</span> <span class="identifier">test_suite</span><span class="special">*</span>
+<span class="identifier">init</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">argc</span><span class="special">,</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">argv</span><span class="special">[])</span>
+<span class="special">{</span>
+    <span class="identifier">test_suite</span><span class="special">&amp;</span> <span class="identifier">suite</span> <span class="special">=</span> <span class="identifier">framework</span><span class="special">::</span><span class="identifier">master_test_suite</span><span class="special">();</span>
+    <span class="identifier">suite</span><span class="special">.</span><span class="identifier">add</span><span class="special">(</span><span class="identifier">BOOST_PARAM_CLASS_TEST_CASE</span><span class="special">(</span>
+        <span class="special">&amp;</span><span class="identifier">hello_world_tester</span><span class="special">::</span><span class="identifier">inserts_text</span><span class="special">,</span> <span class="identifier">tester</span><span class="special">,</span>
+        <span class="identifier">tester</span><span class="special">-&gt;</span><span class="identifier">eq_items</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">tester</span><span class="special">-&gt;</span><span class="identifier">eq_items</span><span class="special">.</span><span class="identifier">end</span><span class="special">()));</span>
+    <span class="identifier">suite</span><span class="special">.</span><span class="identifier">add</span><span class="special">(</span><span class="identifier">BOOST_PARAM_CLASS_TEST_CASE</span><span class="special">(</span>
+        <span class="special">&amp;</span><span class="identifier">hello_world_tester</span><span class="special">::</span><span class="identifier">does_not_insert_text</span><span class="special">,</span> <span class="identifier">tester</span><span class="special">,</span>
+        <span class="identifier">tester</span><span class="special">-&gt;</span><span class="identifier">ne_items</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">tester</span><span class="special">-&gt;</span><span class="identifier">ne_items</span><span class="special">.</span><span class="identifier">end</span><span class="special">()));</span>
+    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">argc</span><span class="special">,</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">argv</span><span class="special">[])</span>
+<span class="special">{</span>
+    <span class="keyword">return</span> <span class="identifier">unit_test_main</span><span class="special">(</span><span class="identifier">init</span><span class="special">,</span> <span class="identifier">argc</span><span class="special">,</span> <span class="identifier">argv</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            The single <em class="replaceable"><code>instance</code></em> is shared among all test
+            cases and therefore should not keep any shared state that may couple
+            independent test cases. In this example, the output string stream is
+            created fresh inside each test method and not shared between calls to
+            the method.
+          </p></td></tr>
+</table></div>
+<h6>
+<a name="test.reference.test_case.boost_param_class_test_case.h0"></a>
+          <span class="phrase"><a name="test.reference.test_case.boost_param_class_test_case.example_source_code"></a></span><a class="link" href="boost_param_class_test_case.html#test.reference.test_case.boost_param_class_test_case.example_source_code">Example
+          Source Code</a>
+        </h6>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+              System under test:
+              <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                    <a href="../../../../../../../libs/test/doc/src/system_under_test/hello/hello.hpp" target="_top">hello.hpp</a>
+                  </li>
+<li class="listitem">
+                    <a href="../../../../../../../libs/test/doc/src/system_under_test/hello/hello.cpp" target="_top">hello.cpp</a>
+                  </li>
+</ul></div>
+            </li>
+<li class="listitem">
+              Tests:
+              <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">
+                    <a href="../../../../../../../libs/test/doc/src/examples/param_class_test_case.cpp" target="_top">param_class_test_case.cpp</a>
+                  </li></ul></div>
+            </li>
+</ul></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="boost_param_test_case.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../test_case.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="boost_test_case.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+# Jamfile.v2
+#
+# Copyright (c) 2013
+# Richard Thomson
+#
+# Distributed Under the Boost Software License, Version 1.0. (See
+# accompanying file LICENSE_1_0.txt or copy at
+# http://www.boost.org/LICENSE_1_0.txt)
+
+alias src :
+    tutorials
+    system_under_test
+    examples
+    ;
+
+build-project tutorials ;
+build-project system_under_test ;
+build-project examples ;

@@ -1,0 +1,88 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Test Assertions</title>
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="up" href="../reference.html" title="Reference">
+<link rel="prev" href="test_classes/unit_test_main.html" title="unit_test_main">
+<link rel="next" href="assertion/levels.html" title="Assertion Levels">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="test_classes/unit_test_main.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="assertion/levels.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="test.reference.assertion"></a><a class="link" href="assertion.html" title="Test Assertions">Test Assertions</a>
+</h3></div></div></div>
+<div class="toc"><dl class="toc">
+<dt><span class="section"><a href="assertion/levels.html">Assertion Levels</a></span></dt>
+<dt><span class="section"><a href="assertion/_boost____level___bitwise_equal_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_BITWISE_EQUAL</code></a></span></dt>
+<dt><span class="section"><a href="assertion/_boost____level___close_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_CLOSE</code></a></span></dt>
+<dt><span class="section"><a href="assertion/_boost____level___close_fraction_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_CLOSE_FRACTION</code></a></span></dt>
+<dt><span class="section"><a href="assertion/boost_level_equal.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_EQUAL</code></a></span></dt>
+<dt><span class="section"><a href="assertion/_boost____level___equal_collections_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_EQUAL_COLLECTIONS</code></a></span></dt>
+<dt><span class="section"><a href="assertion/boost_level_exception.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_EXCEPTION</code></a></span></dt>
+<dt><span class="section"><a href="assertion/boost_fail.html"><code class="literal">BOOST_FAIL</code></a></span></dt>
+<dt><span class="section"><a href="assertion/_boost____level___ge_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_GE</code></a></span></dt>
+<dt><span class="section"><a href="assertion/_boost____level___gt_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_GT</code></a></span></dt>
+<dt><span class="section"><a href="assertion/_boost____level___le_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_LE</code></a></span></dt>
+<dt><span class="section"><a href="assertion/_boost____level___lt_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_LT</code></a></span></dt>
+<dt><span class="section"><a href="assertion/boost_level_message.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_MESSAGE</code></a></span></dt>
+<dt><span class="section"><a href="assertion/_boost____level___ne_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_NE</code></a></span></dt>
+<dt><span class="section"><a href="assertion/boost_level_no_throw.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_NO_THROW</code></a></span></dt>
+<dt><span class="section"><a href="assertion/_boost____level___predicate_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_PREDICATE</code></a></span></dt>
+<dt><span class="section"><a href="assertion/_boost____level___small_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_SMALL</code></a></span></dt>
+<dt><span class="section"><a href="assertion/boost_level_throw.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_THROW</code></a></span></dt>
+<dt><span class="section"><a href="assertion/boost_test_dont_print_log_value.html"><code class="literal">BOOST_TEST_DONT_PRINT_LOG_VALUE</code></a></span></dt>
+</dl></div>
+<p>
+        Assertions are used to validate the result of exercising the system under
+        test. When an assertion fails, a diagnostic message is created and the failed
+        assertion is recorded. Different assertion levels allow you to control how
+        a failed assertion is interpreted by the test runner.
+      </p>
+<div class="important"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../../../../../../doc/src/images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          When an assertion involves a user-defined datatype, a stream insertion
+          operator (<code class="computeroutput"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></code>)
+          must be defined for the user-defined datatype, or the assertion will fail
+          to compile. Asserting a comparison operation on a value of a user-defined
+          type will require the appropriate comparison operator (<code class="computeroutput"><span class="keyword">operator</span><span class="special">&lt;</span></code>, <code class="computeroutput"><span class="keyword">operator</span><span class="special">==</span></code>, etc.) be defiend for the type or the
+          assertion will fail to compile. The need to define <code class="computeroutput"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></code> can be eliminated by using <a class="link" href="assertion/boost_test_dont_print_log_value.html" title="BOOST_TEST_DONT_PRINT_LOG_VALUE"><code class="literal">BOOST_TEST_DONT_PRINT_LOG_VALUE</code></a>.
+        </p></td></tr>
+</table></div>
+<p>
+        The <a class="link" href="../guide/compilation/minimal_header.html" title="Minimal Header">minimal header</a>
+        test framework does not provide the facilities described here.
+      </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="test_classes/unit_test_main.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="assertion/levels.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

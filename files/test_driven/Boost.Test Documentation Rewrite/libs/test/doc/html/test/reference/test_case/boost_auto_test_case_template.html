@@ -1,0 +1,83 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>BOOST_AUTO_TEST_CASE_TEMPLATE</title>
+<link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="up" href="../test_case.html" title="Test Cases">
+<link rel="prev" href="boost_auto_test_case_expected_failures.html" title="BOOST_AUTO_TEST_CASE_EXPECTED_FAILURES">
+<link rel="next" href="boost_fixture_test_case.html" title="BOOST_FIXTURE_TEST_CASE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="boost_auto_test_case_expected_failures.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../test_case.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="boost_fixture_test_case.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="test.reference.test_case.boost_auto_test_case_template"></a><a class="link" href="boost_auto_test_case_template.html" title="BOOST_AUTO_TEST_CASE_TEMPLATE"><code class="literal">BOOST_AUTO_TEST_CASE_TEMPLATE</code></a>
+</h4></div></div></div>
+<p>
+          <code class="literal">BOOST_AUTO_TEST_CASE_TEMPLATE(</code><em class="replaceable"><code>name</code></em>,
+          <em class="replaceable"><code>var</code></em>, <em class="replaceable"><code>types</code></em><code class="literal">)</code>
+          declares a test case <em class="replaceable"><code>name</code></em> parameterized by a
+          single template argument <em class="replaceable"><code>var</code></em> that is evaluated
+          for each type in <em class="replaceable"><code>types</code></em>. This allows you to write
+          a test case that exercises an invariant across a collection of types. The
+          macro expands into one test case for each type in <em class="replaceable"><code>types</code></em>,
+          with the template argument <em class="replaceable"><code>var</code></em> assigned to each
+          type. The <em class="replaceable"><code>types</code></em> argument must be a Boost.MPL
+          type list and must be defined as a <code class="literal">typedef</code>.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpl</span><span class="special">/</span><span class="identifier">list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">limits</span><span class="special">&gt;</span>
+
+<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;</span>
+    <span class="keyword">unsigned</span> <span class="keyword">char</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="keyword">short</span><span class="special">,</span>
+    <span class="keyword">unsigned</span> <span class="keyword">int</span><span class="special">,</span>
+    <span class="keyword">unsigned</span> <span class="keyword">long</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span><span class="special">&gt;</span> <span class="identifier">unsigned_types</span><span class="special">;</span>
+
+<span class="identifier">BOOST_AUTO_TEST_CASE_TEMPLATE</span><span class="special">(</span><span class="identifier">not_is_signed_for_unsigned_types</span><span class="special">,</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">unsigned_types</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">BOOST_REQUIRE</span><span class="special">(!</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">is_signed</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+<h6>
+<a name="test.reference.test_case.boost_auto_test_case_template.h0"></a>
+          <span class="phrase"><a name="test.reference.test_case.boost_auto_test_case_template.example_source_code"></a></span><a class="link" href="boost_auto_test_case_template.html#test.reference.test_case.boost_auto_test_case_template.example_source_code">Example
+          Source Code</a>
+        </h6>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+              Tests:
+              <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">
+                    <a href="../../../../../../../libs/test/doc/src/examples/auto_test_case_template.cpp" target="_top">auto_test_case_template.cpp</a>
+                  </li></ul></div>
+            </li></ul></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="boost_auto_test_case_expected_failures.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../test_case.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="boost_fixture_test_case.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

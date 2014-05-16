@@ -1,0 +1,147 @@
+[/==============================================================================
+    Copyright (C) 2013 Richard Thomson
+
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
+    file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+===============================================================================/]
+
+[section:test_classes Test Classes]
+
+Most of the time you will not need to interact with the classes in __test__
+because the macro facilities for assertions, test cases and test suites
+hide all the details of the classes.
+If you are adapting legacy test code to __test__ you may need to interact
+with these classes in order to leverage existing test code without
+significant refactoring of the legacy test code.
+
+The [link test.reference.test_classes.predicate_result =predicate_result=]
+class is used to combine a boolean result from a predicate with a custom
+failure message for reporting additional detail in the context of a failed
+assertion.
+The [link test.reference.test_classes.test_unit =test_unit=],
+[link test.reference.test_classes.test_case =test_case=],
+[link test.reference.test_classes.test_suite =test_suite=] and
+[link test.reference.test_classes.master_test_suite_t =master_test_suite_t=]
+classes provide the interface to test suites and their test cases for the
+test runner.
+The [link test.reference.test_classes.test_observer =test_observer=],
+[link test.reference.test_classes.unit_test_log_t =unit_test_log_t=]
+and [link test.reference.test_classes.unit_test_log_formatter =unit_test_log_formatter=]
+classes provide low-level interaction with the test runner log.
+
+[section:predicate_result =predicate_result=]
+
+The =predicate_result= class combines a boolean result from a predicate
+with a detailed context message for a failed predicate evaluation.  Usually
+this class is only used in the internal implementation of the test framework,
+but a user can define their own custom predicates that return a =predicate_result=
+to support detailed failure messages when an assertion fails.
+
+=predicate_result= is constructable and assignable from =bool=.
+The =message()= method returns an output string stream that can be used
+to build up a context message.
+
+[import ../../../../boost/test/predicate_result.hpp]
+[predicate_result_decl]
+
+See __boost_require_message__ for an example using =predicate_result=.
+
+[endsect]
+
+[section:test_unit =test_unit=]
+
+The =test_unit= class forms the basis of the hierarchical tree of test
+cases.
+Test applications will usually create instances of =test_case=
+or =test_suite=, both of which derive from =test_unit=.
+
+[import ../../../../boost/test/unit_test_suite_impl.hpp][test_unit_decl]
+
+[endsect]
+
+[section:test_case =test_case=]
+
+The =test_case= class represents a single test case.
+A test case must be added to a test suite reachable from the master test
+suite in order for the test runner to run the test case.
+
+[test_case_decl]
+
+[endsect]
+
+[section:test_suite =test_suite=]
+
+The =test_suite= class represents a group of test cases and suites in
+the test tree hierarchy.
+
+[test_suite_decl]
+
+[endsect]
+
+[section:master_test_suite_t =master_test_suite_t=]
+
+The master test suite of type =master_test_suite_t= is the starting point
+for the test runner.
+
+[master_test_suite_t_decl]
+
+You can obtain a reference to the master test suite with the
+=master_test_suite()= function:
+
+[import ../../../../boost/test/framework.hpp][master_test_suite_decl]
+
+[endsect]
+
+[section:test_observer =test_observer=]
+
+The =test_observer= class encapsulates observers of test execution.  It
+provides a simple /null/ style observer behavior.
+
+[import ../../../../boost/test/test_observer.hpp][test_observer_decl]
+
+[endsect]
+
+[section:unit_test_log_t =unit_test_log_t=]
+
+The =unit_test_log_t= class encapsulates the unit test log.  You obtain
+a reference to the single global unit test log instance with the
+=unit_test_log= member.
+
+[import ../../../../boost/test/unit_test_log.hpp][unit_test_log_t_decl]
+
+[endsect]
+
+[section:unit_test_log_formatter =unit_test_log_formatter=]
+
+The =unit_test_log_formatter= class encapsulates formatting of log events
+for an output stream.
+
+[import ../../../../boost/test/unit_test_log_formatter.hpp][unit_test_log_formatter_decl]
+
+[endsect]
+
+[section:init_unit_test_func =init_unit_test_func=]
+
+The =init_unit_test_func= function typedef identifies the signature of
+the user supplied initialization function.  The initialization function
+can be used to add custom test cases and test suites to the test tree.
+
+[init_unit_test_func_decl]
+
+[endsect]
+
+[section:unit_test_main =unit_test_main=]
+
+The =unit_test_main= function provides an implementation of =main= that
+can be used by a test executable compiled with __boost_test_no_main__.
+
+[import ../../../../boost/test/unit_test.hpp][unit_test_main_decl]
+
+=unit_test_main= initializes the test framework, traverses the test
+tree and reports the result as a the return value of the function.
+Unexpected exceptions and system errors (signals, etc.) are caught and
+mapped to appropriate return values by the function.
+
+[endsect]
+
+[endsect]

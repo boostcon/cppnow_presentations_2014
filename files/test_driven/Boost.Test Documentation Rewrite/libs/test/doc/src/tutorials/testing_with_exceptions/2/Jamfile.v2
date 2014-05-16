@@ -1,0 +1,16 @@
+# Jamfile.v2
+#
+# Copyright (c) 2013
+# Richard Thomson
+#
+# Distributed Under the Boost Software License, Version 1.0. (See
+# accompanying file LICENSE_1_0.txt or copy at
+# http://www.boost.org/LICENSE_1_0.txt)
+
+alias testing_with_exceptions.2 :
+    hello.testing_with_exceptions.2
+    test_hello.testing_with_exceptions.2
+    ;
+
+lib hello.testing_with_exceptions.2 : sut/hello.cpp : <link>static ;
+run-fail test/test_hello.cpp hello.testing_with_exceptions.2 : : : <include>sut : test_hello.testing_with_exceptions.2 ;

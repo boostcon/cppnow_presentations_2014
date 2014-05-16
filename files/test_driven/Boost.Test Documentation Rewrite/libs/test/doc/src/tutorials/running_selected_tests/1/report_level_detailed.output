@@ -1,0 +1,15 @@
+[pre
+> test_hello --report_level=detailed
+Running 2 test cases...
+
+Test suite "Master Test Suite" passed with:
+  2 assertions out of 2 passed
+  2 test cases out of 2 passed
+
+  Test case "hello_world_inserts_text" passed with:
+    1 assertion out of 1 passed
+
+  Test case "hello_world_stream_with_badbit_throws_runtime_error" passed with:
+    1 assertion out of 1 passed
+
+]

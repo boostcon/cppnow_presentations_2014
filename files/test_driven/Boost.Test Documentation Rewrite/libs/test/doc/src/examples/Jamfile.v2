@@ -1,0 +1,62 @@
+# Jamfile.v2
+#
+# Copyright (c) 2013
+# Richard Thomson
+#
+# Distributed Under the Boost Software License, Version 1.0. (See
+# accompanying file LICENSE_1_0.txt or copy at
+# http://www.boost.org/LICENSE_1_0.txt)
+
+alias examples :
+    compilation//compilation
+    assertions
+    assertion_failures
+    auto_test_case_template
+    file_system
+    global_fixture
+    manual_registration
+    param_class_test_case
+    param_test_case
+    test_case
+    test_case_template
+    auto_test_case_expected_failures
+    ;
+
+alias turtle
+    : # no sources
+    : # no build requirements
+    : # no default build
+    : <include>../../../../../../turtle
+    ;
+
+explicit turtle_mock ;
+
+build-project compilation ;
+
+run assertions.cpp /boost//unit_test_framework ;
+run auto_test_case_template.cpp /boost//unit_test_framework 
+    : : : <link>static ;
+run file_system.cpp ../system_under_test//scanner /boost//filesystem /boost//unit_test_framework
+    : : : <include>../system_under_test/scanner : file_system ;
+run global_fixture.cpp another_global_fixture.cpp /boost//unit_test_framework
+    : : : <link>static ;
+run manual_registration.cpp ../system_under_test//hello
+    : : : <include>../system_under_test/hello : manual_registration ;
+run param_class_test_case.cpp ../system_under_test//hello
+    : : : <include>../system_under_test/hello : param_class_test_case ;
+run param_test_case.cpp ../system_under_test//hello
+    : : : <include>../system_under_test/hello : param_test_case ;
+run test_case.cpp ../system_under_test//hello
+    : : : <include>../system_under_test/hello : test_case ;
+run test_case_template.cpp  ;
+
+run-fail auto_test_case_expected_failures.cpp ../system_under_test//hello /boost//unit_test_framework 
+    : : : <include>../system_under_test/hello <link>static ;
+run-fail assertion_failures.cpp /boost//unit_test_framework ;
+
+run turtle_mock.cpp
+    turtle
+    ../system_under_test//scanner
+    /boost//filesystem
+    /boost//unit_test_framework
+    : : : <include>../system_under_test/scanner : turtle_mock ;

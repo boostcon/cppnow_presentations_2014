@@ -1,0 +1,76 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Test Classes</title>
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="up" href="../reference.html" title="Reference">
+<link rel="prev" href="test_suite/boost_test_suite.html" title="BOOST_TEST_SUITE">
+<link rel="next" href="test_classes/predicate_result.html" title="predicate_result">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="test_suite/boost_test_suite.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="test_classes/predicate_result.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="test.reference.test_classes"></a><a class="link" href="test_classes.html" title="Test Classes">Test Classes</a>
+</h3></div></div></div>
+<div class="toc"><dl class="toc">
+<dt><span class="section"><a href="test_classes/predicate_result.html"><code class="literal">predicate_result</code></a></span></dt>
+<dt><span class="section"><a href="test_classes/test_unit.html"><code class="literal">test_unit</code></a></span></dt>
+<dt><span class="section"><a href="test_classes/test_case.html"><code class="literal">test_case</code></a></span></dt>
+<dt><span class="section"><a href="test_classes/test_suite.html"><code class="literal">test_suite</code></a></span></dt>
+<dt><span class="section"><a href="test_classes/master_test_suite_t.html"><code class="literal">master_test_suite_t</code></a></span></dt>
+<dt><span class="section"><a href="test_classes/test_observer.html"><code class="literal">test_observer</code></a></span></dt>
+<dt><span class="section"><a href="test_classes/unit_test_log_t.html"><code class="literal">unit_test_log_t</code></a></span></dt>
+<dt><span class="section"><a href="test_classes/unit_test_log_formatter.html"><code class="literal">unit_test_log_formatter</code></a></span></dt>
+<dt><span class="section"><a href="test_classes/init_unit_test_func.html"><code class="literal">init_unit_test_func</code></a></span></dt>
+<dt><span class="section"><a href="test_classes/unit_test_main.html"><code class="literal">unit_test_main</code></a></span></dt>
+</dl></div>
+<p>
+        Most of the time you will not need to interact with the classes in Boost.Test
+        because the macro facilities for assertions, test cases and test suites hide
+        all the details of the classes. If you are adapting legacy test code to Boost.Test
+        you may need to interact with these classes in order to leverage existing
+        test code without significant refactoring of the legacy test code.
+      </p>
+<p>
+        The <a class="link" href="test_classes/predicate_result.html" title="predicate_result"><code class="literal">predicate_result</code></a>
+        class is used to combine a boolean result from a predicate with a custom
+        failure message for reporting additional detail in the context of a failed
+        assertion. The <a class="link" href="test_classes/test_unit.html" title="test_unit"><code class="literal">test_unit</code></a>,
+        <a class="link" href="test_classes/test_case.html" title="test_case"><code class="literal">test_case</code></a>,
+        <a class="link" href="test_classes/test_suite.html" title="test_suite"><code class="literal">test_suite</code></a>
+        and <a class="link" href="test_classes/master_test_suite_t.html" title="master_test_suite_t"><code class="literal">master_test_suite_t</code></a>
+        classes provide the interface to test suites and their test cases for the
+        test runner. The <a class="link" href="test_classes/test_observer.html" title="test_observer"><code class="literal">test_observer</code></a>,
+        <a class="link" href="test_classes/unit_test_log_t.html" title="unit_test_log_t"><code class="literal">unit_test_log_t</code></a>
+        and <a class="link" href="test_classes/unit_test_log_formatter.html" title="unit_test_log_formatter"><code class="literal">unit_test_log_formatter</code></a>
+        classes provide low-level interaction with the test runner log.
+      </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="test_suite/boost_test_suite.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="test_classes/predicate_result.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

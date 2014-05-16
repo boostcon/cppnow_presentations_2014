@@ -1,0 +1,170 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Minimal Header</title>
+<link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="up" href="../compilation.html" title="Compilation and Usage Variants">
+<link rel="prev" href="../compilation.html" title="Compilation and Usage Variants">
+<link rel="next" href="_main_.html" title="main">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../compilation.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../compilation.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="_main_.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="test.guide.compilation.minimal_header"></a><a class="link" href="minimal_header.html" title="Minimal Header">Minimal Header</a>
+</h4></div></div></div>
+<p>
+          A lightweight, minimal version of the testing framework can be obtained
+          by including <code class="literal">&lt;boost/test/minimal.hpp&gt;</code>. This header
+          provides only the following macros:
+        </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Macro
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Meaning
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    <code class="literal">BOOST_CHECK(</code><span class="emphasis"><em>expression</em></span><code class="literal">)</code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    If <span class="emphasis"><em>expression</em></span> is false, the test fails and
+                    test execution continues.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="literal">BOOST_REQUIRE(</code><span class="emphasis"><em>expression</em></span><code class="literal">)</code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    If <span class="emphasis"><em>expression</em></span> is false, the test fails and
+                    test execution terminates.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="literal">BOOST_ERROR(</code><span class="emphasis"><em>message</em></span><code class="literal">)</code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Report <span class="emphasis"><em>message</em></span>, fail the test and continue
+                    test execution.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="literal">BOOST_FAIL(</code><span class="emphasis"><em>message</em></span><code class="literal">)</code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Report <span class="emphasis"><em>message</em></span>, fail the test and terminate
+                    test execution.
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+          The header supplies an implementation of <code class="literal">main</code> that executes
+          a single test case by calling a free function named <code class="literal">test_main</code>
+          with the following signature:
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">test_main</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">argc</span><span class="special">,</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">argv</span><span class="special">[]);</span>
+</pre>
+<p>
+        </p>
+<p>
+          The arguments <code class="literal">argc</code> and <code class="literal">argv</code> are passed
+          to <code class="literal">test_main</code> from the implementation of <code class="literal">main</code>
+          supplied by the test framework. No command-line argument processing is
+          performed by <code class="literal">main</code>. A summary report of errors recorded
+          by the test case is printed out after executing the test case. If any exception
+          is thrown by the test case, it is caught by <code class="literal">main</code> and
+          treated as an error from the test case.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">test</span><span class="special">/</span><span class="identifier">minimal</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="keyword">int</span> <span class="identifier">test_main</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">argc</span><span class="special">,</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">argv</span><span class="special">[])</span>
+<span class="special">{</span>
+    <span class="comment">// test case</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+<h6>
+<a name="test.guide.compilation.minimal_header.h0"></a>
+          <span class="phrase"><a name="test.guide.compilation.minimal_header.example_source_code"></a></span><a class="link" href="minimal_header.html#test.guide.compilation.minimal_header.example_source_code">Example
+          Source Code</a>
+        </h6>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+              System under test:
+              <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">
+                    <a href="../../../../../../../libs/test/doc/src/system_under_test/hello/hello.cpp" target="_top">hello.cpp</a>
+                  </li></ul></div>
+            </li>
+<li class="listitem">
+              An example of using the minimal test framework:
+              <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">
+                    <a href="../../../../../../../libs/test/doc/src/examples/compilation/minimal/test_hello.cpp" target="_top">test_hello.cpp</a>.
+                  </li></ul></div>
+            </li>
+</ul></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../compilation.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../compilation.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="_main_.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

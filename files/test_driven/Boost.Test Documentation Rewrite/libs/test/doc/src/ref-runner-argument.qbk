@@ -1,0 +1,364 @@
+[/==============================================================================
+    Copyright (C) 2013 Richard Thomson
+
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
+    file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+===============================================================================/]
+
+[template envar[name]
+[*Environment variable]: [^[name]]
+]
+
+[section:argument Command Line Arguments]
+
+[table Command Line Argument Summary
+[[Argument]                 [Description]]
+[[=--auto_start_dbg=]       [Automatically attach debugger in case of system failure]]
+[[=--build_info=]           [Print build information]]
+[[=--catch_system_errors=]  [Catch system errors]]
+[[=--detect_fp_exceptions=] [Detect floating-point exceptions]]
+[[=--detect_memory_leaks=]  [Detect memory leaks]]
+[[=--help=]                 [Print out a summary of test runner options]]
+[[=--log_format=]           [The format of the test log]]
+[[=--log_level=]            [The level of logging reported]]
+[[=--log_sink=]             [The log sink name]]
+[[=--output_format=]        [The output format]]
+[[=--random=]               [Random number seed]]
+[[=--report_format=]        [The test results report format]]
+[[=--report_level=]         [The test results report level]]
+[[=--report_sink=]          [The report sink name]]
+[[=--result_code=]          [Return result code]]
+[[=--run_test=]             [Tests to run]]
+[[=--show_progress=]        [Show execution progress]]
+[[=--use_alt_stack=]        [Use alternative stack]]
+[[=--wait_for_debugger=]    [Wait for the debugger to attach to the test runner.]]
+]
+
+The functionality of each command-line option can also be invoked with an
+environment variable.  The description for each option gives the environment
+variable associated with that option.
+
+[section:auto_start_dbg =--auto_start_dbg=]
+
+This argument controls whether or not a debugger is attached to the test
+runner when a fatal system error occurs.  A fatal system error includes
+Unix/POSIX signals, C++ exceptions and Win32 structured exceptions.
+
+[table
+[[Value] [Meaning]]
+[[[*=no=] (default)] [Do not attach a debugger to when a fatal system error occurs.]]
+[[=yes=] [Attach the default debugger when a fatal system error occurs.]]
+]
+
+[envar BOOST_TEST_AUTO_START_DBG]
+
+[endsect]
+
+[section =--build_info=]
+
+This argument causes the test runner to report information about the
+build environment before running the tests.  If the argument is specified
+but no value is given, then a value of =yes= is assumed.
+
+[table
+[[Value] [Meaning]]
+[[[*=no=] (default)] [Do not report build information.]]
+[[=yes=] [Report build information.]]
+]
+
+[envar BOOST_TEST_BUILD_INFO]
+
+[endsect]
+
+[section =--catch_system_errors=]
+
+This argument controls whether or not the test runner catches fatal system
+errors.
+
+[table
+[[Value] [Meaning]]
+[[=no=] [Do not handle fatal system errors.]]
+[[[*=yes=] (default)] [Handle fatal system errors.]]
+]
+
+[envar BOOST_TEST_CATCH_SYSTEM_ERRORS]
+
+[endsect]
+
+[section =--detect_fp_exceptions=]
+
+If the execution environment supports floating-point exceptions, this
+argument controls whether or not the test runner will detect floating-point
+exceptions.
+
+[table
+[[Value] [Meaning]]
+[[[*=no=] (default)] [Do not detect floating-point exceptions.]]
+[[=yes=] [Detect floating-point exceptions, if supported.]]
+]
+
+[envar BOOST_TEST_DETECT_FP_EXCEPTIONS]
+
+[endsect]
+
+[section =--detect_memory_leaks=]
+
+If the execution environment supports the detection of memory leaks,
+this argument controls whether or not the test runner reports memory leaks.
+After running the tests, a memory leak report is issued showing the allocation
+number and the amount of memory leaked.
+
+Values greater than =1= for this argument cause a trap to the debugger for
+a particular memory allocation number.  Currently, this option is only
+implemented for Microsoft compilers.
+
+[table
+[[Value] [Meaning]]
+[[=0=] [Do not detect memory leaks.]]
+[[[*=1=] (default)] [Detect memory leaks and issue a memory leak report.]]
+[[[~number]] [Break on allocation [~number].]]
+]
+
+[envar BOOST_TEST_DETECT_MEMORY_LEAKS]
+
+[endsect]
+
+[section:log_format =--log_format=]
+
+This argument controls the format of the test runner output.  The value
+is case insensitive.  See [link test.reference.runner.output.log test
+runner log] for more information on the log.
+
+[table
+[[Value] [Meaning]]
+[[[*=HRF=] (default)] [Human readable format output.]]
+[[=XML=] [XML format output.]]
+]
+
+[envar BOOST_TEST_LOG_FORMAT]
+
+[endsect]
+
+[section:log_level =--log_level=]
+
+This argument controls the level of test runner output.  The values are
+cumulative, with each increase in log level including all messages at
+lower levels.  By default, only errors are reported.
+See [link test.reference.runner.output.log test
+runner log] for more information on the log.
+
+[table
+[[Value] [Meaning]]
+[[=nothing=] [Do not report any information.]]
+[[=fatal_error=] [Report all user or system fatal errors, such as memory access violation.]]
+[[=system_error=] [Report system non-fatal errors, such as timeout or floating-point exception.]]
+[[=cpp_exception=] [Report uncaught C++ exceptions.]]
+[[[*=error=] (default)] [Report test failures.]]
+[[=warning=] [Report test warnings.]]
+[[=message=] [Report test messages; see __boost_test_message__.]]
+[[=test_suite=] [Report entering and leaving every test case and test suite.]]
+[[=success=] [Report all successful assertions.]]
+[[=all=] [Report everything.]]
+]
+
+[envar BOOST_TEST_LOG_LEVEL]
+
+[endsect]
+
+[section:log_sink =--log_sink=]
+
+This argument controls the destination, or sink, of the test runner log.
+See [link test.reference.runner.output.log test
+runner log] for more information on the log.
+
+[table
+[[Value] [Meaning]]
+[[[*=stdout=] (default)] [The test runner log is sent to the standard output stream.]]
+[[=stderr=] [The test runner log is sent to the standard error stream.]]
+[[[~file]] [The test runner log is sent to the file [~file].]]
+]
+
+[envar BOOST_TEST_LOG_SINK]
+
+[endsect]
+
+[section:output_format =--output_format=]
+
+This argument combines __log_format__ and __report_format__.
+See [link test.reference.runner.output.log test
+runner log] for more information on the log.
+See [link test.reference.runner.output.report test
+runner report] for more information on the report.
+
+[table
+[[Value] [Meaning]]
+[[[*=HRF=] (default)] [Human readable format output.]]
+[[=XML=] [XML format output.]]
+]
+
+[envar BOOST_TEST_OUTPUT_FORMAT]
+
+[endsect]
+
+[section =--random=]
+
+This argument controls whether or not the test runner will execute tests
+in a random order.  This argument can also provide a seed for the random
+number generator used to run tests in a random order.
+
+[table
+[[Value] [Meaning]]
+[[[*=0=] (default)] [Run tests in registration order.]]
+[[=1=] [Run tests in a random order, using the current time as the seed.]]
+[[[~n]] [Run tests in a random order, using [~n] as the seed.]]
+]
+
+[envar BOOST_TEST_RANDOM]
+
+[endsect]
+
+[section:report_format =--report_format=]
+
+This argument controls the format of the test report.
+See [link test.reference.runner.output.report test
+runner report] for more information on the report.
+
+[table
+[[Value] [Meaning]]
+[[[*=HRF=] (default)] [Human readable format output.]]
+[[=XML=] [XML format output.]]
+]
+
+[envar BOOST_TEST_REPORT_FORMAT]
+
+[endsect]
+
+[section:report_level =--report_level=]
+
+This argument controls the level of the test report.  The levels are
+cumulative, with each successive level incorporating the output of all
+the previous levels.
+See [link test.reference.runner.output.report test
+runner report] for more information on the report.
+
+[table
+[[Value] [Meaning]]
+[[=no=] [No test report.]]
+[[[*=confirm=] (default)] [Confirmation test report.]]
+[[=short=] [Short test report.]]
+[[=detailed=] [Detailed test report.]]
+]
+
+[envar BOOST_TEST_REPORT_LEVEL]
+
+[endsect]
+
+[section:report_sink =--report_sink=]
+
+This argument controls the destination, or sink, of the test runner report.
+See [link test.reference.runner.output.report test
+runner report] for more information on the report.
+
+[table
+[[Value] [Meaning]]
+[[=stdout=] [The test report is sent to the standard output stream.]]
+[[[*=stderr=] (default)] [The test report is sent to the standard error stream.]]
+[[[~file]] [The test report is sent to the file [~file].]]
+]
+
+[envar BOOST_TEST_REPORT_SINK]
+
+[endsect]
+
+[section =--result_code=]
+
+This argument controls whether or not the test runner returns an exit
+code corresponding to a summary of the test execution or zero.  The summary
+result code is determined as follows:
+
+[table
+[[Result Code] [Description]]
+[[0 (=boost::exit_success=)] [All executed tests passed.]]
+[[200 (=boost::exit_exception_failure=)] [Failure due to uncaught exception.]]
+[[201 (=boost::exit_test_failure=)] [One or more executed tests failed.]]
+]
+
+[table
+[[Value] [Meaning]]
+[[=no=] [Always return zero.]]
+[[[*=yes=] (default)] [Return a status code indicating the summary of the tests executed.]]
+]
+
+[envar BOOST_TEST_RESULT_CODE]
+
+[endsect]
+
+[section:run_test =--run_test=]
+
+This argument controls which test cases will be executed.  The value is
+a comma separated list of test specifiers.  Test cases are arranged as
+leaves on a tree structure, with every test case belonging to a test suite.
+The test runner always creates a master test suite.  Named test suites are
+children of the master test suite or another named test suite.  Any test
+case that is not the child of a named test suite is a child of the unnamed
+master test suite.
+
+Test specifiers select test cases or suites by naming the path from the
+unnamed master test suite to the case or suite, similar to a full path to
+a file in a hierarchical directory structure.  A test specifier is one or
+more path specifiers, separated by a slash (=/=).  A test specifier begins
+at the master test suite and proceeds down the test tree, naming suites or
+test cases.
+
+The argument __report_level__ set to =detailed= can be used to output the
+names of all the test suites and test cases within those test suites.
+
+[table
+[[Path Specifier] [Tests Selected]]
+[[[~name]] [The test case or suite named [~name].]]
+[[=*=[~name]] [All test cases or suites whose name ends in [~name].]]
+[[[~name]=*=] [All test cases or suites whose name begins with [~name].]]
+[[=*=[~name]=*=] [All test cases or suites whose name contains [~name].]]
+[[=*=] [All test cases or suites.]]
+[[[~spec1]=,=[~spec2]=,=[~...]] [The test cases or suites with the given specifier.]]
+[[[~spec1]=/=[~spec2]] [The test cases or suites matched by [~spec2] in the
+    test suite matched by [~spec1].]]
+]
+
+[envar BOOST_TESTS_TO_RUN]
+
+[endsect]
+
+[section =--show_progress=]
+
+This parameter instructs the test runner to print progress through the
+test cases.  The test runner has no way of determining the length of time
+each test case will consume; the progress percentage is determined by
+counting test cases.
+
+[table
+[[Value] [Meaning]]
+[[[*=no=] (default)] [Do not show test execution progress.]]
+[[=yes=] [Show test execution progress.]]
+]
+
+[envar BOOST_TEST_SHOW_PROGRESS]
+
+[endsect]
+
+[section =--use_alt_stack=]
+
+This parameter instructs the test runner to use an alternate stack for
+signals processing on platforms where this is supported.
+
+[table
+[[Value] [Meaning]]
+[[[*=no=] (default)] [Do not use an alternate stack.]]
+[[=yes=] [Use an alternate stack, where supported.]]
+]
+
+[envar BOOST_TEST_USE_ALT_STACK]
+
+[endsect]
+
+[endsect]

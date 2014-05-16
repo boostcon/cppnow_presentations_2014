@@ -1,0 +1,9 @@
+[pre
+Running 1 test case...
+src/tutorials/hello_test/2/test/test_hello.cpp(13): fatal error in "hello_world_inserts_text": critical check "Hello, world!\\n" == dest.str() failed [Hello, world!
+ != Hello, world!\]
+
+*** 1 failure detected in test suite "Master Test Suite"
+ 
+EXIT STATUS: 201 
+]

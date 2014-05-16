@@ -1,0 +1,213 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Test Cases</title>
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="up" href="../reference.html" title="Reference">
+<link rel="prev" href="configuration_macros.html" title="Configuration Macros">
+<link rel="next" href="test_case/boost_auto_test_case.html" title="BOOST_AUTO_TEST_CASE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="configuration_macros.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="test_case/boost_auto_test_case.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="test.reference.test_case"></a><a class="link" href="test_case.html" title="Test Cases">Test Cases</a>
+</h3></div></div></div>
+<div class="toc"><dl class="toc">
+<dt><span class="section"><a href="test_case/boost_auto_test_case.html"><code class="literal">BOOST_AUTO_TEST_CASE</code></a></span></dt>
+<dt><span class="section"><a href="test_case/boost_auto_test_case_expected_failures.html"><code class="literal">BOOST_AUTO_TEST_CASE_EXPECTED_FAILURES</code></a></span></dt>
+<dt><span class="section"><a href="test_case/boost_auto_test_case_template.html"><code class="literal">BOOST_AUTO_TEST_CASE_TEMPLATE</code></a></span></dt>
+<dt><span class="section"><a href="test_case/boost_fixture_test_case.html"><code class="literal">BOOST_FIXTURE_TEST_CASE</code></a></span></dt>
+<dt><span class="section"><a href="test_case/boost_global_fixture.html"><code class="literal">BOOST_GLOBAL_FIXTURE</code></a></span></dt>
+<dt><span class="section"><a href="test_case/boost_param_test_case.html"><code class="literal">BOOST_PARAM_TEST_CASE</code></a></span></dt>
+<dt><span class="section"><a href="test_case/boost_param_class_test_case.html"><code class="literal">BOOST_PARAM_CLASS_TEST_CASE</code></a></span></dt>
+<dt><span class="section"><a href="test_case/boost_test_case.html"><code class="literal">BOOST_TEST_CASE</code></a></span></dt>
+<dt><span class="section"><a href="test_case/boost_test_case_template.html"><code class="literal">BOOST_TEST_CASE_TEMPLATE</code></a></span></dt>
+<dt><span class="section"><a href="test_case/boost_test_case_template_function.html"><code class="literal">BOOST_TEST_CASE_TEMPLATE_FUNCTION</code></a></span></dt>
+</dl></div>
+<p>
+        A test case is a named body of code providing the three phases of a test:
+        setup, exercise and verify. A test case is most conveniently created using
+        one of the provided test case macros listed in the following table.
+      </p>
+<div class="table">
+<a name="test.reference.test_case.test_case_macros"></a><p class="title"><b>Table&#160;1.1.&#160;Test Case Macros</b></p>
+<div class="table-contents"><table class="table" summary="Test Case Macros">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Macro
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="literal">BOOST_AUTO_TEST_CASE(</code><em class="replaceable"><code>name</code></em><code class="literal">)</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Creates test case <em class="replaceable"><code>name</code></em> and automatically
+                  registers it with the test runner.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">BOOST_AUTO_TEST_CASE_EXPECTED_FAILURES(</code><em class="replaceable"><code>name</code></em>,
+                  <em class="replaceable"><code>count</code></em><code class="literal">)</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Informs the test runner that test case <em class="replaceable"><code>name</code></em>
+                  should result in <em class="replaceable"><code>count</code></em> failures.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">BOOST_AUTO_TEST_CASE_TEMPLATE(</code><em class="replaceable"><code>name</code></em>,
+                  <em class="replaceable"><code>T</code></em>, <em class="replaceable"><code>types</code></em><code class="literal">)</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Automatically registers a test case <em class="replaceable"><code>name</code></em>
+                  parameterized by the template argument <em class="replaceable"><code>T</code></em>
+                  over the collection of <em class="replaceable"><code>types</code></em>.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">BOOST_FIXTURE_TEST_CASE(</code><em class="replaceable"><code>name</code></em>,
+                  <em class="replaceable"><code>fixture</code></em><code class="literal">)</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Creates test case <em class="replaceable"><code>name</code></em> derived from
+                  the fixture <em class="replaceable"><code>fixture</code></em> and automatically
+                  registers it with the test runner.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">BOOST_PARAM_TEST_CASE(</code><em class="replaceable"><code>fn</code></em>,
+                  <em class="replaceable"><code>begin</code></em>, <em class="replaceable"><code>end</code></em><code class="literal">)</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Manually creates a parameterized test case using the supplied callable
+                  object <em class="replaceable"><code>fn</code></em> and parameter iterators <em class="replaceable"><code>begin</code></em>
+                  and <em class="replaceable"><code>end</code></em>.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">BOOST_PARAM_CLASS_TEST_CASE(</code><em class="replaceable"><code>fn</code></em>,
+                  <em class="replaceable"><code>instance</code></em>, <em class="replaceable"><code>begin</code></em>,
+                  <em class="replaceable"><code>end</code></em><code class="literal">)</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Manually creates a parameterized test case using the supplied callable
+                  object <em class="replaceable"><code>fn</code></em>, class instance <em class="replaceable"><code>instance</code></em>
+                  and parameter iterators <em class="replaceable"><code>begin</code></em> and <em class="replaceable"><code>end</code></em>.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">BOOST_TEST_CASE(</code><em class="replaceable"><code>fn</code></em><code class="literal">)</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Manually creates a test case using the supplied callable object
+                  <em class="replaceable"><code>fn</code></em>.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">BOOST_TEST_CASE_TEMPLATE(</code><em class="replaceable"><code>name</code></em>,
+                  <em class="replaceable"><code>types</code></em><code class="literal">)</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Manually creates a set of test cases from the template test case
+                  <em class="replaceable"><code>name</code></em> for each type in <em class="replaceable"><code>types</code></em>.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">BOOST_TEST_CASE_TEMPLATE_FUNCTION(</code><em class="replaceable"><code>name</code></em>,
+                  <em class="replaceable"><code>T</code></em><code class="literal">)</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Manually creates a template test case <em class="replaceable"><code>name</code></em>
+                  parameterized by the template argument <em class="replaceable"><code>T</code></em>.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="configuration_macros.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="test_case/boost_auto_test_case.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

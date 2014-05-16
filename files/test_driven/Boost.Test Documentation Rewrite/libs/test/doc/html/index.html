@@ -1,0 +1,176 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Chapter&#160;1.&#160;Boost.Test</title>
+<link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="next" href="test/motivation.html" title="Motivation">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../boost.png"></td>
+<td align="center"><a href="../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav"><a accesskey="n" href="test/motivation.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a></div>
+<div class="chapter">
+<div class="titlepage"><div>
+<div><h2 class="title">
+<a name="test"></a>Chapter&#160;1.&#160;Boost.Test</h2></div>
+<div><div class="author"><h3 class="author">
+<span class="firstname">Richard</span> <span class="surname">Thomson</span>
+</h3></div></div>
+<div><p class="copyright">Copyright &#169; 2013 Richard Thomson</p></div>
+<div><div class="legalnotice">
+<a name="test.legal"></a><p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></div>
+</div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl class="toc">
+<dt><span class="section"><a href="test/motivation.html">Motivation</a></span></dt>
+<dt><span class="section"><a href="test/how_to_read_this_documentation.html">How To Read This Documentation</a></span></dt>
+<dt><span class="section"><a href="test/tutorials.html">Tutorials</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="test/tutorials/hello_test.html">Hello, Test!</a></span></dt>
+<dt><span class="section"><a href="test/tutorials/testing_with_exceptions.html">Testing with
+      Exceptions</a></span></dt>
+<dt><span class="section"><a href="test/tutorials/testing_with_fixtures.html">Testing with Fixtures</a></span></dt>
+<dt><span class="section"><a href="test/tutorials/running_selected_tests.html">Running Selected
+      Tests</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="test/guide.html">User's Guide</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="test/guide/compilation.html">Compilation and Usage Variants</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="test/guide/compilation/minimal_header.html">Minimal Header</a></span></dt>
+<dt><span class="section"><a href="test/guide/compilation/_main_.html"><code class="literal">main</code></a></span></dt>
+<dt><span class="section"><a href="test/guide/compilation/header_only.html">Header Only</a></span></dt>
+<dt><span class="section"><a href="test/guide/compilation/static_library.html">Static Library</a></span></dt>
+<dt><span class="section"><a href="test/guide/compilation/shared_library.html">Shared Library</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="test/guide/test_case_design.html">Test Case Design and Maintenance</a></span></dt>
+<dt><span class="section"><a href="test/guide/acceptance_tests.html">Acceptance Tests and Unit
+      Tests</a></span></dt>
+<dt><span class="section"><a href="test/guide/testing_file_io.html">Testing File I/O</a></span></dt>
+<dt><span class="section"><a href="test/guide/mocking_collaborators.html">Mocking Collaborators</a></span></dt>
+<dt><span class="section"><a href="test/guide/testing__main_.html">Testing <code class="literal">main</code></a></span></dt>
+<dt><span class="section"><a href="test/guide/testing_protected_or_private_members.html">Testing
+      Protected or Private Members</a></span></dt>
+<dt><span class="section"><a href="test/guide/manually_registering_test_cases_and_suites.html">Manually
+      Registering Test Cases and Suites</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="test/reference.html">Reference</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="test/reference/configuration_macros.html">Configuration Macros</a></span></dt>
+<dt><span class="section"><a href="test/reference/test_case.html">Test Cases</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="test/reference/test_case/boost_auto_test_case.html"><code class="literal">BOOST_AUTO_TEST_CASE</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_case/boost_auto_test_case_expected_failures.html"><code class="literal">BOOST_AUTO_TEST_CASE_EXPECTED_FAILURES</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_case/boost_auto_test_case_template.html"><code class="literal">BOOST_AUTO_TEST_CASE_TEMPLATE</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_case/boost_fixture_test_case.html"><code class="literal">BOOST_FIXTURE_TEST_CASE</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_case/boost_global_fixture.html"><code class="literal">BOOST_GLOBAL_FIXTURE</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_case/boost_param_test_case.html"><code class="literal">BOOST_PARAM_TEST_CASE</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_case/boost_param_class_test_case.html"><code class="literal">BOOST_PARAM_CLASS_TEST_CASE</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_case/boost_test_case.html"><code class="literal">BOOST_TEST_CASE</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_case/boost_test_case_template.html"><code class="literal">BOOST_TEST_CASE_TEMPLATE</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_case/boost_test_case_template_function.html"><code class="literal">BOOST_TEST_CASE_TEMPLATE_FUNCTION</code></a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="test/reference/test_suite.html">Test Suites</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="test/reference/test_suite/boost_auto_test_suite.html"><code class="literal">BOOST_AUTO_TEST_SUITE</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_suite/boost_auto_test_suite_end.html"><code class="literal">BOOST_AUTO_TEST_SUITE_END</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_suite/boost_fixture_test_suite.html"><code class="literal">BOOST_FIXTURE_TEST_SUITE</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_suite/boost_test_module.html"><code class="literal">BOOST_TEST_MODULE</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_suite/boost_test_suite.html"><code class="literal">BOOST_TEST_SUITE</code></a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="test/reference/test_classes.html">Test Classes</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="test/reference/test_classes/predicate_result.html"><code class="literal">predicate_result</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_classes/test_unit.html"><code class="literal">test_unit</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_classes/test_case.html"><code class="literal">test_case</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_classes/test_suite.html"><code class="literal">test_suite</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_classes/master_test_suite_t.html"><code class="literal">master_test_suite_t</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_classes/test_observer.html"><code class="literal">test_observer</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_classes/unit_test_log_t.html"><code class="literal">unit_test_log_t</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_classes/unit_test_log_formatter.html"><code class="literal">unit_test_log_formatter</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_classes/init_unit_test_func.html"><code class="literal">init_unit_test_func</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/test_classes/unit_test_main.html"><code class="literal">unit_test_main</code></a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="test/reference/assertion.html">Test Assertions</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="test/reference/assertion/levels.html">Assertion Levels</a></span></dt>
+<dt><span class="section"><a href="test/reference/assertion/_boost____level___bitwise_equal_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_BITWISE_EQUAL</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/assertion/_boost____level___close_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_CLOSE</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/assertion/_boost____level___close_fraction_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_CLOSE_FRACTION</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/assertion/boost_level_equal.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_EQUAL</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/assertion/_boost____level___equal_collections_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_EQUAL_COLLECTIONS</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/assertion/boost_level_exception.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_EXCEPTION</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/assertion/boost_fail.html"><code class="literal">BOOST_FAIL</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/assertion/_boost____level___ge_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_GE</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/assertion/_boost____level___gt_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_GT</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/assertion/_boost____level___le_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_LE</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/assertion/_boost____level___lt_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_LT</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/assertion/boost_level_message.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_MESSAGE</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/assertion/_boost____level___ne_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_NE</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/assertion/boost_level_no_throw.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_NO_THROW</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/assertion/_boost____level___predicate_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_PREDICATE</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/assertion/_boost____level___small_.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_SMALL</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/assertion/boost_level_throw.html"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_THROW</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/assertion/boost_test_dont_print_log_value.html"><code class="literal">BOOST_TEST_DONT_PRINT_LOG_VALUE</code></a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="test/reference/runner.html">Test Runner</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="test/reference/runner/argument.html">Command Line Arguments</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="test/reference/runner/argument/auto_start_dbg.html"><code class="literal">--auto_start_dbg</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/runner/argument/___build_info_.html"><code class="literal">--build_info</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/runner/argument/___catch_system_errors_.html"><code class="literal">--catch_system_errors</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/runner/argument/___detect_fp_exceptions_.html"><code class="literal">--detect_fp_exceptions</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/runner/argument/___detect_memory_leaks_.html"><code class="literal">--detect_memory_leaks</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/runner/argument/log_format.html"><code class="literal">--log_format</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/runner/argument/log_level.html"><code class="literal">--log_level</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/runner/argument/log_sink.html"><code class="literal">--log_sink</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/runner/argument/output_format.html"><code class="literal">--output_format</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/runner/argument/___random_.html"><code class="literal">--random</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/runner/argument/report_format.html"><code class="literal">--report_format</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/runner/argument/report_level.html"><code class="literal">--report_level</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/runner/argument/report_sink.html"><code class="literal">--report_sink</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/runner/argument/___result_code_.html"><code class="literal">--result_code</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/runner/argument/run_test.html"><code class="literal">--run_test</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/runner/argument/___show_progress_.html"><code class="literal">--show_progress</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/runner/argument/___use_alt_stack_.html"><code class="literal">--use_alt_stack</code></a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="test/reference/runner/output.html">Test Output</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="test/reference/runner/output/log.html">Test Log</a></span></dt>
+<dt><span class="section"><a href="test/reference/runner/output/report.html">Test Report</a></span></dt>
+<dt><span class="section"><a href="test/reference/runner/output/boost_test_checkpoint.html"><code class="literal">BOOST_TEST_CHECKPOINT</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/runner/output/boost_test_message.html"><code class="literal">BOOST_TEST_MESSAGE</code></a></span></dt>
+<dt><span class="section"><a href="test/reference/runner/output/_boost_test_passpoint_.html"><code class="literal">BOOST_TEST_PASSPOINT</code></a></span></dt>
+</dl></dd>
+</dl></dd>
+</dl></dd>
+</dl>
+</div>
+<p>
+    This is the documentation for Boost.Test, a library designed to support automated
+    testing of software generally and unit testing specifically.
+  </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"><p><small>Last revised: January 06, 2014 at 04:37:36 GMT</small></p></td>
+<td align="right"><div class="copyright-footer"></div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav"><a accesskey="n" href="test/motivation.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a></div>
+</body>
+</html>

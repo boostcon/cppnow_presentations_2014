@@ -1,0 +1,223 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Mocking Collaborators</title>
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="up" href="../guide.html" title="User's Guide">
+<link rel="prev" href="testing_file_io.html" title="Testing File I/O">
+<link rel="next" href="testing__main_.html" title="Testing main">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="testing_file_io.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../guide.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="testing__main_.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="test.guide.mocking_collaborators"></a><a class="link" href="mocking_collaborators.html" title="Mocking Collaborators">Mocking Collaborators</a>
+</h3></div></div></div>
+<p>
+        In <a class="link" href="testing_file_io.html" title="Testing File I/O">testing file I/O</a>, we
+        showed an example of creating a class <code class="literal">fake_directory_scanner</code>
+        that acted as a simple test double for an interface. Such simple fake objects
+        are fine at first, but they're full of boring boiler plate code and after
+        a while it becomes tedious to write them by hand.
+      </p>
+<p>
+        For collaborators defined by a pure virtual base class, also known as an
+        interface, there are mock object frameworks that alleviate the need to write
+        the repetitive boiler plate code. One such mock object framework that is
+        designed to work with Boost.Test is the <a href="http://turtle.sourceforge.net" target="_top">Turtle
+        mock object framework</a>.
+      </p>
+<p>
+        Here is an example of the file system tests written using turtle:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="string">"directory_scanner.hpp"</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">turtle</span><span class="special">/</span><span class="identifier">mock</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="identifier">MOCK_BASE_CLASS</span><span class="special">(</span><span class="identifier">mock_directory_scanner</span><span class="special">,</span> <span class="identifier">directory_scanner</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">MOCK_METHOD</span><span class="special">(</span><span class="identifier">begin</span><span class="special">,</span> <span class="number">1</span><span class="special">);</span>
+    <span class="identifier">MOCK_METHOD</span><span class="special">(</span><span class="identifier">has_next</span><span class="special">,</span> <span class="number">0</span><span class="special">);</span>
+    <span class="identifier">MOCK_METHOD</span><span class="special">(</span><span class="identifier">next</span><span class="special">,</span> <span class="number">0</span><span class="special">);</span>
+<span class="special">};</span>
+</pre>
+<p>
+      </p>
+<p>
+        Defining the mock object is considerably simpler than writing a fake object
+        by hand. Turtle uses variadic argument macros and template based type deduction
+        to infer the type signature of the methods simply from the number of arguments
+        each method takes. This alleviates us from having to repeat all of this information
+        from the interface into the implementation of the test double.
+      </p>
+<p>
+        Now we can rewrite our tests to use a mock object configured for each test
+        case:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">static</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span> <span class="identifier">ARBITRARY_DIRECTORY_NAME</span><span class="special">(</span><span class="string">"foo"</span><span class="special">);</span>
+<span class="keyword">static</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span> <span class="identifier">ARBITRARY_NON_TEXT_FILE_NAME</span><span class="special">(</span><span class="string">"foo.foo"</span><span class="special">);</span>
+<span class="keyword">static</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span> <span class="identifier">ARBITRARY_TEXT_FILE_NAME</span><span class="special">(</span><span class="string">"foo.txt"</span><span class="special">);</span>
+<span class="keyword">static</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span> <span class="identifier">ARBITRARY_OTHER_TEXT_FILE_NAME</span><span class="special">(</span><span class="string">"bar.txt"</span><span class="special">);</span>
+
+<span class="keyword">struct</span> <span class="identifier">text_files_fixture</span>
+<span class="special">{</span>
+    <span class="identifier">text_files_fixture</span><span class="special">()</span>
+    <span class="special">{</span>
+        <span class="identifier">MOCK_EXPECT</span><span class="special">(</span><span class="identifier">scanner</span><span class="special">.</span><span class="identifier">begin</span><span class="special">).</span><span class="identifier">once</span><span class="special">().</span><span class="identifier">with</span><span class="special">(</span><span class="identifier">ARBITRARY_DIRECTORY_NAME</span><span class="special">);</span>
+    <span class="special">}</span>
+
+    <span class="keyword">void</span> <span class="identifier">expect_enumerate_non_text_file</span><span class="special">()</span>
+    <span class="special">{</span>
+        <span class="identifier">MOCK_EXPECT</span><span class="special">(</span><span class="identifier">scanner</span><span class="special">.</span><span class="identifier">has_next</span><span class="special">).</span><span class="identifier">once</span><span class="special">().</span><span class="identifier">returns</span><span class="special">(</span><span class="keyword">true</span><span class="special">);</span>
+        <span class="identifier">MOCK_EXPECT</span><span class="special">(</span><span class="identifier">scanner</span><span class="special">.</span><span class="identifier">next</span><span class="special">).</span><span class="identifier">once</span><span class="special">().</span><span class="identifier">returns</span><span class="special">(</span><span class="identifier">ARBITRARY_NON_TEXT_FILE_NAME</span><span class="special">);</span>
+    <span class="special">}</span>
+
+    <span class="keyword">void</span> <span class="identifier">expect_enumerate_text_file</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">file_name</span> <span class="special">=</span> <span class="identifier">ARBITRARY_TEXT_FILE_NAME</span><span class="special">)</span>
+    <span class="special">{</span>
+        <span class="identifier">MOCK_EXPECT</span><span class="special">(</span><span class="identifier">scanner</span><span class="special">.</span><span class="identifier">has_next</span><span class="special">).</span><span class="identifier">once</span><span class="special">().</span><span class="identifier">returns</span><span class="special">(</span><span class="keyword">true</span><span class="special">);</span>
+        <span class="identifier">MOCK_EXPECT</span><span class="special">(</span><span class="identifier">scanner</span><span class="special">.</span><span class="identifier">next</span><span class="special">).</span><span class="identifier">once</span><span class="special">().</span><span class="identifier">returns</span><span class="special">(</span><span class="identifier">file_name</span><span class="special">);</span>
+        <span class="identifier">expected</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">file_name</span><span class="special">);</span>
+    <span class="special">}</span>
+
+    <span class="keyword">void</span> <span class="identifier">expect_enumerate_end</span><span class="special">()</span>
+    <span class="special">{</span>
+        <span class="identifier">MOCK_EXPECT</span><span class="special">(</span><span class="identifier">scanner</span><span class="special">.</span><span class="identifier">has_next</span><span class="special">).</span><span class="identifier">once</span><span class="special">().</span><span class="identifier">returns</span><span class="special">(</span><span class="keyword">false</span><span class="special">);</span>
+    <span class="special">}</span>
+
+    <span class="identifier">mock_directory_scanner</span> <span class="identifier">scanner</span><span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">empty</span><span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">expected</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="identifier">BOOST_FIXTURE_TEST_SUITE</span><span class="special">(</span><span class="identifier">test_text_files</span><span class="special">,</span> <span class="identifier">text_files_fixture</span><span class="special">);</span>
+
+<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span><span class="identifier">returns_empty_for_empty_directory</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">expect_enumerate_end</span><span class="special">();</span>
+
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">files</span> <span class="special">=</span> <span class="identifier">text_files</span><span class="special">(</span><span class="identifier">ARBITRARY_DIRECTORY_NAME</span><span class="special">,</span> <span class="identifier">scanner</span><span class="special">);</span>
+
+    <span class="identifier">BOOST_REQUIRE_EQUAL_COLLECTIONS</span><span class="special">(</span><span class="identifier">empty</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">empty</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">files</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">files</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
+<span class="special">}</span>
+
+<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span><span class="identifier">returns_empty_for_no_text_files</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">expect_enumerate_non_text_file</span><span class="special">();</span>
+    <span class="identifier">expect_enumerate_end</span><span class="special">();</span>
+
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">files</span> <span class="special">=</span> <span class="identifier">text_files</span><span class="special">(</span><span class="identifier">ARBITRARY_DIRECTORY_NAME</span><span class="special">,</span> <span class="identifier">scanner</span><span class="special">);</span>
+
+    <span class="identifier">BOOST_REQUIRE_EQUAL_COLLECTIONS</span><span class="special">(</span><span class="identifier">empty</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">empty</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">files</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">files</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
+<span class="special">}</span>
+
+<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span><span class="identifier">returns_file_for_text_file</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">expect_enumerate_text_file</span><span class="special">();</span>
+    <span class="identifier">expect_enumerate_end</span><span class="special">();</span>
+
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">files</span> <span class="special">=</span> <span class="identifier">text_files</span><span class="special">(</span><span class="identifier">ARBITRARY_DIRECTORY_NAME</span><span class="special">,</span> <span class="identifier">scanner</span><span class="special">);</span>
+
+    <span class="identifier">BOOST_REQUIRE_EQUAL_COLLECTIONS</span><span class="special">(</span><span class="identifier">expected</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">expected</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">files</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">files</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
+<span class="special">}</span>
+
+<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span><span class="identifier">returns_only_text_file_for_mixed_files</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">expect_enumerate_text_file</span><span class="special">();</span>
+    <span class="identifier">expect_enumerate_non_text_file</span><span class="special">();</span>
+    <span class="identifier">expect_enumerate_end</span><span class="special">();</span>
+
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">files</span> <span class="special">=</span> <span class="identifier">text_files</span><span class="special">(</span><span class="identifier">ARBITRARY_DIRECTORY_NAME</span><span class="special">,</span> <span class="identifier">scanner</span><span class="special">);</span>
+
+    <span class="identifier">BOOST_REQUIRE_EQUAL_COLLECTIONS</span><span class="special">(</span><span class="identifier">expected</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">expected</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">files</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">files</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
+<span class="special">}</span>
+
+<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span><span class="identifier">returns_all_text_files</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">expect_enumerate_text_file</span><span class="special">();</span>
+    <span class="identifier">expect_enumerate_non_text_file</span><span class="special">();</span>
+    <span class="identifier">expect_enumerate_text_file</span><span class="special">(</span><span class="identifier">ARBITRARY_OTHER_TEXT_FILE_NAME</span><span class="special">);</span>
+    <span class="identifier">expect_enumerate_end</span><span class="special">();</span>
+
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">files</span> <span class="special">=</span> <span class="identifier">text_files</span><span class="special">(</span><span class="identifier">ARBITRARY_DIRECTORY_NAME</span><span class="special">,</span> <span class="identifier">scanner</span><span class="special">);</span>
+
+    <span class="identifier">BOOST_REQUIRE_EQUAL_COLLECTIONS</span><span class="special">(</span><span class="identifier">expected</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">expected</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">files</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">files</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
+<span class="special">}</span>
+
+<span class="identifier">BOOST_AUTO_TEST_SUITE_END</span><span class="special">();</span>
+</pre>
+<p>
+      </p>
+<p>
+        The tests themselves are largely unchanged and what is different is the intention
+        revealing methods we placed in the test fixture. Mock object frameworks generally
+        provide a rich set of methods on the mock object for setting the expectations
+        on the number of times a method is called, such as <code class="literal">once()</code>,
+        the expected arguments to a method, such as <code class="literal">with()</code>, and
+        the return value of a method, such as <code class="literal">returns()</code>.
+      </p>
+<p>
+        With a turtle mock, the expectations are verified when the mock object is
+        destroyed. The mock is a member in our fixture and will be destroyed at the
+        end of every test case.
+      </p>
+<h5>
+<a name="test.guide.mocking_collaborators.h0"></a>
+        <span class="phrase"><a name="test.guide.mocking_collaborators.example_source_code"></a></span><a class="link" href="mocking_collaborators.html#test.guide.mocking_collaborators.example_source_code">Example Source
+        Code</a>
+      </h5>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+            System under test:
+            <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                  <a href="../../../../../../libs/test/doc/src/system_under_test/scanner/scanner.hpp" target="_top">scanner.hpp</a>
+                </li>
+<li class="listitem">
+                  <a href="../../../../../../libs/test/doc/src/system_under_test/scanner/scanner.cpp" target="_top">scanner.cpp</a>
+                </li>
+<li class="listitem">
+                  <a href="../../../../../../libs/test/doc/src/system_under_test/scanner/directory_scanner.hpp" target="_top">directory_scanner.hpp</a>
+                </li>
+<li class="listitem">
+                  <a href="../../../../../../libs/test/doc/src/system_under_test/scanner/filesystem_directory_scanner.hpp" target="_top">filesystem_directory_scanner.hpp</a>
+                </li>
+</ul></div>
+          </li>
+<li class="listitem">
+            Tests:
+            <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">
+                  <a href="../../../../../../libs/test/doc/src/examples/turtle_mock.cpp" target="_top">turtle_mock.cpp</a>
+                </li></ul></div>
+          </li>
+</ul></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="testing_file_io.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../guide.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="testing__main_.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

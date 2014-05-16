@@ -1,0 +1,29 @@
+# Jamfile.v2
+#
+# Copyright (c) 2013
+# Richard Thomson
+#
+# Distributed Under the Boost Software License, Version 1.0. (See
+# accompanying file LICENSE_1_0.txt or copy at
+# http://www.boost.org/LICENSE_1_0.txt)
+
+use-project /boost/test : ../build ;
+
+import quickbook ;
+
+build-project src ;
+
+alias code : src ;
+
+boostbook test
+    :
+        src/test.qbk
+        code
+    :
+        <xsl:param>chunk.section.depth=4
+        <xsl:param>chunk.first.sections=1
+        <xsl:param>toc.section.depth=4
+        <xsl:param>toc.max.depth=4
+        <xsl:param>generate.section.toc.level=4
+        <xsl:param>boost.root=../../../..
+    ;

@@ -1,0 +1,86 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>BOOST_level_MESSAGE</title>
+<link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Boost.Test 1.22.0">
+<link rel="up" href="../assertion.html" title="Test Assertions">
+<link rel="prev" href="_boost____level___lt_.html" title="BOOST_level_LT">
+<link rel="next" href="_boost____level___ne_.html" title="BOOST_level_NE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="_boost____level___lt_.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../assertion.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="_boost____level___ne_.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="test.reference.assertion._boost____level___message_"></a><a class="link" href="_boost____level___message_.html" title="BOOST_level_MESSAGE"><code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_MESSAGE</code></a>
+</h4></div></div></div>
+<p>
+          <code class="literal">BOOST_</code><em class="replaceable"><code>level</code></em><code class="literal">_MESSAGE(</code><em class="replaceable"><code>predicate</code></em>,
+          <em class="replaceable"><code>message</code></em><code class="literal">)</code> emits <em class="replaceable"><code>message</code></em>
+          if the supplied <em class="replaceable"><code>predicate</code></em> evaluates to false.
+          The <em class="replaceable"><code>message</code></em> is applied to an output stream with
+          <code class="computeroutput"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></code>
+          and the argument can contain additional applications of <code class="computeroutput"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></code> for building up complex messages.
+          The predicate can return <code class="literal">bool</code> or <a class="link" href="../test_classes/predicate_result.html" title="predicate_result"><code class="literal">predicate_result</code></a>.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">static</span> <span class="keyword">int</span> <span class="identifier">g_i</span><span class="special">;</span>
+
+<span class="comment">// simple predicate</span>
+<span class="keyword">static</span> <span class="keyword">bool</span> <span class="identifier">global_int_is_positive</span><span class="special">()</span>
+<span class="special">{</span>
+    <span class="keyword">return</span> <span class="identifier">g_i</span> <span class="special">&gt;</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+
+<span class="comment">// predicate that builds up detail message</span>
+<span class="keyword">static</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">test_tools</span><span class="special">::</span><span class="identifier">predicate_result</span> <span class="identifier">global_int_equal</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">expected</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="keyword">if</span> <span class="special">(</span><span class="identifier">g_i</span> <span class="special">==</span> <span class="identifier">expected</span><span class="special">)</span>
+    <span class="special">{</span>
+        <span class="keyword">return</span> <span class="keyword">true</span><span class="special">;</span>
+    <span class="special">}</span>
+
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">test_tools</span><span class="special">::</span><span class="identifier">predicate_result</span> <span class="identifier">failed</span> <span class="special">=</span> <span class="keyword">false</span><span class="special">;</span>
+    <span class="identifier">failed</span><span class="special">.</span><span class="identifier">message</span><span class="special">()</span> <span class="special">&lt;&lt;</span> <span class="string">"g_i != "</span> <span class="special">&lt;&lt;</span> <span class="identifier">expected</span> <span class="special">&lt;&lt;</span> <span class="string">"; actual: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">g_i</span><span class="special">;</span>
+    <span class="keyword">return</span> <span class="identifier">failed</span><span class="special">;</span>
+<span class="special">}</span>
+
+<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span><span class="identifier">example_message</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">g_i</span> <span class="special">=</span> <span class="number">1</span><span class="special">;</span>
+
+    <span class="identifier">BOOST_REQUIRE_MESSAGE</span><span class="special">(</span><span class="identifier">global_int_is_positive</span><span class="special">(),</span>
+        <span class="string">"g_i is not positive; actual: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">g_i</span><span class="special">);</span>
+    <span class="identifier">BOOST_REQUIRE_MESSAGE</span><span class="special">(</span><span class="identifier">global_int_equal</span><span class="special">(</span><span class="number">1</span><span class="special">),</span> <span class="string">""</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="_boost____level___lt_.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../assertion.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="_boost____level___ne_.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

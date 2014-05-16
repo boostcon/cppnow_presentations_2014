@@ -1,0 +1,181 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Shared Library</title>
+<link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="up" href="../compilation.html" title="Compilation and Usage Variants">
+<link rel="prev" href="static_library.html" title="Static Library">
+<link rel="next" href="../test_case_design.html" title="Test Case Design and Maintenance">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="static_library.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../compilation.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../test_case_design.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="test.guide.compilation.shared_library"></a><a class="link" href="shared_library.html" title="Shared Library">Shared Library</a>
+</h4></div></div></div>
+<p>
+          To build Boost.Test as a shared library, first build the boost build tools,
+          as described in the <a href="../../../../../../../more/getting_started/index.html" target="_top">Getting
+          Started</a> documentation. After you have bootstrapped the build tools,
+          build the test library with by invoking <code class="literal">b2</code> with arguments
+          similar to the following:
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">b2</span> <span class="special">--</span><span class="identifier">with</span><span class="special">-</span><span class="identifier">test</span> <span class="identifier">link</span><span class="special">=</span><span class="identifier">shared</span></pre>
+<p>
+        </p>
+<p>
+          This will place the resulting libraries in <code class="literal">stage/lib</code>
+          at the top level of the boost tree.
+        </p>
+<p>
+          In a shared library configuration, Boost.Test is compiled into a single
+          shared library named <code class="literal">boost_unit_test_framework</code> and the
+          test executable is linked against that library to import symbols from the
+          library. The Boost.Test shared library must be available to the runtime
+          loader in order for the tests to execute. Every compilation unit that includes
+          a header from Boost.Test must define <a class="link" href="../../reference/configuration_macros.html#test.reference.compilation.boost_test_dyn_link"><code class="literal">BOOST_TEST_DYN_LINK</code></a>
+          first so that declarations are properly annotated as imported symbols.
+          When <a class="link" href="../../reference/configuration_macros.html#test.reference.compilation.boost_test_dyn_link"><code class="literal">BOOST_TEST_DYN_LINK</code></a>
+          is defined, Boost.Test also defines <a class="link" href="../../reference/configuration_macros.html#test.reference.compilation.boost_test_alternative_init_api"><code class="literal">BOOST_TEST_ALTERNATIVE_INIT_API</code></a>.
+        </p>
+<p>
+          Exactly one compilation unit in the test executable should define <a class="link" href="../../reference/configuration_macros.html#test.reference.compilation.boost_test_main"><code class="literal">BOOST_TEST_MAIN</code></a>,
+          in order run the tests.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// In exactly one compilation unit</span>
+<span class="preprocessor">#define</span> <span class="identifier">BOOST_TEST_DYN_LINK</span>
+<span class="preprocessor">#define</span> <span class="identifier">BOOST_TEST_MAIN</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">test</span><span class="special">/</span><span class="identifier">unit_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="comment">// test cases (optional)</span>
+</pre>
+<p>
+        </p>
+<p>
+          Additional source files define <a class="link" href="../../reference/configuration_macros.html#test.reference.compilation.boost_test_dyn_link"><code class="literal">BOOST_TEST_DYN_LINK</code></a>,
+          include the main unit test header and define more test cases and/or suites.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// In additional source files</span>
+<span class="preprocessor">#define</span> <span class="identifier">BOOST_TEST_DYN_LINK</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">test</span><span class="special">/</span><span class="identifier">unit_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="comment">// test cases</span>
+</pre>
+<p>
+        </p>
+<p>
+          To compile the library with no implementation of <code class="literal">main</code>,
+          add <a class="link" href="../../reference/configuration_macros.html#test.reference.compilation.boost_test_no_main"><code class="literal">BOOST_TEST_NO_MAIN</code></a>
+          to the <code class="literal">cxxflags</code> property for b2:
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">b2</span> <span class="special">--</span><span class="identifier">with</span><span class="special">-</span><span class="identifier">test</span> <span class="identifier">link</span><span class="special">=</span><span class="identifier">shared</span> <span class="identifier">define</span><span class="special">=</span><span class="identifier">BOOST_TEST_NO_MAIN</span></pre>
+<p>
+        </p>
+<p>
+          When the library is compiled with <a class="link" href="../../reference/configuration_macros.html#test.reference.compilation.boost_test_no_main"><code class="literal">BOOST_TEST_NO_MAIN</code></a>
+          defined, one source file must provide a definition for <code class="literal">main</code>.
+          The simplest is to delegate to <a class="link" href="../../reference/test_classes/unit_test_main.html" title="unit_test_main"><code class="literal">unit_test_main</code></a>
+          and provide an implementation of an initialization function that manually
+          adds test cases and suites to the test tree. Any test cases or test suites
+          added with <a class="link" href="../../reference/test_case/boost_auto_test_case.html" title="BOOST_AUTO_TEST_CASE"><code class="literal">BOOST_AUTO_TEST_CASE</code></a>,
+          <a class="link" href="../../reference/test_case/boost_fixture_test_case.html" title="BOOST_FIXTURE_TEST_CASE"><code class="literal">BOOST_FIXTURE_TEST_CASE</code></a>,
+          <a class="link" href="../../reference/test_suite/boost_auto_test_suite.html" title="BOOST_AUTO_TEST_SUITE"><code class="literal">BOOST_AUTO_TEST_SUITE</code></a>
+          or <a class="link" href="../../reference/test_suite/boost_fixture_test_suite.html" title="BOOST_FIXTURE_TEST_SUITE"><code class="literal">BOOST_FIXTURE_TEST_SUITE</code></a>
+          are automatically added.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// In exactly one source file</span>
+<span class="preprocessor">#define</span> <span class="identifier">BOOST_TEST_NO_MAIN</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">test</span><span class="special">/</span><span class="identifier">unit_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="keyword">bool</span> <span class="identifier">init_function</span><span class="special">()</span>
+<span class="special">{</span>
+    <span class="comment">// create test cases and suites and return a boolean indicating</span>
+    <span class="comment">// success (true) or failure (false).</span>
+    <span class="keyword">return</span> <span class="keyword">true</span><span class="special">;</span>
+<span class="special">}</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">argc</span><span class="special">,</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">argv</span><span class="special">[])</span>
+<span class="special">{</span>
+    <span class="keyword">return</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">unit_test_main</span><span class="special">(&amp;</span><span class="identifier">init_function</span><span class="special">,</span> <span class="identifier">argc</span><span class="special">,</span> <span class="identifier">argv</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+<h6>
+<a name="test.guide.compilation.shared_library.h0"></a>
+          <span class="phrase"><a name="test.guide.compilation.shared_library.example_source_code"></a></span><a class="link" href="shared_library.html#test.guide.compilation.shared_library.example_source_code">Example
+          Source Code</a>
+        </h6>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+              System under test:
+              <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                    <a href="../../../../../../../libs/test/doc/src/system_under_test/hello/hello.hpp" target="_top">hello.hpp</a>
+                  </li>
+<li class="listitem">
+                    <a href="../../../../../../../libs/test/doc/src/system_under_test/hello/hello.cpp" target="_top">hello.cpp</a>
+                  </li>
+</ul></div>
+            </li>
+<li class="listitem">
+              An example of using the standard implementation of <code class="literal">main</code>:
+              <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                    <a href="../../../../../../../libs/test/doc/src/examples/compilation/dynamic/main.cpp" target="_top">main.cpp</a>
+                  </li>
+<li class="listitem">
+                    <a href="../../../../../../../libs/test/doc/src/examples/compilation/dynamic/test_hello.cpp" target="_top">test_hello.cpp</a>.
+                  </li>
+</ul></div>
+            </li>
+<li class="listitem">
+              An example of using a custom <code class="literal">main</code>:
+              <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                    <a href="../../../../../../../libs/test/doc/src/examples/compilation/dynamic_main/main.cpp" target="_top">main.cpp</a>
+                  </li>
+<li class="listitem">
+                    <a href="../../../../../../../libs/test/doc/src/examples/compilation/dynamic_main/test_hello.cpp" target="_top">test_hello.cpp</a>.
+                  </li>
+</ul></div>
+            </li>
+</ul></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="static_library.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../compilation.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../test_case_design.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

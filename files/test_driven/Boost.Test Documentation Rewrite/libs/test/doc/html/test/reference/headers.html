@@ -1,0 +1,227 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Header Files</title>
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Test 1.22.0">
+<link rel="up" href="../reference.html" title="Reference">
+<link rel="prev" href="runner/output/_boost_test_passpoint_.html" title="BOOST_TEST_PASSPOINT">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="runner/output/_boost_test_passpoint_.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="test.reference.headers"></a><a class="link" href="headers.html" title="Header Files">Header Files</a>
+</h3></div></div></div>
+<p>
+        <code class="computeroutput"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">test</span><span class="special">/</span><span class="identifier">debug</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code>
+      </p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">test</span> <span class="special">{</span>
+
+<span class="keyword">bool</span> <span class="identifier">under_debugger</span><span class="special">();</span>
+
+<span class="keyword">void</span> <span class="identifier">debugger_break</span><span class="special">();</span>
+
+<span class="keyword">struct</span> <span class="identifier">dbg_startup_info</span> <span class="special">{</span>
+    <span class="keyword">long</span>                    <span class="identifier">pid</span><span class="special">;</span>
+    <span class="keyword">bool</span>                    <span class="identifier">break_or_continue</span><span class="special">;</span>
+    <span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">const_string</span> <span class="identifier">binary_path</span><span class="special">;</span>
+    <span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">const_string</span> <span class="identifier">display</span><span class="special">;</span>
+    <span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">const_string</span> <span class="identifier">init_done_lock</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="keyword">void</span> <span class="special">(</span><span class="identifier">dbg_startup_info</span> <span class="keyword">const</span><span class="special">&amp;)&gt;</span> <span class="identifier">dbg_starter</span><span class="special">;</span>
+
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">set_debugger</span><span class="special">(</span> <span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">const_string</span> <span class="identifier">dbg_id</span><span class="special">,</span> <span class="identifier">dbg_starter</span> <span class="identifier">s</span> <span class="special">=</span> <span class="identifier">dbg_starter</span><span class="special">()</span> <span class="special">);</span>
+
+<span class="keyword">bool</span> <span class="identifier">attach_debugger</span><span class="special">(</span> <span class="keyword">bool</span> <span class="identifier">break_or_continue</span> <span class="special">=</span> <span class="keyword">true</span> <span class="special">);</span>
+
+<span class="keyword">void</span> <span class="identifier">detect_memory_leaks</span><span class="special">(</span> <span class="keyword">bool</span> <span class="identifier">on_off</span><span class="special">,</span> <span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">const_string</span> <span class="identifier">report_file</span> <span class="special">=</span> <span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">const_string</span><span class="special">()</span> <span class="special">);</span>
+
+<span class="keyword">void</span> <span class="identifier">break_memory_alloc</span><span class="special">(</span> <span class="keyword">long</span> <span class="identifier">mem_alloc_order_num</span> <span class="special">);</span>
+
+<span class="special">}}</span> <span class="comment">// boost::test</span>
+</pre>
+<p>
+        <code class="computeroutput"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">test</span><span class="special">/</span><span class="identifier">debug_config</span><span class="special">.</span><span class="identifier">hpp</span></code>
+      </p>
+<pre class="programlisting"><span class="identifier">BOOST_TEST_DBG_LIST</span>
+
+<span class="identifier">BOOST_TEST_STAT_LINE_MAX</span>
+</pre>
+<p>
+        <code class="computeroutput"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">test</span><span class="special">/</span><span class="identifier">execution_monitor</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code>
+      </p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+<span class="keyword">class</span> <span class="identifier">execution_exception</span> <span class="special">{</span>
+    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">const_string</span> <span class="identifier">const_string</span><span class="special">;</span>
+<span class="keyword">public</span><span class="special">:</span>
+    <span class="keyword">enum</span> <span class="identifier">error_code</span> <span class="special">{</span>
+        <span class="identifier">no_error</span>               <span class="special">=</span> <span class="number">0</span><span class="special">,</span>
+        <span class="identifier">user_error</span>             <span class="special">=</span> <span class="number">200</span><span class="special">,</span>
+        <span class="identifier">cpp_exception_error</span>    <span class="special">=</span> <span class="number">205</span><span class="special">,</span>
+        <span class="identifier">system_error</span>           <span class="special">=</span> <span class="number">210</span><span class="special">,</span>
+        <span class="identifier">timeout_error</span>          <span class="special">=</span> <span class="number">215</span><span class="special">,</span>
+        <span class="identifier">user_fatal_error</span>       <span class="special">=</span> <span class="number">220</span><span class="special">,</span>
+        <span class="identifier">system_fatal_error</span>     <span class="special">=</span> <span class="number">225</span>
+    <span class="special">};</span>
+
+    <span class="keyword">struct</span> <span class="identifier">BOOST_TEST_DECL</span> <span class="identifier">location</span> <span class="special">{</span>
+        <span class="keyword">explicit</span>    <span class="identifier">location</span><span class="special">(</span> <span class="keyword">char</span> <span class="keyword">const</span><span class="special">*</span> <span class="identifier">file_name</span> <span class="special">=</span> <span class="number">0</span><span class="special">,</span> <span class="identifier">size_t</span> <span class="identifier">line_num</span> <span class="special">=</span> <span class="number">0</span><span class="special">,</span> <span class="keyword">char</span> <span class="keyword">const</span><span class="special">*</span> <span class="identifier">func</span> <span class="special">=</span> <span class="number">0</span> <span class="special">);</span>
+
+        <span class="identifier">const_string</span>    <span class="identifier">m_file_name</span><span class="special">;</span>
+        <span class="identifier">size_t</span>          <span class="identifier">m_line_num</span><span class="special">;</span>
+        <span class="identifier">const_string</span>    <span class="identifier">m_function</span><span class="special">;</span>
+    <span class="special">};</span>
+
+    <span class="comment">// Constructor</span>
+    <span class="identifier">execution_exception</span><span class="special">(</span> <span class="identifier">error_code</span> <span class="identifier">ec_</span><span class="special">,</span> <span class="identifier">const_string</span> <span class="identifier">what_msg_</span><span class="special">,</span> <span class="identifier">location</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">location_</span> <span class="special">);</span> <span class="comment">// max length 256 inc '\0'</span>
+
+    <span class="comment">// Access methods</span>
+    <span class="identifier">error_code</span>      <span class="identifier">code</span><span class="special">()</span> <span class="keyword">const</span>    <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">m_error_code</span><span class="special">;</span> <span class="special">}</span>
+    <span class="identifier">const_string</span>    <span class="identifier">what</span><span class="special">()</span> <span class="keyword">const</span>    <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">m_what</span><span class="special">;</span> <span class="special">}</span>
+    <span class="identifier">location</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">where</span><span class="special">()</span> <span class="keyword">const</span>   <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">m_location</span><span class="special">;</span> <span class="special">}</span>
+<span class="special">};</span> <span class="comment">// execution_exception</span>
+
+<span class="keyword">class</span> <span class="identifier">execution_monitor</span> <span class="special">{</span>
+    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">const_string</span> <span class="identifier">const_string</span><span class="special">;</span>
+<span class="keyword">public</span><span class="special">:</span>
+    <span class="identifier">execution_monitor</span><span class="special">();</span>
+
+    <span class="comment">// Public properties</span>
+
+    <span class="comment">//  The p_catch_system_errors parameter specifies whether the monitor should </span>
+    <span class="comment">//  try to catch system errors/exceptions that would cause program to crash </span>
+    <span class="comment">//  in regular case</span>
+    <span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">readwrite_property</span><span class="special">&lt;</span><span class="keyword">bool</span><span class="special">&gt;</span> <span class="identifier">p_catch_system_errors</span><span class="special">;</span>
+
+    <span class="comment">//  The p_auto_start_dbg parameter specifies whether the monitor should </span>
+    <span class="comment">//  try to attach debugger in case of caught system error</span>
+    <span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">readwrite_property</span><span class="special">&lt;</span><span class="keyword">bool</span><span class="special">&gt;</span> <span class="identifier">p_auto_start_dbg</span><span class="special">;</span>
+
+    <span class="comment">//  The p_timeout parameter specifies the seconds that elapse before</span>
+    <span class="comment">//  a timer_error occurs.  May be ignored on some platforms.</span>
+    <span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">readwrite_property</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span>  <span class="identifier">p_timeout</span><span class="special">;</span>
+
+    <span class="comment">//  The p_use_alt_stack parameter specifies whether the monitor should</span>
+    <span class="comment">//  use alternative stack for the signal catching</span>
+    <span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">readwrite_property</span><span class="special">&lt;</span><span class="keyword">bool</span><span class="special">&gt;</span> <span class="identifier">p_use_alt_stack</span><span class="special">;</span>
+
+    <span class="comment">//  The p_detect_fp_exceptions parameter specifies whether the monitor should</span>
+    <span class="comment">//  try to detect hardware floating point exceptions (!= 0), and which specific exception to catch</span>
+    <span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">readwrite_property</span><span class="special">&lt;</span><span class="keyword">unsigned</span><span class="special">&gt;</span> <span class="identifier">p_detect_fp_exceptions</span><span class="special">;</span>
+
+    <span class="keyword">int</span>         <span class="identifier">execute</span><span class="special">(</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">()&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">F</span> <span class="special">);</span>
+    <span class="comment">//  Returns:  Value returned by function call F().</span>
+    <span class="comment">//</span>
+    <span class="comment">//  Effects:  Calls executes supplied function F inside a try/catch block which also may</span>
+    <span class="comment">//  include other unspecified platform dependent error detection code.</span>
+    <span class="comment">//</span>
+    <span class="comment">//  Throws: execution_exception on an uncaught C++ exception,</span>
+    <span class="comment">//  a hardware or software signal, trap, or other exception.</span>
+    <span class="comment">//</span>
+    <span class="comment">//  Note: execute() doesn't consider it an error for F to return a non-zero value.</span>
+
+    <span class="keyword">void</span>         <span class="identifier">vexecute</span><span class="special">(</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="keyword">void</span> <span class="special">()&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">F</span> <span class="special">);</span>
+    <span class="comment">//  Effects:  Same as above, but returns nothing</span>
+
+    <span class="comment">// register custom (user supplied) exception translator</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">ExceptionType</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">ExceptionTranslator</span><span class="special">&gt;</span>
+    <span class="keyword">void</span>        <span class="identifier">register_exception_translator</span><span class="special">(</span> <span class="identifier">ExceptionTranslator</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">tr</span><span class="special">,</span> <span class="identifier">const_string</span> <span class="identifier">tag</span> <span class="special">=</span> <span class="identifier">const_string</span><span class="special">(),</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">type</span><span class="special">&lt;</span><span class="identifier">ExceptionType</span><span class="special">&gt;*</span> <span class="special">=</span> <span class="number">0</span> <span class="special">);</span>
+
+    <span class="comment">// erase custom exception translator</span>
+    <span class="keyword">void</span>        <span class="identifier">erase_exception_translator</span><span class="special">(</span> <span class="identifier">const_string</span> <span class="identifier">tag</span> <span class="special">)</span>
+    <span class="special">{</span>
+        <span class="identifier">m_custom_translators</span> <span class="special">=</span> <span class="identifier">m_custom_translators</span><span class="special">-&gt;</span><span class="identifier">erase</span><span class="special">(</span> <span class="identifier">m_custom_translators</span><span class="special">,</span> <span class="identifier">tag</span> <span class="special">);</span>
+    <span class="special">}</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">ExceptionType</span><span class="special">&gt;</span>
+    <span class="keyword">void</span>        <span class="identifier">erase_exception_translator</span><span class="special">(</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">type</span><span class="special">&lt;</span><span class="identifier">ExceptionType</span><span class="special">&gt;*</span> <span class="special">=</span> <span class="number">0</span> <span class="special">)</span>
+    <span class="special">{</span>
+        <span class="identifier">m_custom_translators</span> <span class="special">=</span> <span class="identifier">m_custom_translators</span><span class="special">-&gt;</span><span class="identifier">erase</span><span class="special">&lt;</span><span class="identifier">ExceptionType</span><span class="special">&gt;(</span> <span class="identifier">m_custom_translators</span> <span class="special">);</span>
+    <span class="special">}</span>
+
+<span class="special">};</span> <span class="comment">// execution_monitor</span>
+
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">ExceptionType</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">ExceptionTranslator</span><span class="special">&gt;</span>
+<span class="keyword">void</span>
+<span class="identifier">execution_monitor</span><span class="special">::</span><span class="identifier">register_exception_translator</span><span class="special">(</span> <span class="identifier">ExceptionTranslator</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">tr</span><span class="special">,</span> <span class="identifier">const_string</span> <span class="identifier">tag</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">type</span><span class="special">&lt;</span><span class="identifier">ExceptionType</span><span class="special">&gt;*</span> <span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">m_custom_translators</span><span class="special">.</span><span class="identifier">reset</span><span class="special">(</span>
+        <span class="keyword">new</span> <span class="identifier">detail</span><span class="special">::</span><span class="identifier">translator_holder</span><span class="special">&lt;</span><span class="identifier">ExceptionType</span><span class="special">,</span><span class="identifier">ExceptionTranslator</span><span class="special">&gt;(</span> <span class="identifier">tr</span><span class="special">,</span> <span class="identifier">m_custom_translators</span><span class="special">,</span> <span class="identifier">tag</span> <span class="special">)</span> <span class="special">);</span>
+<span class="special">}</span>
+
+<span class="keyword">struct</span> <span class="identifier">execution_aborted</span> <span class="special">{};</span>
+
+<span class="keyword">class</span> <span class="identifier">system_error</span> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+    <span class="comment">// Constructor</span>
+    <span class="keyword">explicit</span>    <span class="identifier">system_error</span><span class="special">(</span> <span class="keyword">char</span> <span class="keyword">const</span><span class="special">*</span> <span class="identifier">exp</span> <span class="special">);</span>
+
+    <span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">readonly_property</span><span class="special">&lt;</span><span class="keyword">long</span><span class="special">&gt;</span>          <span class="identifier">p_errno</span><span class="special">;</span>
+    <span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">readonly_property</span><span class="special">&lt;</span><span class="keyword">char</span> <span class="keyword">const</span><span class="special">*&gt;</span>   <span class="identifier">p_failed_exp</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="preprocessor">#define</span> <span class="identifier">BOOST_TEST_SYS_ASSERT</span><span class="special">(</span> <span class="identifier">exp</span> <span class="special">)</span> <span class="keyword">if</span><span class="special">(</span> <span class="special">(</span><span class="identifier">exp</span><span class="special">)</span> <span class="special">)</span> <span class="special">;</span> <span class="keyword">else</span> <span class="keyword">throw</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system_error</span><span class="special">(</span> <span class="identifier">BOOST_STRINGIZE</span><span class="special">(</span> <span class="identifier">exp</span> <span class="special">)</span> <span class="special">)</span>
+
+<span class="keyword">namespace</span> <span class="identifier">fpe</span> <span class="special">{</span>
+
+<span class="keyword">enum</span> <span class="identifier">masks</span> <span class="special">{</span>
+    <span class="identifier">BOOST_FPE_OFF</span>       <span class="special">=</span> <span class="number">0</span><span class="special">,</span>
+
+<span class="preprocessor">#ifdef</span> <span class="identifier">BOOST_SEH_BASED_SIGNAL_HANDLING</span>
+    <span class="identifier">BOOST_FPE_DIVBYZERO</span> <span class="special">=</span> <span class="identifier">EM_ZERODIVIDE</span><span class="special">,</span>
+    <span class="identifier">BOOST_FPE_INEXACT</span>   <span class="special">=</span> <span class="identifier">EM_INEXACT</span><span class="special">,</span>
+    <span class="identifier">BOOST_FPE_INVALID</span>   <span class="special">=</span> <span class="identifier">EM_INVALID</span><span class="special">,</span>
+    <span class="identifier">BOOST_FPE_OVERFLOW</span>  <span class="special">=</span> <span class="identifier">EM_OVERFLOW</span><span class="special">,</span>
+    <span class="identifier">BOOST_FPE_UNDERFLOW</span> <span class="special">=</span> <span class="identifier">EM_UNDERFLOW</span><span class="special">|</span><span class="identifier">EM_DENORMAL</span><span class="special">,</span>
+
+    <span class="identifier">BOOST_FPE_ALL</span>       <span class="special">=</span> <span class="identifier">MCW_EM</span><span class="special">,</span>
+<span class="preprocessor">#elif</span> <span class="identifier">defined</span><span class="special">(</span><span class="identifier">BOOST_NO_FENV_H</span><span class="special">)</span> <span class="special">||</span> <span class="identifier">defined</span><span class="special">(</span><span class="identifier">BOOST_CLANG</span><span class="special">)</span>
+    <span class="identifier">BOOST_FPE_ALL</span>       <span class="special">=</span> <span class="number">1</span><span class="special">,</span>
+<span class="preprocessor">#else</span>
+    <span class="identifier">BOOST_FPE_DIVBYZERO</span> <span class="special">=</span> <span class="identifier">FE_DIVBYZERO</span><span class="special">,</span>
+    <span class="identifier">BOOST_FPE_INEXACT</span>   <span class="special">=</span> <span class="identifier">FE_INEXACT</span><span class="special">,</span>
+    <span class="identifier">BOOST_FPE_INVALID</span>   <span class="special">=</span> <span class="identifier">FE_INVALID</span><span class="special">,</span>
+    <span class="identifier">BOOST_FPE_OVERFLOW</span>  <span class="special">=</span> <span class="identifier">FE_OVERFLOW</span><span class="special">,</span>
+    <span class="identifier">BOOST_FPE_UNDERFLOW</span> <span class="special">=</span> <span class="identifier">FE_UNDERFLOW</span><span class="special">,</span>
+
+    <span class="identifier">BOOST_FPE_ALL</span>       <span class="special">=</span> <span class="identifier">FE_ALL_EXCEPT</span><span class="special">,</span>
+<span class="preprocessor">#endif</span>
+    <span class="identifier">BOOST_FPE_INV</span>       <span class="special">=</span> <span class="identifier">BOOST_FPE_ALL</span><span class="special">+</span><span class="number">1</span>
+<span class="special">};</span>
+
+<span class="comment">// return the previous set of enabled exceptions when successful, and BOOST_FPE_INV otherwise</span>
+<span class="keyword">unsigned</span> <span class="identifier">BOOST_TEST_DECL</span> <span class="identifier">enable</span><span class="special">(</span> <span class="keyword">unsigned</span> <span class="identifier">mask</span> <span class="special">);</span>
+<span class="keyword">unsigned</span> <span class="identifier">BOOST_TEST_DECL</span> <span class="identifier">disable</span><span class="special">(</span> <span class="keyword">unsigned</span> <span class="identifier">mask</span> <span class="special">);</span>
+
+<span class="special">}</span> <span class="comment">// namespace fpe</span>
+<span class="special">}</span> <span class="comment">// namespace boost</span>
+</pre>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="runner/output/_boost_test_passpoint_.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a>
+</div>
+</body>
+</html>

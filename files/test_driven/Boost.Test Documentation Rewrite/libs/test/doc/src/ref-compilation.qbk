@@ -1,0 +1,37 @@
+[/==============================================================================
+    Copyright (C) 2013 Richard Thomson
+
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
+    file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+===============================================================================/]
+
+[section Configuration Macros]
+
+[table
+[[Macro] [Meaning]]
+[[[#test.reference.compilation.boost_test_alternative_init_api]=BOOST_TEST_ALTERNATIVE_INIT_API=]
+    [When defined, the alternative [link test.reference.test_classes.init_unit_test_func =init_unit_test_func=] test module initialization API is used.]]
+[[[#test.reference.compilation.boost_test_dyn_link]=BOOST_TEST_DYN_LINK=]
+    [When defined, the implementation is compiled as a shared library.
+    Defining =BOOST_TEST_DYN_LINK= also defines
+    =BOOST_TEST_ALTERNATIVE_INIT_API=.]]
+[[[#test.reference.compilation.boost_test_main]=BOOST_TEST_MAIN=]
+    [When defined, an implementation of main is included in the source file.]]
+[[[#test.reference.compilation.boost_test_module]=BOOST_TEST_MODULE=]
+    [When defined, it provides the name of the master test suite,
+    otherwise a default name is used.]]
+[[[#test.reference.compilation.boost_test_no_lib]=BOOST_TEST_NO_LIB=]
+    [When defined, no automatic linking is performed.]]
+[[[#test.reference.compilation.boost_test_no_main]=BOOST_TEST_NO_MAIN=]
+    [When defined, no implementation of main is provided in any configuration.
+    Static and shared libraries must have been built with this symbol
+    defined for it to take effect when using the library.  The test
+    executable must provide its own implementation of =main=;
+    [link test.reference.test_classes.unit_test_main =unit_test_main=] may
+    be used for this purpose.]]
+]
+
+When using any of these macros, they must be defined before including any
+header from __test__.
+
+[endsect]

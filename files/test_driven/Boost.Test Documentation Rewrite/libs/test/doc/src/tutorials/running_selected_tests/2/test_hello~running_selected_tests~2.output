@@ -1,0 +1,8 @@
+[pre
+> test_hello --run_test=test_hello
+Running 2 test cases...
+
+*** No errors detected
+ 
+EXIT STATUS: 0 
+]

@@ -1,0 +1,339 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Testing File I/O</title>
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="up" href="../guide.html" title="User's Guide">
+<link rel="prev" href="acceptance_tests.html" title="Acceptance Tests and Unit Tests">
+<link rel="next" href="mocking_collaborators.html" title="Mocking Collaborators">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="acceptance_tests.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../guide.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="mocking_collaborators.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="test.guide.testing_file_io"></a><a class="link" href="testing_file_io.html" title="Testing File I/O">Testing File I/O</a>
+</h3></div></div></div>
+<p>
+        A common problem encountered in unit testing is interaction with the file
+        system: scanning directories, creating files, opening files, reading files,
+        writing files, creating symbolic links and so-on. Interacting directly with
+        the file system when executing unit tests can lead to a failure of tests
+        to be <a class="link" href="test_case_design.html#robust_test">robust</a> or <a class="link" href="test_case_design.html#repeatable_test">repeatable</a>.
+        We also want our unit tests to be fast; an execution time of 100 milliseconds
+        is considered a slow unit test. Interacting directly with the file system
+        can make our unit tests take too long to execute.
+      </p>
+<p>
+        The simplest approach is to wrap file system operations in an interface and
+        perform all operations through the interface. Consider the following example
+        of a function that returns a vector of filenames ending in ".txt"
+        in a given directory:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">extern</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">text_files</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">directory</span><span class="special">);</span>
+</pre>
+<p>
+      </p>
+<p>
+        How can we unit test <code class="literal">text_files</code> without relying on the
+        actual contents of the file system? We can decouple <code class="literal">text_files</code>
+        from the file system by introducing an interface:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">class</span> <span class="identifier">directory_scanner</span><span class="special">;</span>
+
+<span class="keyword">extern</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">text_files</span><span class="special">(</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">directory</span><span class="special">,</span>
+    <span class="identifier">directory_scanner</span><span class="special">&amp;</span> <span class="identifier">scanner</span><span class="special">);</span>
+</pre>
+<p>
+      </p>
+<p>
+        We've used a forward declaration of <code class="literal">directory_scanner</code>
+        where <code class="literal">text_files</code> is declared. The interface looks like
+        this:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">class</span> <span class="identifier">directory_scanner</span>
+<span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+    <span class="keyword">virtual</span> <span class="special">~</span><span class="identifier">directory_scanner</span><span class="special">()</span> <span class="special">{}</span>
+
+    <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="identifier">begin</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="identifier">directory</span><span class="special">)</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
+
+    <span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="identifier">has_next</span><span class="special">()</span> <span class="keyword">const</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
+
+    <span class="keyword">virtual</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">next</span><span class="special">()</span> <span class="keyword">const</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">};</span>
+</pre>
+<p>
+      </p>
+<p>
+        The interface <code class="literal">directory_scanner</code> is used to isolate the
+        free function <code class="literal">text_files</code> from directly interacting with
+        the file system. In the unit tests, we use an implementation of <code class="literal">directory_scanner</code>
+        that senses how <code class="literal">text_files</code> uses the interface and allows
+        us to control the data made available to <code class="literal">text_files</code>. The
+        tests can use a hand-crafted fake implementation or an implementation from
+        a mock library. The fake might look something like this:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">class</span> <span class="identifier">fake_directory_scanner</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">directory_scanner</span>
+<span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+    <span class="identifier">fake_directory_scanner</span><span class="special">()</span>
+        <span class="special">:</span> <span class="identifier">begin_called</span><span class="special">(</span><span class="keyword">false</span><span class="special">),</span>
+        <span class="identifier">has_next_called</span><span class="special">(</span><span class="keyword">false</span><span class="special">),</span>
+        <span class="identifier">next_called</span><span class="special">(</span><span class="keyword">false</span><span class="special">),</span>
+        <span class="identifier">next_call_count</span><span class="special">(</span><span class="number">0U</span><span class="special">)</span>
+    <span class="special">{}</span>
+
+    <span class="keyword">virtual</span> <span class="special">~</span><span class="identifier">fake_directory_scanner</span><span class="special">()</span> <span class="special">{}</span>
+
+    <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="identifier">begin</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="identifier">directory</span><span class="special">)</span>
+    <span class="special">{</span>
+        <span class="identifier">begin_called</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">;</span>
+        <span class="identifier">begin_last_directory</span> <span class="special">=</span> <span class="identifier">directory</span><span class="special">;</span>
+    <span class="special">}</span>
+    <span class="keyword">bool</span> <span class="identifier">begin_called</span><span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">begin_last_directory</span><span class="special">;</span>
+
+    <span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="identifier">has_next</span><span class="special">()</span> <span class="keyword">const</span>
+    <span class="special">{</span>
+        <span class="identifier">has_next_called</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">;</span>
+        <span class="keyword">return</span> <span class="identifier">next_call_count</span> <span class="special">&lt;=</span> <span class="identifier">next_fake_results</span><span class="special">.</span><span class="identifier">size</span><span class="special">();</span>
+    <span class="special">}</span>
+    <span class="keyword">mutable</span> <span class="keyword">bool</span> <span class="identifier">has_next_called</span><span class="special">;</span>
+    <span class="keyword">bool</span> <span class="identifier">has_next_fake_result</span><span class="special">;</span>
+
+    <span class="keyword">virtual</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">next</span><span class="special">()</span> <span class="keyword">const</span>
+    <span class="special">{</span>
+        <span class="identifier">next_called</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">;</span>
+        <span class="special">++</span><span class="identifier">next_call_count</span><span class="special">;</span>
+        <span class="keyword">return</span> <span class="identifier">has_next</span><span class="special">()</span> <span class="special">?</span> <span class="identifier">next_fake_results</span><span class="special">[</span><span class="identifier">next_call_count</span> <span class="special">-</span> <span class="number">1U</span><span class="special">]</span> <span class="special">:</span> <span class="string">""</span><span class="special">;</span>
+    <span class="special">}</span>
+    <span class="keyword">mutable</span> <span class="keyword">bool</span> <span class="identifier">next_called</span><span class="special">;</span>
+    <span class="keyword">mutable</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">next_call_count</span><span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">next_fake_results</span><span class="special">;</span>
+<span class="special">};</span>
+</pre>
+<p>
+      </p>
+<p>
+        The tests for <code class="literal">text_files</code> use the <code class="literal">fake_directory_scanner</code>
+        to specify the configuration of the file system for the different test cases:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">static</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span> <span class="identifier">ARBITRARY_DIRECTORY_NAME</span><span class="special">(</span><span class="string">"foo"</span><span class="special">);</span>
+<span class="keyword">static</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span> <span class="identifier">ARBITRARY_NON_TEXT_FILE_NAME</span><span class="special">(</span><span class="string">"foo.foo"</span><span class="special">);</span>
+<span class="keyword">static</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span> <span class="identifier">ARBITRARY_TEXT_FILE_NAME</span><span class="special">(</span><span class="string">"foo.txt"</span><span class="special">);</span>
+<span class="keyword">static</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span> <span class="identifier">ARBITRARY_OTHER_TEXT_FILE_NAME</span><span class="special">(</span><span class="string">"bar.txt"</span><span class="special">);</span>
+
+<span class="keyword">struct</span> <span class="identifier">text_files_fixture</span>
+<span class="special">{</span>
+    <span class="keyword">void</span> <span class="identifier">expect_enumerate_non_text_file</span><span class="special">()</span>
+    <span class="special">{</span>
+        <span class="identifier">scanner</span><span class="special">.</span><span class="identifier">next_fake_results</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">ARBITRARY_NON_TEXT_FILE_NAME</span><span class="special">);</span>
+    <span class="special">}</span>
+
+    <span class="keyword">void</span> <span class="identifier">expect_enumerate_text_file</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">file_name</span> <span class="special">=</span> <span class="identifier">ARBITRARY_TEXT_FILE_NAME</span><span class="special">)</span>
+    <span class="special">{</span>
+        <span class="identifier">scanner</span><span class="special">.</span><span class="identifier">next_fake_results</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">file_name</span><span class="special">);</span>
+        <span class="identifier">expected</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">file_name</span><span class="special">);</span>
+    <span class="special">}</span>
+
+    <span class="identifier">fake_directory_scanner</span> <span class="identifier">scanner</span><span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">empty</span><span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">expected</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="identifier">BOOST_FIXTURE_TEST_SUITE</span><span class="special">(</span><span class="identifier">test_text_files</span><span class="special">,</span> <span class="identifier">text_files_fixture</span><span class="special">);</span>
+
+<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span><span class="identifier">returns_empty_for_empty_directory</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">files</span> <span class="special">=</span> <span class="identifier">text_files</span><span class="special">(</span><span class="identifier">ARBITRARY_DIRECTORY_NAME</span><span class="special">,</span> <span class="identifier">scanner</span><span class="special">);</span>
+
+    <span class="identifier">BOOST_REQUIRE_EQUAL_COLLECTIONS</span><span class="special">(</span><span class="identifier">empty</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">empty</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">files</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">files</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
+<span class="special">}</span>
+
+<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span><span class="identifier">returns_empty_for_no_text_files</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">expect_enumerate_non_text_file</span><span class="special">();</span>
+
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">files</span> <span class="special">=</span> <span class="identifier">text_files</span><span class="special">(</span><span class="identifier">ARBITRARY_DIRECTORY_NAME</span><span class="special">,</span> <span class="identifier">scanner</span><span class="special">);</span>
+
+    <span class="identifier">BOOST_REQUIRE_EQUAL_COLLECTIONS</span><span class="special">(</span><span class="identifier">empty</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">empty</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">files</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">files</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
+<span class="special">}</span>
+
+<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span><span class="identifier">returns_file_for_text_file</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">expect_enumerate_text_file</span><span class="special">();</span>
+
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">files</span> <span class="special">=</span> <span class="identifier">text_files</span><span class="special">(</span><span class="identifier">ARBITRARY_DIRECTORY_NAME</span><span class="special">,</span> <span class="identifier">scanner</span><span class="special">);</span>
+
+    <span class="identifier">BOOST_REQUIRE_EQUAL_COLLECTIONS</span><span class="special">(</span><span class="identifier">expected</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">expected</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">files</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">files</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
+<span class="special">}</span>
+
+<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span><span class="identifier">returns_only_text_file_for_mixed_files</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">expect_enumerate_text_file</span><span class="special">();</span>
+    <span class="identifier">expect_enumerate_non_text_file</span><span class="special">();</span>
+
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">files</span> <span class="special">=</span> <span class="identifier">text_files</span><span class="special">(</span><span class="identifier">ARBITRARY_DIRECTORY_NAME</span><span class="special">,</span> <span class="identifier">scanner</span><span class="special">);</span>
+
+    <span class="identifier">BOOST_REQUIRE_EQUAL_COLLECTIONS</span><span class="special">(</span><span class="identifier">expected</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">expected</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">files</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">files</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
+<span class="special">}</span>
+
+<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span><span class="identifier">returns_all_text_files</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">expect_enumerate_text_file</span><span class="special">();</span>
+    <span class="identifier">expect_enumerate_non_text_file</span><span class="special">();</span>
+    <span class="identifier">expect_enumerate_text_file</span><span class="special">(</span><span class="identifier">ARBITRARY_OTHER_TEXT_FILE_NAME</span><span class="special">);</span>
+
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">files</span> <span class="special">=</span> <span class="identifier">text_files</span><span class="special">(</span><span class="identifier">ARBITRARY_DIRECTORY_NAME</span><span class="special">,</span> <span class="identifier">scanner</span><span class="special">);</span>
+
+    <span class="identifier">BOOST_REQUIRE_EQUAL_COLLECTIONS</span><span class="special">(</span><span class="identifier">expected</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">expected</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">files</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">files</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
+<span class="special">}</span>
+
+<span class="identifier">BOOST_AUTO_TEST_SUITE_END</span><span class="special">();</span>
+</pre>
+<p>
+      </p>
+<p>
+        In production code, we use an implementation of <code class="literal">directory_scanner</code>
+        that interacts directly with the file system using Boost.FileSystem.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">class</span> <span class="identifier">filesystem_directory_scanner</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">directory_scanner</span>
+<span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+    <span class="identifier">filesystem_directory_scanner</span><span class="special">()</span> <span class="special">{}</span>
+    <span class="keyword">virtual</span> <span class="special">~</span><span class="identifier">filesystem_directory_scanner</span><span class="special">()</span> <span class="special">{}</span>
+
+    <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="identifier">begin</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="identifier">directory</span><span class="special">)</span>
+    <span class="special">{</span>
+        <span class="identifier">current</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">filesystem</span><span class="special">::</span><span class="identifier">directory_iterator</span><span class="special">(</span><span class="identifier">directory</span><span class="special">);</span>
+    <span class="special">}</span>
+
+    <span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="identifier">has_next</span><span class="special">()</span> <span class="keyword">const</span>
+    <span class="special">{</span>
+        <span class="keyword">return</span> <span class="identifier">current</span> <span class="special">!=</span> <span class="identifier">end</span><span class="special">;</span>
+    <span class="special">}</span>
+
+    <span class="keyword">virtual</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">next</span><span class="special">()</span> <span class="keyword">const</span>
+    <span class="special">{</span>
+        <span class="keyword">if</span> <span class="special">(</span><span class="identifier">has_next</span><span class="special">())</span>
+        <span class="special">{</span>
+            <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span> <span class="identifier">result</span> <span class="special">=</span> <span class="special">(*</span><span class="identifier">current</span><span class="special">).</span><span class="identifier">path</span><span class="special">().</span><span class="identifier">filename</span><span class="special">().</span><span class="identifier">string</span><span class="special">();</span>
+            <span class="keyword">do</span>
+            <span class="special">{</span>
+                <span class="special">++</span><span class="identifier">current</span><span class="special">;</span>
+            <span class="special">}</span>
+            <span class="keyword">while</span> <span class="special">(</span><span class="identifier">has_next</span><span class="special">()</span> <span class="special">&amp;&amp;</span> <span class="special">!</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">filesystem</span><span class="special">::</span><span class="identifier">is_regular_file</span><span class="special">((*</span><span class="identifier">current</span><span class="special">).</span><span class="identifier">path</span><span class="special">()));</span>
+            <span class="keyword">return</span> <span class="identifier">result</span><span class="special">;</span>
+        <span class="special">}</span>
+        <span class="keyword">throw</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">runtime_error</span><span class="special">(</span><span class="string">"no next path"</span><span class="special">);</span>
+    <span class="special">}</span>
+
+<span class="keyword">private</span><span class="special">:</span>
+    <span class="keyword">mutable</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">filesystem</span><span class="special">::</span><span class="identifier">directory_iterator</span> <span class="identifier">current</span><span class="special">;</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">filesystem</span><span class="special">::</span><span class="identifier">directory_iterator</span> <span class="identifier">end</span><span class="special">;</span>
+<span class="special">};</span>
+</pre>
+<p>
+      </p>
+<p>
+        We've wrapped just enough of Boost.FileSystem for our needs; Boost.FileSystem
+        has a very large surface area and we don't need to put an interface around
+        the entire thing, just enough to satisfy the needs of <code class="literal">text_files</code>.
+      </p>
+<p>
+        If we don't want production code to have to worry about supplying an instance
+        of <code class="literal">filesystem_directory_scanner</code> to <code class="literal">text_files</code>,
+        we can use overloading on <code class="literal">text_files</code> and use simple delegation
+        to supply the dependency:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">extern</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span>
+<span class="identifier">text_files</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">directory</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">filesystem_directory_scanner</span> <span class="identifier">scanner</span><span class="special">;</span>
+    <span class="keyword">return</span> <span class="identifier">text_files</span><span class="special">(</span><span class="identifier">directory</span><span class="special">,</span> <span class="identifier">scanner</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<p>
+        Seeing this, you might wonder if we need to unit test the overload we just
+        created? Because we are using simple delegation here, there isn't sufficient
+        complexity to warrant unit testing. However, we have no unit tests for <code class="literal">filesystem_directory_scanner</code>,
+        which does have control structures. We will want some sort of automated tests
+        around this code to verify that it functions properly. We can use <a class="link" href="acceptance_tests.html" title="Acceptance Tests and Unit Tests">acceptance
+        tests</a> to verify the system as a whole, exercising all the components
+        end-to-end and not just in isolation.
+      </p>
+<h5>
+<a name="test.guide.testing_file_io.h0"></a>
+        <span class="phrase"><a name="test.guide.testing_file_io.example_source_code"></a></span><a class="link" href="testing_file_io.html#test.guide.testing_file_io.example_source_code">Example
+        Source Code</a>
+      </h5>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+            System under test:
+            <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                  <a href="../../../../../../libs/test/doc/src/system_under_test/scanner/scanner.hpp" target="_top">scanner.hpp</a>
+                </li>
+<li class="listitem">
+                  <a href="../../../../../../libs/test/doc/src/system_under_test/scanner/scanner.cpp" target="_top">scanner.cpp</a>
+                </li>
+<li class="listitem">
+                  <a href="../../../../../../libs/test/doc/src/system_under_test/scanner/directory_scanner.hpp" target="_top">directory_scanner.hpp</a>
+                </li>
+<li class="listitem">
+                  <a href="../../../../../../libs/test/doc/src/system_under_test/scanner/filesystem_directory_scanner.hpp" target="_top">filesystem_directory_scanner.hpp</a>
+                </li>
+</ul></div>
+          </li>
+<li class="listitem">
+            Tests:
+            <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">
+                  <a href="../../../../../../libs/test/doc/src/examples/file_system.cpp" target="_top">file_system.cpp</a>
+                </li></ul></div>
+          </li>
+</ul></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="acceptance_tests.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../guide.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="mocking_collaborators.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Testing Protected or Private Members</title>
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="up" href="../guide.html" title="User's Guide">
+<link rel="prev" href="testing__main_.html" title="Testing main">
+<link rel="next" href="manually_registering_test_cases_and_suites.html" title="Manually Registering Test Cases and Suites">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="testing__main_.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../guide.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="manually_registering_test_cases_and_suites.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="test.guide.testing_protected_or_private_members"></a><a class="link" href="testing_protected_or_private_members.html" title="Testing Protected or Private Members">Testing
+      Protected or Private Members</a>
+</h3></div></div></div>
+<p>
+        When testing a large class, you may find yourself wanting to test protected
+        or private members of the class. The best approach is to test those members
+        by testing the public members of the class. If using the public members of
+        a class requires considerable setup in order to force execution down a particular
+        path that exercises the protected or private member in question, then you
+        may wish to refactor the code to enhance testability.
+      </p>
+<p>
+        The most expedient technique for protected members is to raise their visibility
+        through derivation. Suppose we have a base class <code class="computeroutput"><span class="identifier">B</span></code>
+        with a protected member <code class="computeroutput"><span class="identifier">p</span></code>
+        that we wish to test:
+</p>
+<pre class="programlisting"><span class="keyword">class</span> <span class="identifier">B</span>
+<span class="special">{</span>
+<span class="comment">// ... other stuff in B</span>
+<span class="keyword">protected</span><span class="special">:</span>
+    <span class="keyword">bool</span> <span class="identifier">p</span><span class="special">();</span>
+<span class="special">};</span>
+</pre>
+<p>
+        We can derive a class <code class="computeroutput"><span class="identifier">D</span></code> in
+        the test code from the class <code class="computeroutput"><span class="identifier">B</span></code>
+        in the production code that raises the visibility of <code class="computeroutput"><span class="identifier">p</span></code>:
+</p>
+<pre class="programlisting"><span class="keyword">class</span> <span class="identifier">D</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">B</span>
+<span class="special">{</span>
+<span class="comment">// ... other stuff needed to build a D from a B</span>
+<span class="keyword">public</span><span class="special">:</span>
+    <span class="keyword">using</span> <span class="identifier">B</span><span class="special">::</span><span class="identifier">p</span><span class="special">;</span>
+<span class="special">};</span>
+</pre>
+<p>
+        Now we can write a test for <code class="computeroutput"><span class="identifier">D</span><span class="special">::</span><span class="identifier">p</span></code>.
+      </p>
+<p>
+        While this certainly seems expedient, it's annoying to write these derived
+        classes simply for the purposes of hoisting members into public visibility.
+        It also just feels dirty. We're taking implementation details that are supposed
+        to be hidden from consumers of the class and we're exposing them. If we are
+        not diligent and watchful, this class <code class="computeroutput"><span class="identifier">D</span></code>
+        in the test project that was only intended for testing may find itself showing
+        up in the production code.
+      </p>
+<p>
+        Maybe the problem isn't one of visibility but that we simply aren't listening
+        closely enough to the code in the first place. As Herb Sutter shows us in
+        <a href="http://www.gotw.ca/gotw/076.htm" target="_top">Uses and Abuses of Access Rights</a>,
+        the "Liar", the "Pickpocket", the "Cheat" and
+        the "Language Lawyer" can all find ways to subvert the access protections
+        afforded to a class.
+      </p>
+<p>
+        When we are tempted to test non-public methods of a class, it's because we
+        feel that there is sufficient complexity in these non-public methods to warrant
+        testing them. What if that complexity is trying to tell us something? If
+        our class is so complex, isn't it possible that it's violating the <a href="http://en.wikipedia.org/wiki/Single_responsibility_principle" target="_top">Single
+        Responsibility Principle</a>? Maybe the class is trying to encompass
+        several responsibilities and should be decomposed into two or more classes,
+        each with a single responsibility. We could perform the <a href="http://www.refactoring.com/catalog/extractClass.html" target="_top">Extract
+        Class</a> refactoring to create two classes with appropriate public interfaces
+        and then write tests against those new public interfaces.
+      </p>
+<p>
+        Another choice is to refactor the original class using the <a href="http://en.wikipedia.org/wiki/Opaque_pointer" target="_top">"pimpl
+        idiom"</a>, elevate the visibility to public of all the methods
+        on the implementation class and write tests against the implementation class.
+        This has the same downsides as the derive-and-elevate approach and we're
+        still ignoring the whispers of the code.
+      </p>
+<p>
+        When your code is hard to test, your code is telling you something. Listen
+        to the code!
+      </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="testing__main_.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../guide.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="manually_registering_test_cases_and_suites.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

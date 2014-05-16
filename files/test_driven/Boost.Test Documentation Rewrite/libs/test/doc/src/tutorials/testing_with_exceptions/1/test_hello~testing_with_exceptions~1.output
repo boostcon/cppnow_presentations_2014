@@ -1,0 +1,8 @@
+[pre
+Running 2 test cases...
+src/tutorials/testing_with_exceptions/1/test/test_hello.cpp(24): fatal error in "hello_world_stream_with_badbit_throws_runtime_error": std::runtime_error not thrown
+
+*** 1 failure detected in test suite "Master Test Suite"
+ 
+EXIT STATUS: 201 
+]

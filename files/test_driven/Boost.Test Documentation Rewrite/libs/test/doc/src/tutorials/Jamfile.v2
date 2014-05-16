@@ -1,0 +1,19 @@
+# Jamfile.v2
+#
+# Copyright (c) 2013
+# Richard Thomson
+#
+# Distributed Under the Boost Software License, Version 1.0. (See
+# accompanying file LICENSE_1_0.txt or copy at
+# http://www.boost.org/LICENSE_1_0.txt)
+
+alias tutorials :
+    hello_test//tutorial_hello_test
+    running_selected_tests
+    testing_with_exceptions
+    testing_with_fixtures ;
+
+build-project hello_test ;
+build-project running_selected_tests ;
+build-project testing_with_exceptions ;
+build-project testing_with_fixtures ;

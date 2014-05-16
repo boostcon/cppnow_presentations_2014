@@ -1,0 +1,612 @@
+[/==============================================================================
+    Copyright (C) 2013 Richard Thomson
+
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
+    file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+===============================================================================/]
+
+[section:guide User's Guide]
+
+[include:test user-compilation.qbk]
+
+[section:test_case_design Test Case Design and Maintenance]
+
+[@http://xunitpatterns.com/Goals%20of%20Test%20Automation.html xUnit
+Patterns][footnote The term ['xUnit] is a generic term for unit testing
+frameworks, such as jUnit.  The advice in ['xUnit Patterns] applies equally
+well to __test__.], by Gerard Meszaros, presents several high level
+objectives for automated tests and individual goals for achieving those
+objectives:
+
+* Objective: Tests should help us improve quality.
+ * Goal: [link tests_as_specifications Tests as specifications]
+ * Goal: [link bug_repellant Bug repellant]
+ * Goal: [link defect_localization Defect localization]
+* Objective: Tests should help us understand the system under test.
+ * Goal: [link tests_as_documentation Tests as documentation]
+* Objective: Tests should reduce, not increase, risk.
+ * Goal: [link tests_as_safety_net Tests as safety net]
+ * Goal: [link do_no_harm Do No Harm]
+* Objective: Tests should be easy to run.
+ * Goal: [link fully_automated_test Fully Automated Test]
+ * Goal: [link self_checking_test Self-Checking Test]
+ * Goal: [link repeatable_test Repeatable Test]
+* Objective: Tests should be easy to write and maintain.
+ * Goal: [link simple_tests Simple Tests]
+ * Goal: [link expressive_tests Expressive Tests]
+ * Goal: [link separation_of_concerns Separation of Concerns]
+* Objective: Tests should require minimal maintenance as the system evolves
+  around them.
+ * Goal: [link robust_test Robust Test]
+
+In this section, we will discuss how the facilities in __test__ can support
+these goals; see ['xUnit Patterns] for the description and rationale of
+these goals.
+
+[#tests_as_specifications][heading Goal: Tests as Specifications]
+
+Tests can serve as specifications for the system under test if we write
+the test for the system first, using test-driven development.  We imagine
+the perfect system that does exactly what we need and write a test as if
+that system existed.  In order to achieve a failing test, we write just
+enough of the implementation to make the test compile.
+
+A good way to ensure that the implementation causes a test failure is for
+called methods and functions to throw an exception indicating that the
+method or function called is not implemented:
+```
+#include <stdexcept>
+
+void free_function()
+{
+    throw std::runtime_error("free_function not implemented.");
+}
+```
+We get a failing test right away, while still satisfying just enough syntax
+to satisfy the compiler.
+
+[#bug_repellant][heading Goal: Bug Repellant]
+
+It is well known that the longer a bug remains undetected in a software,
+the more expensive it is to fix.[footnote
+[@https://en.wikipedia.org/wiki/Software_testing#Economics Software Testing:
+Economics]]  If we are practicing test-driven development, then we find
+bugs in our implementation as soon as we code them.  The time to find a
+bug in this manner can be as little as seconds and was demonstrated in
+the tutorial [link test.tutorials.hello_test "Hello, Test!"].
+
+The easiest way to achieve this rapid feedback is to run the tests as part
+of the build.  The details vary depending on your build system.
+
+In Visual Studio 2012, this is most readily achieved by setting a post-build
+build event as shown below.  Because [^$(TargetPath)] may contain spaces,
+the variable is surrounded by double quotes to ensure that the entire path
+to the executable is found.  The description is given generically using
+[^$(TargetName)] so that this build event can be copied to any test
+project's properties and be used without modification.  Take
+care that you define the build event for all configurations and all
+platforms used by your build system so that the unit tests always run.  
+
+[$../src/user-vs2012-build-event.png]
+
+If you are using a =Makefile= to compile your code, create a phony
+target that depends on your unit test executable and specify the
+command to execute your unit test and create the phony target if
+the test passes.  This will ensure that the unit tests continue to run
+as long as they fail because the phony target will only be updated
+when the tests pass.
+
+If you are using Boost.Build and Jamfiles to compile your code, you can
+use the rules in the =testing= module to incorporate your unit tests
+into your build.  The =unit-test= rule will build an executable and run
+it, failing the build when the executable returns a non-zero exit status.
+Other rules in the =testing= module may also be useful.
+
+[#defect_localization][heading Goal: Defect Localization]
+
+If we keep our test cases focused on only a single behavior in our
+system under test, then there is only a single cause for any particular
+unit test to fail.  We saw this in [link
+test.tutorials.testing_with_exceptions "Testing With Exceptions"] when
+we added a new test case to =hello_world= for a bad stream.  By choosing
+[@http://c2.com/cgi/wiki?IntentionRevealingNames intention revealing names]
+for our test cases, we can identify the source of the failure simply by
+reading the name of the failed test case.
+
+Since each test case excercises only one scenario for the system under
+test, we must make at least one test case for each possible scenario.  We
+can use the [@http://en.wikipedia.org/wiki/Cyclomatic_complexity cyclomatic
+complexity] as a rough proxy for the number of tests cases needed for any
+particular method or function to ensure that we have sufficient
+[@http://en.wikipedia.org/wiki/Code_coverage coverage] of the system under
+test.
+
+[#tests_as_documentation][heading Goal: Tests as Documentation]
+
+When confronted with a new software component or a new code base, how do
+we understand its behavior?  We can read the documentation, but ultimately
+the behavior is defined by the code executed.  Comments and documentation
+can lag the actual implementation.  Sometimes, the only answer to our
+questions about a software component come from the implementation.  If
+the component is only available to us in binary form, we don't have the
+luxury of consulting the source code in order to answer our questions.
+
+Unit tests can serve as a form of executable documentation for software
+components.  They tell us how the system responds to the scenarios
+orchestrated by the test cases.
+
+When faced with a confusing aspect of a software component, we can answer
+questions about the behavior of the component by writing a unit test that
+describes our hypothesis about the component's behavior.  If the unit test
+passes, we have verified our hypothesis.  If the unit test fails, our
+hypothesis was incorrect; either way, we have learned something about the
+component.  We can use unit tests to document subtle and unexpected
+behaviors of components.  Unit tests are also the perfect documentation
+for a bug report on a component maintained by others.
+
+[#tests_as_safety_net][heading Goal: Tests as Safety Net]
+
+When we start building a software system, we are able to keep all the
+details of the system in our mind because the system is small.  As the size
+of the system increases, it becomes harder and harder to keep all the
+details of the system in mind as we make modifications.  A comprehensive
+suite of unit tests over the system give us an automated regression test
+that gives us the confidence of knowing that our changes are not introducing
+any problems elsewhere in the code.
+
+[#do_no_harm][heading Goal: Do No Harm]
+
+Automated tests should only reduce risk, not introduce risk into the
+system.  To achieve this, we want to keep all test code separated from
+production code.  The easiest way to do this is to put the system under
+test into a library (static or shared) and link the test executable
+against the library.  We saw this in the tutorial
+[link test.tutorials.hello_test "Hello, Test!"], when we separated the
+system under test into the =hello= library and the test code into
+=test_hello.cpp=.
+
+[#fully_automated_test][heading Goal: Fully Automated Test]
+
+__test__ supports fully automated tests by allowing us to supply the
+inputs to the system under test in each test case in order to drive
+the system into the scenario of interest.  Test cases should never
+rely on user input, or they will not be fully automated tests that
+can run unattended.
+
+[#self_checking_test][heading Goal: Self-Checking Test]
+
+__test__ supports self-checking tests through its rich set of
+[link test.reference.assertion assertions].  Each test case supplies the
+inputs to the system under test and validates the behavior of the system
+using assertions.  Self-checking tests report only bad news and good news
+results in no notifications.  The default output from the test runner only
+reports failing tests and a summary of all tests executed.  The test
+runner also returns a non-zero status code when a test fails, allowing
+easy failure of [@http://en.wikipedia.org/wiki/Continuous_integration
+continuous integration] builds.
+
+[#repeatable_test][heading Goal: Repeatable Test]
+
+We should get the same results from automated tests every time we run
+them, provided the implementation of the system under test has not changed
+between runs.  In the context of unit testing, this implies that a test
+case must control all the collaborators that can influence the system.
+
+The most troublesome collaborators are among the following:
+* current date and time
+* device input
+* file system
+* system services (Windows registry, networking, etc.)
+* C style apis
+
+In the book "Working Effectively with Legacy Code", Michael Feathers
+described a number of techniques for decoupling the system under test
+from such troublesome collaborators that can cause unit tests to
+spuriously fail.  All the techniques are variations on a theme: introduce
+a level of indirection to decouple the system under test from a collaborator.
+C++ offers [@http://en.wikipedia.org/wiki/Template_metaprogramming#Static_polymorphism
+static polymorphism] via templates as well as the usual dynamic
+polymorphism via interfaces to decouple a system under test from a
+collaborator.
+
+[#simple_tests][heading Goal: Simple Tests]
+
+We keep tests simple by exercising only one scenario for each test case.
+Simple test cases read linearly through the phases of setup, exercise and
+verify.  Trying to exercise too much functionality in a single test case
+can introduce unnecessary complexity into the test.
+
+Duplication between test cases can make tests hard to read by distracting
+us from the steady rhythm of setup, exercise and verify of test cases.
+You may find it useful to apply the
+[@http://en.wikipedia.org/wiki/Rule_of_three_(computer_programming) rule of
+three] when writing test cases to decide when to extract duplication into
+a fixture.
+
+[#expressive_tests][heading Goal: Expressive Tests]
+
+Sometimes low-level setup details get in the way of a test reading
+clearly.  This could be the result of a complicated data structure needed
+in order to exercise the system down a particular code path.  Similarly,
+the verification of a result produced by the system under test may involve
+a series of assertions that make the test hard to follow.  __test__
+provides fixtures as a way to localize these distracting details by
+extracting setup and assertion methods into the fixture.
+
+Over time we build up a series of methods in the fixture that allow us
+to express domain concepts succinctly and clearly in the tests, making
+them more expressive of the scenario in the domain.  Fixtures can be
+combined through aggregation or inheritance in order to express combinations
+and hierarchies of domain concepts.
+
+[#separation_of_concerns][heading Goal: Separation of Concerns]
+
+We keep test code separated from production code with the packaging
+mechanisms provided by C++.  Production code is supplied to the test
+executable as a library, either static or dynamic.  The test code resides
+in separate source files from the production code.  The production code
+consumed by the test code is compiled with the exact same preprocessor
+settings as the production code to ensure that tests do not influence
+the production code.
+
+We keep concerns separated in our tests by testing each concern in its own
+test case.  Each test case exercises a single scenario and our tests
+exercise the responsibilities or classes individually.  If we are
+practicing test-driven development, we keep the
+[@http://en.wikipedia.org/wiki/Single_responsibility_principle single
+responsibility principle] in mind as we are creating the system to satisfy
+the evolving tests.  When our tests start involving more than one concern,
+it can be a sign that our system under test is covering more than one
+responsibility.
+
+[#robust_test][heading Goal: Robust Test]
+
+Test cases are robust when small changes to the system under test result
+in a small number of test cases failing.  If a small change to the system
+results in many test cases failing, then our tests are not robust.  If
+our tests cases do not sufficiently isolate the system under test from its
+collaborators, then a change to one part of the system can cause tests on
+seemingly unrelated parts of the system to fail.  If we have repeated
+assertions in many test cases for the same system under test, then many
+test cases can fail if that single assertion fails.  Each of these
+situations is a case of overlap between test cases; in the first case,
+the overlap is between the parts of the production code unrelated to the
+system under test that we exercise and in the second case, the overlap is
+between test cases on the system under test. 
+
+[endsect]
+
+[section:acceptance_tests Acceptance Tests and Unit Tests]
+
+Unit testing helps us to find bugs "in the small"; little implementation
+details that we got wrong while we were building a function, a method
+or a class.  When we test each class as an isolated unit, we can miss
+errors in the way two classes interact or in the way a whole ensemble
+of classes cooperate in an integrated system.
+
+An acceptance test is an automated test that exercises our system as an
+integrated whole and not as a collection of isolated units.  In a unit
+test, we decouple ourselves from the execution environment in order to
+test a piece of code in isolation.  In an acceptance test, we run the
+whole system and provide controlled inputs to the system.  This may
+consist of prepared input data files, prepared input databases and so-on.
+
+Using these two forms of automated testing, we can use them as a vise
+to squeeze bugs between the two forms of automated tests.  Unit tests
+push from below and acceptance tests push from above.
+
+While the facilities in __test__ can be used to create an automated
+acceptance test, the tools are fairly low-level for the kinds of high-level
+criteria that an acceptance test would use.  Acceptance tests are usually
+defined by the [@http://en.wikipedia.org/wiki/Product_owner#Roles product
+owner] or customer and will describe acceptance criteria in the language
+closest to the problem domain and farthest away from the details of the
+implementation.
+
+A better approach for automated acceptance tests would be a tool such as
+[@http://www.fitnesse.org FitNesse] that is designed for automated
+acceptance testing.
+
+[endsect]
+
+[section:testing_file_io Testing File I/O]
+
+A common problem encountered in unit testing is interaction with the
+file system: scanning directories, creating files, opening files, reading
+files, writing files, creating symbolic links and so-on.  Interacting
+directly with the file system when executing unit tests can lead to
+a failure of tests to be [link robust_test robust] or [link repeatable_test
+repeatable].  We also want our unit tests to be fast; an execution time of
+100 milliseconds is considered a slow unit test.  Interacting directly with the file
+system can make our unit tests take too long to execute.
+
+The simplest approach is to wrap file system operations in an interface
+and perform all operations through the interface.  Consider the following
+example of a function that returns a vector of filenames ending in ".txt"
+in a given directory:
+
+[import system_under_test/scanner/scanner.hpp][text_files_decl]
+
+How can we unit test =text_files= without relying on the actual contents
+of the file system?  We can decouple =text_files= from the file system by
+introducing an interface:
+
+[text_files_dependency_decl]
+
+We've used a forward declaration of =directory_scanner= where =text_files=
+is declared.  The interface looks like this:
+
+[import system_under_test/scanner/directory_scanner.hpp][directory_scanner]
+
+The interface =directory_scanner= is used to isolate the free function
+=text_files= from directly interacting with the file system.  In the
+unit tests, we use an implementation of =directory_scanner= that senses
+how =text_files= uses the interface and allows us to control the data
+made available to =text_files=.  The tests can use a hand-crafted
+fake implementation or an implementation from a mock library.  The fake
+might look something like this:
+
+[import examples/file_system.cpp][fake_directory_scanner]
+
+The tests for =text_files= use the =fake_directory_scanner= to specify
+the configuration of the file system for the different test cases:
+
+[test_scanner]
+
+In production code, we use an implementation of =directory_scanner= that
+interacts directly with the file system using Boost.FileSystem.
+
+[import system_under_test/scanner/filesystem_directory_scanner.hpp][filesystem_directory_scanner]
+
+We've wrapped just enough of Boost.FileSystem for our needs;
+Boost.FileSystem has a very large surface area and we don't need to put
+an interface around the entire thing, just enough to satisfy the needs
+of =text_files=.
+
+If we don't want production code to have to worry about supplying an
+instance of =filesystem_directory_scanner= to =text_files=, we can use
+overloading on =text_files= and use simple delegation to supply the
+dependency:
+
+[import system_under_test/scanner/scanner.cpp][text_files_impl]
+
+Seeing this, you might wonder if we need to unit test the overload we
+just created?  Because we are using simple delegation here, there isn't
+sufficient complexity to warrant unit testing.  However, we have no unit
+tests for =filesystem_directory_scanner=, which does have control
+structures.  We will want some sort of automated tests around this code
+to verify that it functions properly.  We can use
+[link test.guide.acceptance_tests acceptance tests] to verify the system
+as a whole, exercising all the components end-to-end and not just in
+isolation.
+
+[heading Example Source Code]
+
+* System under test:
+ * [@boost:/libs/test/doc/src/system_under_test/scanner/scanner.hpp scanner.hpp]
+ * [@boost:/libs/test/doc/src/system_under_test/scanner/scanner.cpp scanner.cpp]
+ * [@boost:/libs/test/doc/src/system_under_test/scanner/directory_scanner.hpp directory_scanner.hpp]
+ * [@boost:/libs/test/doc/src/system_under_test/scanner/filesystem_directory_scanner.hpp filesystem_directory_scanner.hpp]
+* Tests:
+ * [@boost:/libs/test/doc/src/examples/file_system.cpp file_system.cpp]
+
+[endsect]
+
+[section Mocking Collaborators]
+
+In [link test.guide.testing_file_io testing file I/O], we showed an example
+of creating a class =fake_directory_scanner= that acted as a simple test
+double for an interface.  Such simple fake objects are fine at first, but
+they're full of boring boiler plate code and after a while it becomes
+tedious to write them by hand.
+
+For collaborators defined by a pure virtual base class, also known as
+an interface, there are mock object frameworks that alleviate the need to
+write the repetitive boiler plate code.  One such mock object framework
+that is designed to work with __test__ is the
+[@http://turtle.sourceforge.net Turtle mock object framework].
+
+Here is an example of the file system tests written using turtle:
+
+[import examples/turtle_mock.cpp]
+[mock_directory_scanner]
+
+Defining the mock object is considerably simpler than writing a fake
+object by hand.  Turtle uses variadic argument macros and template
+based type deduction to infer the type signature of the methods simply
+from the number of arguments each method takes.  This alleviates us from
+having to repeat all of this information from the interface into the
+implementation of the test double.
+
+Now we can rewrite our tests to use a mock object configured for each test
+case:
+
+[test_scanner_with_mocks]
+
+The tests themselves are largely unchanged and what is different is the
+intention revealing methods we placed in the test fixture.
+Mock object frameworks generally provide a rich set
+of methods on the mock object for setting the expectations on the
+number of times a method is called, such as =once()=, the expected
+arguments to a method, such as =with()=, and the return value of a method,
+such as =returns()=.
+
+With a turtle mock, the expectations are verified when the mock object
+is destroyed.  The mock is a member in our fixture and will be destroyed
+at the end of every test case.
+
+[heading Example Source Code]
+* System under test:
+ * [@boost:/libs/test/doc/src/system_under_test/scanner/scanner.hpp scanner.hpp]
+ * [@boost:/libs/test/doc/src/system_under_test/scanner/scanner.cpp scanner.cpp]
+ * [@boost:/libs/test/doc/src/system_under_test/scanner/directory_scanner.hpp directory_scanner.hpp]
+ * [@boost:/libs/test/doc/src/system_under_test/scanner/filesystem_directory_scanner.hpp filesystem_directory_scanner.hpp]
+* Tests:
+ * [@boost:/libs/test/doc/src/examples/turtle_mock.cpp turtle_mock.cpp]
+
+[endsect]
+
+[section Testing =main=]
+
+If there is considerable logic in an appliation's =main= function, this
+can be difficult to unit test.  The
+[@http://en.wikipedia.org/wiki/One_definition_rule One Definition Rule]
+prevents us from having the application's =main= and the unit test
+executable's =main= in the same executable.  Furthermore, even if we
+could perform some trick to resolve the multiply defined symbol[footnote
+We could abuse the C++ preprocessor or use object file symbol
+modification.], we would still need to figure out how to link the test
+executable with the application's =main= function to test the code.
+
+When it becomes difficult to test code where it is currently, such as
+in the body of =main=, the simplest thing to do is to move the code
+somewhere else that makes it easy to test.  Here is one way to accomplish
+this:
+
+# rename =main= to =app_main=.
+# move =app_main= to a library.
+# create a simple delegating =main= that calls =app_main=.
+# write tests for =app_main= by linking against the library.
+
+The delegating =main= looks like this:
+```
+extern int app_main(int argc, char* argv[]);
+
+int main(int argc, char* argv[])
+{
+    return app_main(argc, argv);
+}
+```
+If you don't already have a library for =app_main=, then create one
+and add all the other application code to the library as well.  The
+build logic for making the executable will consist of compiling a
+single source file containing your delegating implementation of =main=
+and linking against a library containing the rest of the application.
+This will give you a starting point for writing unit tests for anything
+in your application.
+
+[endsect]
+
+[section Testing Protected or Private Members]
+
+When testing a large class, you may find yourself wanting to test
+protected or private members of the class.  The best approach is to
+test those members by testing the public members of the class.  If
+using the public members of a class requires considerable setup in
+order to force execution down a particular path that exercises the
+protected or private member in question, then you may wish to refactor
+the code to enhance testability.
+
+The most expedient technique for protected members is to raise their
+visibility through derivation.  Suppose we have a base class `B` with
+a protected member `p` that we wish to test:
+```
+class B
+{
+// ... other stuff in B
+protected:
+    bool p();
+};
+```
+We can derive a class `D` in the test code from the class `B` in the
+production code that raises the visibility of `p`:
+```
+class D : public B
+{
+// ... other stuff needed to build a D from a B
+public:
+    using B::p;
+};
+```
+Now we can write a test for `D::p`.
+
+While this certainly seems expedient, it's annoying to write these derived
+classes simply for the purposes of hoisting members into public visibility.
+It also just feels dirty.  We're taking implementation details that are
+supposed to be hidden from consumers of the class and we're exposing them.
+If we are not diligent and watchful, this class `D` in the test
+project that was only intended for testing may find itself showing up in
+the production code.
+
+Maybe the problem isn't one of visibility but that we simply aren't
+listening closely enough to the code in the first place.  As Herb Sutter
+shows us in [@http://www.gotw.ca/gotw/076.htm Uses and Abuses of Access
+Rights], the "Liar", the "Pickpocket", the "Cheat" and the "Language
+Lawyer" can all find ways to subvert the access protections afforded to
+a class.
+
+When we are tempted to test non-public methods of a class, it's because we
+feel that there is sufficient complexity in these non-public methods to
+warrant testing them.  What if that complexity is trying to tell us
+something?  If our class is so complex, isn't it possible that it's
+violating the
+[@http://en.wikipedia.org/wiki/Single_responsibility_principle Single
+Responsibility Principle]?  Maybe the class is trying to encompass several
+responsibilities and should be decomposed into two or more classes, each
+with a single responsibility.  We could perform the
+[@http://www.refactoring.com/catalog/extractClass.html Extract Class]
+refactoring to create two classes with appropriate public interfaces and
+then write tests against those new public interfaces.
+
+Another choice is to refactor the original class using the
+[@http://en.wikipedia.org/wiki/Opaque_pointer "pimpl idiom"], elevate
+the visibility to public of all the methods on the implementation class
+and write tests against the implementation class.  This has the same
+downsides as the derive-and-elevate approach and we're still ignoring
+the whispers of the code.
+
+When your code is hard to test, your code is telling you something.
+Listen to the code!
+
+[endsect]
+
+[section Manually Registering Test Cases and Suites]
+
+[heading Registering Test Cases]
+
+You may have an existing body of tests that you wish to register with
+__test__ manually.  You can use __boost_test_case__ to register a 
+function taking no arguments and returning =void= as a test case:
+
+[import examples/manual_registration.cpp][register_function]
+
+You can use a test case method on a fixture class by registering a
+function that creates an instance of the fixture and invokes the test
+method.  This assures that a fresh fixture is created for each test
+case, ensuring that each test executes independently of other tests.
+
+[hello_fixture]
+[register_method_function_instance]
+
+You can register a method on a class as a test case by using Boost.Bind
+to bind the method to a static instance of the class.  This can cause
+oen test case to influence the execution of another test case because
+they share the static fixture.
+
+[register_method_static_instance]
+
+A static instance of the class is used so that the instance exists at the
+time the test case is invoked.  Test case invocation happens after
+registration, so using a local instance in the registration function is
+insufficient.
+
+[heading Registering Test Suites]
+
+A new test suite is created with the __boost_test_suite__ macro.  The
+new suite must be added to the master test suite to execute its tests.
+Any number of test suites can be added in a hierarchy of suites and
+any test case can be added to any test suite.
+
+[register_test_suite]
+
+[heading Example Source Code]
+
+* System under test:
+ * [@boost:/libs/test/doc/src/system_under_test/hello/hello.hpp hello.hpp]
+ * [@boost:/libs/test/doc/src/system_under_test/hello/hello.cpp hello.cpp]
+* Tests:
+ * [@boost:/libs/test/doc/src/examples/manual_registration.cpp manual_registration.cpp]
+
+[endsect]
+
+[endsect]

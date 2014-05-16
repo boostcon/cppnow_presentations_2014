@@ -1,0 +1,409 @@
+[/==============================================================================
+    Copyright (C) 2013 Richard Thomson
+
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
+    file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+===============================================================================/]
+
+[section:tutorials Tutorials]
+
+These tutorials will get you started using __test__.  They are intended
+to be read in order and proceed from the basics of [link test.tutorials.hello_test
+writing your first test] to [link test.tutorials.running_selected_tests
+running selected tests].  Once you've finished with the tutorials, you
+may want to read about [link test.guide.test_case_design test case design]
+for some suggestions on testing various situations in C++.  The full
+details of the framework are provided in the [link test.reference reference]
+section.
+
+[/----------------------------------------------------------------------]
+[section:hello_test Hello, Test!]
+Suppose we wish to test that the following function, declared in =hello.hpp=
+and supplied by a static library =hello=, inserted the text
+=Hello, world!\n= to the given =stream=:
+
+[import tutorials/hello_test/1/sut/hello.hpp]
+[hello_test_sut_hpp1]
+
+We can accomplish this with the following test, saving it in =test_hello.cpp=:
+
+[import tutorials/hello_test/1/test/test_hello.cpp]
+[hello_test_test_cpp1]
+
+We compile =test_hello.cpp= and link it against the static library =hello=
+using the build environment for our platform to produce an executable.
+No other source files or libraries are needed.
+When we run the executable, it will execute our test case.
+
+Suppose that our implementation of =hello_world= looks like this:
+
+[import tutorials/hello_test/1/sut/hello.cpp]
+[hello_test_sut_cpp1]
+
+When we run the unit test executable we obtain output similar to the
+following:[footnote
+The test runner output here is generated from the =run-fail= rule in
+Boost.Build which includes the output from the executable and appends
+the exit code of the process to the output.]
+
+[include tutorials/hello_test/1/hello_test~1.output]
+
+Oops, it looks like we forgot to implement =hello_world=!.  Let's fix that
+by changing =hello.cpp= to the following:
+
+[import tutorials/hello_test/2/sut/hello.cpp]
+[hello_test_sut_cpp2]
+
+We can now rebuild our library, relink our unit test executable and re-run
+the test:
+
+[include tutorials/hello_test/2/hello_test~2.output]
+
+Oops, looks like we forgot to insert the newline character.  Let's fix that
+by changing =hello.cpp= to the following:
+
+[import tutorials/hello_test/3/sut/hello.cpp]
+[hello_test_sut_cpp3]
+
+We rebuild our library, relink our unit test executable again and re-run
+the test:
+
+[include tutorials/hello_test/3/hello_test~3.output]
+
+Now all our tests are passing and we know that =hello_world= does what
+we expect it to do.  We used =std::endl= to insert the newline character
+and it also flushes the output stream after inserting the newline.  If
+we didn't want the output stream to be flushed, we can change =hello_world=
+to use a character literal:
+
+[import tutorials/hello_test/sut/hello.cpp]
+[hello_test_sut_cpp]
+
+We rebuild and re-run the test to verify that our change didn't break
+anything:
+
+[include tutorials/hello_test/hello_test.output]
+
+[heading Some Observations]
+
+Now that we've seen __test__ in action, let's take a closer look at
+what we have just done:
+
+* The entire unit test framework was brought into our test application
+  with a single include =<boost/test/included/unit_test.hpp>=.  We didn't
+  link against any libraries or introduce any run-time dependencies.
+* We didn't write an implementation of =main=, but our test executable
+  linked and ran.  Why?  The preprocessor symbol __boost_test_main__
+  instructed __test__ to supply an implementation of =main= that executes
+  all tests registered with the framework.
+* The macro __boost_auto_test_case__ registered our unit test case with
+  the framework and provides the necessary preamble for the implementation
+  of the testing function.
+* The argument to __boost_auto_test_case__ is the name of our test case and
+  is a C++ identifier, not a string.
+* The test was structured in three phases: setup, exercise, and verify.
+  * Our setup phase created an output string stream in order to capture
+    the output of =hello_world=, the system under test.
+  * The exercise phase called the system under test, our function =hello_world=.
+  * The verify phase checked that the function provided the expected output
+    using the assertion macro __boost_require_equal__.
+  * To make the phases of the test obvious, we used blank lines to separate them.
+* A failing test emits a message that provides information about the
+  location of the failed assertion and the detail of the failure.
+* The above sequence is a typical example of test-driven development,
+  proceeding through stages of "red", "green" and "refactor".
+  * We wrote a failing test and just enough implementation to compile the
+    test ("red").
+  * We then wrote the implementation and ran the test to verify our
+    implementation.  We made a simple mistake, so we corrected that and
+    re-ran the test to verify our implementation by passing the test ("green").
+  * Once our implementation was correct, we looked at possible improvements
+    we might make to the code; in our case we eliminated the side-effect
+    of flushing the output stream ("refactor").
+* The test code and production code, or system under test, are kept
+  separate.  The production code was in a library and the test code was
+  in an executable.
+* No news is good news!  We don't see any noise from test cases when
+  they pass and the test executable emits only a summary of all test
+  cases when all tests pass.
+
+[heading Example Source Code]
+
+* System under test:
+ * [@boost:/libs/test/doc/src/tutorials/hello_test/sut/hello.hpp hello.hpp]
+ * [@boost:/libs/test/doc/src/tutorials/hello_test/sut/hello.cpp hello.cpp]
+* Tests:
+ * [@boost:/libs/test/doc/src/tutorials/hello_test/test/test_hello.cpp test_hello.cpp]
+
+[endsect]
+
+[/----------------------------------------------------------------------]
+[section:testing_with_exceptions Testing with Exceptions]
+
+When we're testing a system, we want to test the failure cases
+as well as the success cases.  This means forcing the system under test
+down an error path by orchestrating bad inputs or synthesizing errors
+from code collaborating with the system under test.
+
+Let's add the requirement that [link test.tutorials.hello_test =hello_world=]
+should throw the a =std::runtime_error= exception if the supplied stream
+has the =badbit= set on the stream.
+
+We can add a test case for this:
+
+[import tutorials/testing_with_exceptions/1/test/test_hello.cpp]
+[hello_world_stream_with_badbit_throws_runtime_error_1]
+
+[note The [@http://en.cppreference.com/w/cpp/io/basic_ios/clear =clear=
+member function] on a stream clears all state bits and sets the state to
+the value of the argument.]
+
+Instead of an assertion macro like __boost_require_equal__, we're using
+the __boost_fail__ macro that guarantees test failure.  If the call to
+=hello_world= doesn't throw a =runtime_error= exception and continues
+to the next line of code, then this test case fails:
+
+[include tutorials/testing_with_exceptions/1/test_hello~testing_with_exceptions~1.output]
+
+Now let's enhance the implementation to support this requirement:
+
+[import tutorials/testing_with_exceptions/2/sut/hello.cpp]
+[testing_with_exceptions_sut_hello_cpp_2]
+
+We run our test and get something similar to the following:
+
+[include tutorials/testing_with_exceptions/2/test_hello~testing_with_exceptions~2.output]
+
+Now the test is still failing, so what did we do wrong?  The
+exception from our system under test unwound the call stack back into the
+unit test framework, which caught the exception and reported this as a
+failure.  We need to tell the test framework that an exception is expected
+in this situation.  We can use __boost_require_throw__ to tell the test
+framework that an expression is expected to throw a particular type of
+exception.  If the exception isn't thrown or an exception of a different
+type is thrown, then the test fails.  Our test now looks like this:
+
+[import tutorials/testing_with_exceptions/test/test_hello.cpp]
+[hello_world_stream_with_badbit_throws_runtime_error]
+
+Now our test case is passing:
+
+[include tutorials/testing_with_exceptions/test_hello~testing_with_exceptions.output]
+
+[heading Some Observations]
+
+* We gave our test case a name that revealed the essence of what it tests
+  so that when it fails, we know immediately from the name of the test what
+  requirement has been invalidated.  Using intention revealing names for
+  test cases is just as important as using intention revealing names for
+  methods, functions and classes.
+* We kept each scenario we wanted to test separate and independent from
+  each other.  This keeps our tests robust; the state of one test does
+  not interfere with any other test.
+* Now that we have two test cases, we can see that there is some duplication
+  between them: the construction of an output string stream.  It isn't much
+  right now, just a single line, but duplication between tests is something
+  we'll need to watch.
+* Every time we modify or add a test, we have to recompile our single
+  test file =test_hello.cpp=, which is including the entire unit test
+  framework source.  This leads to a lengthy compile every time we
+  have to change the tests.
+
+[heading Example Source Code]
+
+* System under test:
+ * [@boost:/libs/test/doc/src/tutorials/testing_with_exceptions/sut/hello.hpp hello.hpp]
+ * [@boost:/libs/test/doc/src/tutorials/testing_with_exceptions/sut/hello.cpp hello.cpp]
+* Tests:
+ * [@boost:/libs/test/doc/src/tutorials/testing_with_exceptions/test/test_hello.cpp test_hello.cpp]
+
+[endsect]
+
+[/----------------------------------------------------------------------]
+[section:testing_with_fixtures Testing with Fixtures]
+
+When we added our second test case in the
+[link test.tutorials.testing_with_exceptions previous tutorial], we
+ended up with some duplicated setup between the two test cases.  This is
+a common occurrence in unit testing.  We have some prerequisites for the
+system under test that must be prepared in order to exercise the system.
+In our case, it is a single output string stream that we use for capturing
+the output of our =hello_world= function.
+
+__test__ provides a facility called a fixture for encapsulating repeated
+setup and tear down code between test cases.  In our example, there isn't
+any explicit tear down code because the output string streams are created
+on the stack and destroyed when execution exits the test case.  We have a
+little bit of repeated setup code that we can move to a fixture that is
+used by both our test cases.  Let's put that repeated code in a fixture:
+
+[import tutorials/testing_with_fixtures/1/test/test_hello.cpp]
+[testing_with_fixtures_test_cpp_1]
+
+A fixture is simply a class or struct that is inherited by the test case.
+We connect the test case to the fixture by using __boost_fixture_test_case__
+instead of __boost_auto_test_case__.  The latter simply connects each test
+case to an empty fixture.  After refactoring the test cases to use a
+fixture, we run the tests to make sure the tests still pass.
+
+When using a fixture, the order of construction and destruction is as
+follows when a test case is executed:
+
+# The fixture is constructed.
+# The test case class is constructed.
+# The test case test method is executed
+# The test case class is destroyed.
+# The fixture is destroyed.
+
+This process happens for each test case that is executed, ensuring that
+each test case has a fresh fixture and remains independent of other test
+cases.
+
+In most cases, the setup will be a little more involved than just creating
+an instance variable and there will be some work done in the constructor of
+the fixture.  We could simply use the default constructor and destructor of
+our fixture in this case.  We've written the constructor and destructor
+explicitly to emphasize that this is where setup and tear down occur.
+
+Now that we've transformed the test cases to use a fixture, it seems
+we've simply traded one piece of repetition, the construction of the
+output string stream, for another: the repeated use of the fixture
+name and system under test in our test cases.  We can use a custom test
+case macro to get rid of this duplication:
+
+[import tutorials/testing_with_fixtures/test/test_hello.cpp]
+[testing_with_fixtures_test_cpp]
+
+Every test case has to have a unique name within the scope of its
+declaration, either the global namespace or a custom namespace, which is
+why we've been prefixing our test case names with the name of the system
+under test, =hello_world=.  Once we accumulate a few tests, the chances
+for a clash between test names increases.
+
+With our custom test case macro, we reduce the chance for a test case
+name clash by ensuring that every test case name is prefixed by the
+name of the system under test.  We ensure that every test case
+for =hello_world= uses the same fixture and we gain some readability of
+the test cases by eliminating the distracting repetition.  If we change
+the name of the fixture, then we need only edit the custom test case
+macro that supplies the fixture name.
+
+In the next tutorial, we'll see an alternative way of eliminating this
+duplication of the prefixes of test case names.
+
+[heading Example Source Code]
+
+* System under test:
+ * [@boost:/libs/test/doc/src/tutorials/testing_with_fixtures/sut/hello.hpp hello.hpp]
+ * [@boost:/libs/test/doc/src/tutorials/testing_with_fixtures/sut/hello.cpp hello.cpp]
+* Tests:
+ * [@boost:/libs/test/doc/src/tutorials/testing_with_fixtures/test/test_hello.cpp test_hello.cpp]
+
+[endsect]
+
+[/----------------------------------------------------------------------]
+[section:running_selected_tests Running Selected Tests]
+
+As we continue to add unit tests for a library, we can get quite a large
+number of tests.  If they are true unit tests and each test exercises a
+single class isolated from its collaborators, then most of the tests are
+not relevant to the changes we are making.  The test executable accepts
+a number of command-line arguments that allow us to control the behavior
+of the test framework, including which tests to run.
+
+We can list the available tests in a test executable with __report_level__
+set to detailed:
+
+[include tutorials/running_selected_tests/1/report_level_detailed.output]
+
+[caution The arguments to the test executable, such as __report_level__,
+use an underscore (=_=) to separate words, not a dash (=-=).]
+
+Suppose we are continuing to make changes to =hello_world= and we want
+to run only the tests that apply to that function.  We can easily identify
+the relevant tests in the output of __report_level__ because we have used
+a test naming convention of prefixing all test case names with the name
+of the system under test, =hello_world=.
+
+Using the __run_test__ argument, we can specify a comma-separated list
+of test case names to run:
+
+[include tutorials/running_selected_tests/1/test_hello~running_selected_tests~1.output]
+
+Wow, that's really a mouthfull!  Even with command recall, typing this
+command for the first time will require typing the exact names of all the
+test cases for =hello_world=.  As we add more test cases, we'll have to
+extend the command line argument to account for each new test case.
+
+We can solve this problem by using test suites, which organize tests into
+a named group:
+
+[import tutorials/running_selected_tests/2/test/test_hello.cpp]
+[running_selected_tests_test_cpp_2]
+
+Now __report_level__ outputs the following:
+
+[include tutorials/running_selected_tests/2/report_level_detailed.output]
+
+The indentation shows that the test cases for =hello_world= are organized
+under the test suite named =test_hello_world=.
+
+[note We can't name the suite =hello_world= because that would conflict
+with the name of our system under test, as both are declared in the same
+global namespace.]
+
+Now we can supply the name of the test suite to __run_test__ to run all
+the test cases in the suite:
+
+[include tutorials/running_selected_tests/2/test_hello~running_selected_tests~2.output]
+
+As we add more test cases to the suite, we don't have to change the
+command we are using to run the tests and we don't need to remember the
+exact names of the test cases.
+
+Suites arrange test cases into a hierarchy.  You can have suites within
+suites to provide larger groupings to test a collection of related classes
+together.  Once a test case is part of a suite, we must use the name of
+the enclosing suite with the name of the test case if we wish to run a
+single test case within the suite by name:
+
+[include tutorials/running_selected_tests/2/run_test_hello_inserts_text.output]
+
+The names of the enclosing suites are separated from each other and from
+the test case name with a slash (=/=).  The names supplied to __run_test__
+also allow for wildcard matching:
+
+[include tutorials/running_selected_tests/2/run_test_hello_star_inserts_text.output]
+
+Just as we can use a fixture with a test case to eliminate repeated setup
+and tear down, we can use a fixture with a test suite.  All test cases
+in the test suite will derive from the test suite's fixture.  If a test
+case in a test suite with a fixture specifies its own fixture, then the
+test case derives from the fixture specified on the test case and not on
+the test suite.  If you want the test case to use both fixtures, then
+make your test case fixture derive from the test suite fixture.
+
+We can use a test suite fixture for =test_hello= to take care of the
+duplicated setup between test cases.  Since our test cases are now within
+the scope of a suite, we don't need to give them a unique prefix anymore.
+Refactoring the tests to use a suite fixture and discarding the prefix
+gives us the following code:
+
+[import tutorials/running_selected_tests/test/test_hello.cpp]
+[running_selected_tests_test_cpp]
+
+Now __report_level__ outputs the following:
+
+[include tutorials/running_selected_tests/report_level_detailed.output]
+
+[heading Example Source Code]
+
+* System under test:
+ * [@boost:/libs/test/doc/src/tutorials/running_selected_tests/sut/hello.hpp hello.hpp]
+ * [@boost:/libs/test/doc/src/tutorials/running_selected_tests/sut/hello.cpp hello.cpp]
+* Tests:
+ * [@boost:/libs/test/doc/src/tutorials/running_selected_tests/test/test_hello.cpp test_hello.cpp]
+
+[endsect]
+
+[endsect]

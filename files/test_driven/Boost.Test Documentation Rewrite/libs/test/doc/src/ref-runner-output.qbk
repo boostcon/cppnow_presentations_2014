@@ -1,0 +1,82 @@
+[/==============================================================================
+    Copyright (C) 2013 Richard Thomson
+
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
+    file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+===============================================================================/]
+
+[section:output Test Output]
+
+[section:log Test Log]
+
+The test log contains detailed information on every assertion in every test
+case.
+The log can be formatted as plain human readable text or as XML and can be
+sent to the standard output stream, the standard error stream or a file.
+
+The amount of detail in the log is set with the __log_level__ option.
+The format of the log is set with the __log_format__ option.
+The destination of the log is set with the __log_sink__ option.
+The __output_format__ option sets both the log format and the report format.
+
+The XML format for the test log conforms to the schema
+[@boost:/libs/test/doc/src/UTF.log.xsd UTF.log.xsd].
+
+[endsect]
+
+[section:report Test Report]
+
+The report contains summary information about the test cases
+executed and the count of failures.
+The report can be formatted as plain human readable text or as XML and can be
+sent to the standard output stream, standard error stream or a file.
+
+The amount of detail in the report is controlled by the __report_level__
+option.
+The format of the report can be changed with the __report_format__ option.
+The destination of the report can be set with the __report_sink__ option.
+The __output_format__ option sets both the report format and the log format.
+
+The XML format for the test report conforms to the schema
+[@boost:/libs/test/doc/src/UTF.report.xsd UTF.report.xsd].
+
+[endsect]
+
+[section:boost_test_checkpoint =BOOST_TEST_CHECKPOINT=]
+
+=BOOST_TEST_CHECKPOINT(=[~message]=)= registers a test case checkpoint
+and associated [~message] with the test runner.  A checkpoint includes
+the source file and line number where the macro was invoked.
+If the test case is aborted unexpectedly, the source location and
+message associated with the last registered checkpoint is emitted into
+the log.  Checkpoints can be used to identify the location of an unexpected
+failure within a block of test case code.  The [~message] is applied to
+an output stream with `operator<<` and can include other invocations of
+`operator<<`.
+
+[example_checkpoint]
+
+[endsect]
+
+[section:boost_test_message =BOOST_TEST_MESSAGE=]
+
+=BOOST_TEST_MESSAGE(=[~message]=)= unconditionally writes the [~message]
+into the test runner log file.  Unlike __boost_test_checkpoint__ no
+file and line number information is written into the log file.  The
+[~message] is applied to an output stream with `operator<<` and can
+include other invocations of `operator<<`.
+
+[example_test_message]
+
+[endsect]
+
+[section =BOOST_TEST_PASSPOINT=]
+
+=BOOST_TEST_PASSPOINT()= is similar to __boost_test_checkpoint__, but 
+only registers a source file location with the test runner.
+
+[example_passpoint]
+ 
+[endsect]
+
+[endsect]

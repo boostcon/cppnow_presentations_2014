@@ -1,0 +1,8 @@
+[pre
+> test_hello --run_test=hello_world_inserts_text,hello_world_stream_with_badbit_throws_runtime_error
+Running 2 test cases...
+
+*** No errors detected
+ 
+EXIT STATUS: 0 
+]

@@ -1,0 +1,102 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Compilation and Usage Variants</title>
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="up" href="../guide.html" title="User's Guide">
+<link rel="prev" href="../guide.html" title="User's Guide">
+<link rel="next" href="compilation/minimal_header.html" title="Minimal Header">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../guide.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../guide.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="compilation/minimal_header.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="test.guide.compilation"></a><a class="link" href="compilation.html" title="Compilation and Usage Variants">Compilation and Usage Variants</a>
+</h3></div></div></div>
+<div class="toc"><dl class="toc">
+<dt><span class="section"><a href="compilation/minimal_header.html">Minimal Header</a></span></dt>
+<dt><span class="section"><a href="compilation/_main_.html"><code class="literal">main</code></a></span></dt>
+<dt><span class="section"><a href="compilation/header_only.html">Header Only</a></span></dt>
+<dt><span class="section"><a href="compilation/static_library.html">Static Library</a></span></dt>
+<dt><span class="section"><a href="compilation/shared_library.html">Shared Library</a></span></dt>
+</dl></div>
+<p>
+        Boost.Test is available in several forms:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+            a single, minimal header
+          </li>
+<li class="listitem">
+            a header-only form
+          </li>
+<li class="listitem">
+            a static library
+          </li>
+<li class="listitem">
+            a shared library
+          </li>
+</ul></div>
+<p>
+        The minimal header can be useful in situations where you don't already have
+        the library built and want to quickly explore a test with a minimal amount
+        of fuss. Once you need to create multiple unit tests, you will quickly outgrow
+        the minimal header.
+      </p>
+<p>
+        The header only form is useful when you don't want to be bothered with compiling
+        the library. Once you have multiple compilation units with unit tests in
+        each compilation unit, you will grow tired of the compilation cost involved
+        with the header only form of the framework.
+      </p>
+<p>
+        The static library form is the easiest to integrate into your build system
+        as it doesn't require any installation of runtime files in order to execute
+        your tests. This runtime simplicity comes at the cost of increased link times
+        and executable sizes.
+      </p>
+<p>
+        The dynamic library form requires the most effort for successful test execution,
+        but provides faster link times than the static library, faster compile times
+        than the header only form and provides all the features of the framework
+        compared to the minimal header.
+      </p>
+<div class="caution"><table border="0" summary="Caution">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../../../../../../doc/src/images/caution.png"></td>
+<th align="left">Caution</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          Boost.Test is not a thread-safe library. Care should be taken when automated
+          tests create multiple threads and interact with data structures passed
+          to Boost.Test macros or functions.
+        </p></td></tr>
+</table></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../guide.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../guide.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="compilation/minimal_header.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

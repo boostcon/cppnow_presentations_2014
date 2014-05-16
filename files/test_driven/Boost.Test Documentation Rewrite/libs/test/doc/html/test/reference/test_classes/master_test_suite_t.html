@@ -1,0 +1,81 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>master_test_suite_t</title>
+<link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="up" href="../test_classes.html" title="Test Classes">
+<link rel="prev" href="test_suite.html" title="test_suite">
+<link rel="next" href="test_observer.html" title="test_observer">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="test_suite.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../test_classes.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="test_observer.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="test.reference.test_classes.master_test_suite_t"></a><a class="link" href="master_test_suite_t.html" title="master_test_suite_t"><code class="literal">master_test_suite_t</code></a>
+</h4></div></div></div>
+<p>
+          The master test suite of type <code class="literal">master_test_suite_t</code> is
+          the starting point for the test runner.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">unit_test</span> <span class="special">{</span>
+
+<span class="keyword">class</span> <span class="identifier">BOOST_TEST_DECL</span> <span class="identifier">master_test_suite_t</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">test_suite</span> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+    <span class="identifier">master_test_suite_t</span><span class="special">()</span> <span class="special">:</span> <span class="identifier">test_suite</span><span class="special">(</span> <span class="string">"Master Test Suite"</span> <span class="special">)</span>
+    <span class="special">,</span> <span class="identifier">argc</span><span class="special">(</span> <span class="number">0</span> <span class="special">)</span>
+    <span class="special">,</span> <span class="identifier">argv</span><span class="special">(</span> <span class="number">0</span> <span class="special">)</span>
+    <span class="special">{}</span>
+
+    <span class="comment">// Data members</span>
+    <span class="keyword">int</span>      <span class="identifier">argc</span><span class="special">;</span>
+    <span class="keyword">char</span><span class="special">**</span>   <span class="identifier">argv</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="special">}</span> <span class="special">}</span>
+</pre>
+<p>
+        </p>
+<p>
+          You can obtain a reference to the master test suite with the <code class="literal">master_test_suite()</code>
+          function:
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">unit_test</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">framework</span> <span class="special">{</span>
+
+<span class="identifier">BOOST_TEST_DECL</span> <span class="identifier">master_test_suite_t</span><span class="special">&amp;</span> <span class="identifier">master_test_suite</span><span class="special">();</span>
+
+<span class="special">}</span> <span class="special">}</span> <span class="special">}</span>
+</pre>
+<p>
+        </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="test_suite.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../test_classes.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="test_observer.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

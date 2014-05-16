@@ -1,0 +1,311 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Hello, Test!</title>
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="up" href="../tutorials.html" title="Tutorials">
+<link rel="prev" href="../tutorials.html" title="Tutorials">
+<link rel="next" href="testing_with_exceptions.html" title="Testing with Exceptions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../tutorials.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../tutorials.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="testing_with_exceptions.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="test.tutorials.hello_test"></a><a class="link" href="hello_test.html" title="Hello, Test!">Hello, Test!</a>
+</h3></div></div></div>
+<p>
+        Suppose we wish to test that the following function, declared in <code class="literal">hello.hpp</code>
+        and supplied by a static library <code class="literal">hello</code>, inserted the text
+        <code class="literal">Hello, world!\n</code> to the given <code class="literal">stream</code>:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#if</span> <span class="special">!</span><span class="identifier">defined</span><span class="special">(</span><span class="identifier">HELLO_HPP</span><span class="special">)</span>
+<span class="preprocessor">#define</span> <span class="identifier">HELLO_HPP</span>
+
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">ostream</span><span class="special">&gt;</span>
+
+<span class="keyword">extern</span> <span class="keyword">void</span> <span class="identifier">hello_world</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span><span class="special">&amp;</span> <span class="identifier">stream</span><span class="special">);</span>
+
+<span class="preprocessor">#endif</span>
+</pre>
+<p>
+      </p>
+<p>
+        We can accomplish this with the following test, saving it in <code class="literal">test_hello.cpp</code>:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#define</span> <span class="identifier">BOOST_TEST_MAIN</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">test</span><span class="special">/</span><span class="identifier">included</span><span class="special">/</span><span class="identifier">unit_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="string">"hello.hpp"</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">sstream</span><span class="special">&gt;</span>
+
+<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span><span class="identifier">hello_world_inserts_text</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostringstream</span> <span class="identifier">dest</span><span class="special">;</span>
+
+    <span class="identifier">hello_world</span><span class="special">(</span><span class="identifier">dest</span><span class="special">);</span>
+
+    <span class="identifier">BOOST_REQUIRE_EQUAL</span><span class="special">(</span><span class="string">"Hello, world!\n"</span><span class="special">,</span> <span class="identifier">dest</span><span class="special">.</span><span class="identifier">str</span><span class="special">());</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<p>
+        We compile <code class="literal">test_hello.cpp</code> and link it against the static
+        library <code class="literal">hello</code> using the build environment for our platform
+        to produce an executable. No other source files or libraries are needed.
+        When we run the executable, it will execute our test case.
+      </p>
+<p>
+        Suppose that our implementation of <code class="literal">hello_world</code> looks like
+        this:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="string">"hello.hpp"</span>
+
+<span class="keyword">void</span> <span class="identifier">hello_world</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span><span class="special">&amp;</span> <span class="identifier">stream</span><span class="special">)</span>
+<span class="special">{</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<p>
+        When we run the unit test executable we obtain output similar to the following:<a href="#ftn.test.tutorials.hello_test.f0" class="footnote" name="test.tutorials.hello_test.f0"><sup class="footnote">[1]</sup></a>
+      </p>
+<pre class="programlisting">Running 1 test case...
+src/tutorials/hello_test/1/test/test_hello.cpp(13): fatal error in "hello_world_inserts_text": critical check "Hello, world!\n" == dest.str() failed [Hello, world!
+ != ]
+
+*** 1 failure detected in test suite "Master Test Suite"
+
+EXIT STATUS: 201
+</pre>
+<p>
+        Oops, it looks like we forgot to implement <code class="literal">hello_world</code>!.
+        Let's fix that by changing <code class="literal">hello.cpp</code> to the following:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="string">"hello.hpp"</span>
+
+<span class="keyword">void</span> <span class="identifier">hello_world</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span><span class="special">&amp;</span> <span class="identifier">stream</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">stream</span> <span class="special">&lt;&lt;</span> <span class="string">"Hello, world!"</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<p>
+        We can now rebuild our library, relink our unit test executable and re-run
+        the test:
+      </p>
+<pre class="programlisting">Running 1 test case...
+src/tutorials/hello_test/2/test/test_hello.cpp(13): fatal error in "hello_world_inserts_text": critical check "Hello, world!\n" == dest.str() failed [Hello, world!
+ != Hello, world!]
+
+*** 1 failure detected in test suite "Master Test Suite"
+
+EXIT STATUS: 201
+</pre>
+<p>
+        Oops, looks like we forgot to insert the newline character. Let's fix that
+        by changing <code class="literal">hello.cpp</code> to the following:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="string">"hello.hpp"</span>
+
+<span class="keyword">void</span> <span class="identifier">hello_world</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span><span class="special">&amp;</span> <span class="identifier">stream</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">stream</span> <span class="special">&lt;&lt;</span> <span class="string">"Hello, world!"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<p>
+        We rebuild our library, relink our unit test executable again and re-run
+        the test:
+      </p>
+<pre class="programlisting">Running 1 test case...
+
+*** No errors detected
+
+EXIT STATUS: 0
+</pre>
+<p>
+        Now all our tests are passing and we know that <code class="literal">hello_world</code>
+        does what we expect it to do. We used <code class="literal">std::endl</code> to insert
+        the newline character and it also flushes the output stream after inserting
+        the newline. If we didn't want the output stream to be flushed, we can change
+        <code class="literal">hello_world</code> to use a character literal:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="string">"hello.hpp"</span>
+
+<span class="keyword">void</span> <span class="identifier">hello_world</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span><span class="special">&amp;</span> <span class="identifier">stream</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">stream</span> <span class="special">&lt;&lt;</span> <span class="string">"Hello, world!\n"</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<p>
+        We rebuild and re-run the test to verify that our change didn't break anything:
+      </p>
+<pre class="programlisting">Running 1 test case...
+
+*** No errors detected
+
+EXIT STATUS: 0
+</pre>
+<h5>
+<a name="test.tutorials.hello_test.h0"></a>
+        <span class="phrase"><a name="test.tutorials.hello_test.some_observations"></a></span><a class="link" href="hello_test.html#test.tutorials.hello_test.some_observations">Some
+        Observations</a>
+      </h5>
+<p>
+        Now that we've seen Boost.Test in action, let's take a closer look at what
+        we have just done:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+            The entire unit test framework was brought into our test application
+            with a single include <code class="literal">&lt;boost/test/included/unit_test.hpp&gt;</code>.
+            We didn't link against any libraries or introduce any run-time dependencies.
+          </li>
+<li class="listitem">
+            We didn't write an implementation of <code class="literal">main</code>, but our
+            test executable linked and ran. Why? The preprocessor symbol <a class="link" href="../reference/configuration_macros.html#test.reference.compilation.boost_test_main"><code class="literal">BOOST_TEST_MAIN</code></a>
+            instructed Boost.Test to supply an implementation of <code class="literal">main</code>
+            that executes all tests registered with the framework.
+          </li>
+<li class="listitem">
+            The macro <a class="link" href="../reference/test_case/boost_auto_test_case.html" title="BOOST_AUTO_TEST_CASE"><code class="literal">BOOST_AUTO_TEST_CASE</code></a>
+            registered our unit test case with the framework and provides the necessary
+            preamble for the implementation of the testing function.
+          </li>
+<li class="listitem">
+            The argument to <a class="link" href="../reference/test_case/boost_auto_test_case.html" title="BOOST_AUTO_TEST_CASE"><code class="literal">BOOST_AUTO_TEST_CASE</code></a>
+            is the name of our test case and is a C++ identifier, not a string.
+          </li>
+<li class="listitem">
+            The test was structured in three phases: setup, exercise, and verify.
+            <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                  Our setup phase created an output string stream in order to capture
+                  the output of <code class="literal">hello_world</code>, the system under
+                  test.
+                </li>
+<li class="listitem">
+                  The exercise phase called the system under test, our function
+                  <code class="literal">hello_world</code>.
+                </li>
+<li class="listitem">
+                  The verify phase checked that the function provided the expected
+                  output using the assertion macro <a class="link" href="../reference/assertion/boost_level_equal.html" title="BOOST_level_EQUAL"><code class="literal">BOOST_REQUIRE_EQUAL</code></a>.
+                </li>
+<li class="listitem">
+                  To make the phases of the test obvious, we used blank lines to
+                  separate them.
+                </li>
+</ul></div>
+          </li>
+<li class="listitem">
+            A failing test emits a message that provides information about the location
+            of the failed assertion and the detail of the failure.
+          </li>
+<li class="listitem">
+            The above sequence is a typical example of test-driven development, proceeding
+            through stages of "red", "green" and "refactor".
+            <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                  We wrote a failing test and just enough implementation to compile
+                  the test ("red").
+                </li>
+<li class="listitem">
+                  We then wrote the implementation and ran the test to verify our
+                  implementation. We made a simple mistake, so we corrected that
+                  and re-ran the test to verify our implementation by passing the
+                  test ("green").
+                </li>
+<li class="listitem">
+                  Once our implementation was correct, we looked at possible improvements
+                  we might make to the code; in our case we eliminated the side-effect
+                  of flushing the output stream ("refactor").
+                </li>
+</ul></div>
+          </li>
+<li class="listitem">
+            The test code and production code, or system under test, are kept separate.
+            The production code was in a library and the test code was in an executable.
+          </li>
+<li class="listitem">
+            No news is good news! We don't see any noise from test cases when they
+            pass and the test executable emits only a summary of all test cases when
+            all tests pass.
+          </li>
+</ul></div>
+<h5>
+<a name="test.tutorials.hello_test.h1"></a>
+        <span class="phrase"><a name="test.tutorials.hello_test.example_source_code"></a></span><a class="link" href="hello_test.html#test.tutorials.hello_test.example_source_code">Example
+        Source Code</a>
+      </h5>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+            System under test:
+            <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                  <a href="../../../../../../libs/test/doc/src/tutorials/hello_test/sut/hello.hpp" target="_top">hello.hpp</a>
+                </li>
+<li class="listitem">
+                  <a href="../../../../../../libs/test/doc/src/tutorials/hello_test/sut/hello.cpp" target="_top">hello.cpp</a>
+                </li>
+</ul></div>
+          </li>
+<li class="listitem">
+            Tests:
+            <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">
+                  <a href="../../../../../../libs/test/doc/src/tutorials/hello_test/test/test_hello.cpp" target="_top">test_hello.cpp</a>
+                </li></ul></div>
+          </li>
+</ul></div>
+<div class="footnotes">
+<br><hr style="width:100; text-align:left;margin-left: 0">
+<div id="ftn.test.tutorials.hello_test.f0" class="footnote"><p><a href="#test.tutorials.hello_test.f0" class="para"><sup class="para">[1] </sup></a>
+          The test runner output here is generated from the <code class="literal">run-fail</code>
+          rule in Boost.Build which includes the output from the executable and appends
+          the exit code of the process to the output.
+        </p></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../tutorials.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../tutorials.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="testing_with_exceptions.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

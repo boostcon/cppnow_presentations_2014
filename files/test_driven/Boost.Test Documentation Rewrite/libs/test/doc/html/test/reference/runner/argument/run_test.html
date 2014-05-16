@@ -1,0 +1,173 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>--run_test</title>
+<link rel="stylesheet" href="../../../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../../../index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="up" href="../argument.html" title="Command Line Arguments">
+<link rel="prev" href="___result_code_.html" title="--result_code">
+<link rel="next" href="___show_progress_.html" title="--show_progress">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="___result_code_.html"><img src="../../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../argument.html"><img src="../../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="___show_progress_.html"><img src="../../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="test.reference.runner.argument.run_test"></a><a class="link" href="run_test.html" title="--run_test"><code class="literal">--run_test</code></a>
+</h5></div></div></div>
+<p>
+            This argument controls which test cases will be executed. The value is
+            a comma separated list of test specifiers. Test cases are arranged as
+            leaves on a tree structure, with every test case belonging to a test
+            suite. The test runner always creates a master test suite. Named test
+            suites are children of the master test suite or another named test suite.
+            Any test case that is not the child of a named test suite is a child
+            of the unnamed master test suite.
+          </p>
+<p>
+            Test specifiers select test cases or suites by naming the path from the
+            unnamed master test suite to the case or suite, similar to a full path
+            to a file in a hierarchical directory structure. A test specifier is
+            one or more path specifiers, separated by a slash (<code class="literal">/</code>).
+            A test specifier begins at the master test suite and proceeds down the
+            test tree, naming suites or test cases.
+          </p>
+<p>
+            The argument <a class="link" href="report_level.html" title="--report_level"><code class="literal">--report_level</code></a>
+            set to <code class="literal">detailed</code> can be used to output the names of
+            all the test suites and test cases within those test suites.
+          </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Path Specifier
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Tests Selected
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <em class="replaceable"><code>name</code></em>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The test case or suite named <em class="replaceable"><code>name</code></em>.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">*</code><em class="replaceable"><code>name</code></em>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      All test cases or suites whose name ends in <em class="replaceable"><code>name</code></em>.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <em class="replaceable"><code>name</code></em><code class="literal">*</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      All test cases or suites whose name begins with <em class="replaceable"><code>name</code></em>.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">*</code><em class="replaceable"><code>name</code></em><code class="literal">*</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      All test cases or suites whose name contains <em class="replaceable"><code>name</code></em>.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">*</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      All test cases or suites.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <em class="replaceable"><code>spec1</code></em><code class="literal">,</code><em class="replaceable"><code>spec2</code></em><code class="literal">,</code><em class="replaceable"><code>...</code></em>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The test cases or suites with the given specifier.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <em class="replaceable"><code>spec1</code></em><code class="literal">/</code><em class="replaceable"><code>spec2</code></em>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The test cases or suites matched by <em class="replaceable"><code>spec2</code></em>
+                      in the test suite matched by <em class="replaceable"><code>spec1</code></em>.
+                    </p>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+            <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TESTS_TO_RUN</code>
+          </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="___result_code_.html"><img src="../../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../argument.html"><img src="../../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="___show_progress_.html"><img src="../../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

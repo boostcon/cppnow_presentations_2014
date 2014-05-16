@@ -1,0 +1,20 @@
+[/==============================================================================
+    Copyright (C) 2013 Richard Thomson
+
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
+    file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+===============================================================================/]
+
+[section:reference Reference]
+
+[import examples/assertions.cpp]
+[import examples/assertion_failures.cpp]
+
+[include:test ref-compilation.qbk]
+[include:test ref-test-case.qbk]
+[include:test ref-test-suite.qbk]
+[include:test ref-test-classes.qbk]
+[include:test ref-assertion.qbk]
+[include:test ref-runner.qbk]
+
+[endsect]

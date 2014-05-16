@@ -1,0 +1,6 @@
+[pre
+> test_hello --run_test=test_hello/hello_world_inserts_text
+Running 1 test case...
+
+*** No errors detected
+]

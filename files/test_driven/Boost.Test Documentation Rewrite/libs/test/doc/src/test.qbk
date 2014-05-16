@@ -1,0 +1,132 @@
+[/==============================================================================
+    Copyright (C) 2013 Richard Thomson
+
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
+    file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+===============================================================================/]
+
+[library Boost.Test
+    [quickbook 1.5]
+    [authors [Thomson, Richard]]
+    [copyright 2013 Richard Thomson]
+    [/ purpose Unit Testing Library]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+    [id test]
+    [source-mode c++]
+    [dirname test]
+]
+
+[/ April 23, 2013 ]
+
+[/ TODO: Stuff that needs to be fixed by these docs:
+
+https://svn.boost.org/trac/boost/ticket/2600
+document method test_unit::depends_on 
+
+https://svn.boost.org/trac/boost/ticket/7136
+Correct documentation for BOOST_<level>_CLOSE_FRACTION is not reflected into released documents
+
+]
+
+[/ Some symbols ]
+
+[def __test__ Boost.Test]
+
+[/ Some web links ]
+
+[def __test_driven_development__ [@http://en.wikipedia.org/wiki/Test-driven_development test-driven development]]
+[def __xunit_patterns__ [@http://xunitpatterns.com xUnit Test Patterns]]
+
+[/ Internal links to the reference ]
+
+[def __boost_fail__             [link test.reference.assertion.boost_fail =BOOST_FAIL=]]
+[def __boost_require_equal__    [link test.reference.assertion.boost_level_equal =BOOST_REQUIRE_EQUAL=]]
+[def __boost_require_exception__ [link test.reference.assertion.boost_level_exception =BOOST_REQUIRE_EXCEPTION=]]
+[def __boost_require_message__  [link test.reference.assertion.boost_level_message =BOOST_REQUIRE_MESSAGE=]]
+[def __boost_require_no_throw__ [link test.reference.assertion.boost_level_no_throw =BOOST_REQUIRE_NO_THROW=]]
+[def __boost_require_throw__    [link test.reference.assertion.boost_level_throw =BOOST_REQUIRE_THROW=]]
+
+[def __boost_test_alternative_init_api__
+                                [link test.reference.compilation.boost_test_alternative_init_api =BOOST_TEST_ALTERNATIVE_INIT_API=]]
+[def __boost_test_dyn_link__    [link test.reference.compilation.boost_test_dyn_link =BOOST_TEST_DYN_LINK=]]
+[def __boost_test_main__        [link test.reference.compilation.boost_test_main =BOOST_TEST_MAIN=]]
+[def __boost_test_no_lib__      [link test.reference.compilation.boost_test_no_lib =BOOST_TEST_NO_LIB=]]
+[def __boost_test_no_main__     [link test.reference.compilation.boost_test_no_main =BOOST_TEST_NO_MAIN=]]
+
+[def __auto_start_dbg__         [link test.reference.runner.argument.auto_start_dbg =--auto_start_dbg=]]
+[def __log_format__             [link test.reference.runner.argument.log_format =--log_format=]]
+[def __log_level__              [link test.reference.runner.argument.log_level =--log_level=]]
+[def __log_sink__               [link test.reference.runner.argument.log_sink =--log_sink=]]
+[def __output_format__          [link test.reference.runner.argument.output_format =--output_format=]]
+[def __report_format__          [link test.reference.runner.argument.report_format =--report_format=]]
+[def __report_level__           [link test.reference.runner.argument.report_level =--report_level=]]
+[def __report_sink__            [link test.reference.runner.argument.report_sink =--report_sink=]]
+[def __run_test__               [link test.reference.runner.argument.run_test =--run_test=]]
+[def __boost_test_checkpoint__  [link test.reference.runner.output.boost_test_checkpoint =BOOST_TEST_CHECKPOINT=]]
+[def __boost_test_message__     [link test.reference.runner.output.boost_test_message =BOOST_TEST_MESSAGE=]]
+
+[def __boost_auto_test_case__   [link test.reference.test_case.boost_auto_test_case =BOOST_AUTO_TEST_CASE=]]
+[def __boost_fixture_test_case__ [link test.reference.test_case.boost_fixture_test_case =BOOST_FIXTURE_TEST_CASE=]]
+[def __boost_param_test_case__  [link test.reference.test_case.boost_param_test_case =BOOST_PARAM_TEST_CASE=]]
+[def __boost_test_case__        [link test.reference.test_case.boost_test_case =BOOST_TEST_CASE=]]
+[def __boost_test_case_template__ [link test.reference.test_case.boost_test_case_template =BOOST_TEST_CASE_TEMPLATE=]]
+[def __boost_test_case_template_function__ [link test.reference.test_case.boost_test_case_template_function =BOOST_TEST_CASE_TEMPLATE_FUNCTION=]]
+
+[def __boost_auto_test_suite__  [link test.reference.test_suite.boost_auto_test_suite =BOOST_AUTO_TEST_SUITE=]]
+[def __boost_fixture_test_suite__ [link test.reference.test_suite.boost_fixture_test_suite =BOOST_FIXTURE_TEST_SUITE=]]
+[def __boost_test_suite__       [link test.reference.test_suite.boost_test_suite =BOOST_TEST_SUITE=]]
+
+[def __predicate_result__       [link test.reference.test_classes.predicate_result =predicate_result=]]
+[def __unit_test_main__         [link test.reference.test_classes.unit_test_main =unit_test_main=]]
+
+[/ Some images ]
+
+[def __note__                   [$./images/note.png]]
+[def __tip__                    [$./images/tip.png]]
+[def __important__              [$./images/important.png]]
+[def __caution__                [$./images/caution.png]]
+[def __danger__                 [$./images/alert.png]]
+
+This is the documentation for __test__, a library designed to support
+automated testing of software generally and unit testing specifically.
+
+[/----------------------------------------------------------------------]
+[section Motivation]
+
+Automated tests are an important part of verifying software.  At the
+developer level, automated tests provide confidence that changes made to
+the software do not result in new defects.  At the customer level,
+automated tests provide confidence that new features meet expectations
+and existing features continue to function unchanged.
+
+__test__ is a library that supports the automated testing of software,
+primarily aimed at satisfying the needs of the developer.
+
+[endsect]
+
+[/----------------------------------------------------------------------]
+[section How To Read This Documentation]
+
+This documentation provides material for both new users and advanced
+users.  If you are completely new to automated testing, you may wish
+to read Wikipedia's article on __test_driven_development__ and consult the
+online book __xunit_patterns__.  The amount of information available on
+automated testing has exploded in the past decade and these are only
+some suggested starting points and not intended to be an exhaustive
+list.
+
+To get started quickly writing your first test, read the
+[link test.tutorials tutorial] sections.  For advice on designing and
+maintaining your tests, read the section on
+[link test.guide.test_case_design test case design].  For advanced uses of the
+library, consult the [link test.reference reference].
+
+[endsect]
+
+[include:test tutorials.qbk]
+[include:test user-guide.qbk]
+[include:test reference.qbk]

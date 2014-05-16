@@ -1,0 +1,9 @@
+[pre
+Running 2 test cases...
+unknown location(0): fatal error in "hello_world_stream_with_badbit_throws_runtime_error": std::runtime_error: bad stream
+src/tutorials/testing_with_exceptions/2/test/test_hello.cpp(13): last checkpoint
+
+*** 1 failure detected in test suite "Master Test Suite"
+ 
+EXIT STATUS: 201 
+]

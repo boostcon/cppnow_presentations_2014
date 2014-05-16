@@ -1,0 +1,333 @@
+[/==============================================================================
+    Copyright (C) 2013 Richard Thomson
+
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
+    file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+===============================================================================/]
+
+[template operator_warning_for[assertion operator element]
+[important If you get a strange compile error when using [assertion],
+check that the appropriate [operator] and `operator<<` are defined for
+the [element].  If you define these operators in your test
+code, keep in mind argument-dependent lookup of types based on enclosing
+namespaces and the namespaces opened by test suites.
+The need to define `operator<<` can be eliminated by using
+[link test.reference.assertion.boost_test_dont_print_log_value =BOOST_TEST_DONT_PRINT_LOG_VALUE=].]
+]
+
+[template operator_warning[assertion operator]
+[operator_warning_for [assertion] [operator] arguments]
+]
+
+[section:assertion Test Assertions]
+
+Assertions are used to validate the result of exercising the system under
+test.  When an assertion fails, a diagnostic message is created and the
+failed assertion is recorded.  Different assertion levels allow you to
+control how a failed assertion is interpreted by the test runner.
+
+[important When an assertion involves a user-defined datatype, a stream insertion
+operator (`operator<<`) must be defined for the user-defined datatype,
+or the assertion will fail to compile.  Asserting a comparison operation
+on a value of a user-defined type will require the appropriate comparison
+operator (`operator<`, `operator==`, etc.) be defined for the type or the
+assertion will fail to compile.
+The need to define `operator<<` can be eliminated by using
+[link test.reference.assertion.boost_test_dont_print_log_value =BOOST_TEST_DONT_PRINT_LOG_VALUE=].
+]
+
+The [link test.guide.compilation.minimal_header minimal header] test
+framework does not provide the facilities described here.
+
+[section:levels Assertion Levels]
+
+When using the library or header-only version of __test__, many
+assertion macros are provided in three levels that determine the behavior
+when the assertion fails and how a failed assertion interacts with the
+test runner.
+
+[table Assertion Levels
+[[Level] [Test Case Fails?] [Aborts Execution?]]
+[[=WARN=] [No] [No]]
+[[=CHECK=] [Yes] [no]]
+[[=REQUIRE=] [Yes] [Yes]]
+]
+
+The =WARN= level issues a diagnostic message, but the
+test case is not considered to have failed and continues
+executing.  The =CHECK= level issues a message to the test log on failure,
+marks the test case as failed and continues executing.  The =REQUIRE=
+level issues a message to the test log on failure, marks the test case
+as failed and halts execution of the test case.
+
+[endsect]
+
+[section =BOOST_=[~level]=_BITWISE_EQUAL=]
+
+=BITWISE_=[~level]=_EQUAL(=[~lhs], [~rhs]=)= compares the two arguments
+for bitwise equality and fails if they are not equal.  This can be useful
+when testing integral values that represent a logical or combination of
+bit flags.
+
+[heading Example]
+
+[example_bitwise_equal]
+
+[endsect]
+
+[section =BOOST_=[~level]=_CLOSE=]
+
+=BOOST_=[~level]=_CLOSE(=[~lhs], [~rhs], [~tolerance]=)= compares the
+two floating-point arguments and considers them equal if they agree within
+the given [~tolerance].  The [~tolerance] is given as a percentage.
+
+[heading Example]
+
+[example_close]
+
+[/ TODO: link to floating-point algorithm explanation /]
+
+[endsect]
+
+[section =BOOST_=[~level]=_CLOSE_FRACTION=]
+
+=BOOST_=[~level]=_CLOSE_FRACTION(=[~lhs], [~rhs], [~tolerance]=)= compares
+the two floating-point arguments and considers them equal if they agree
+within the given [~tolerance].  The [~tolerance] is given as a percentage.
+
+[heading Example]
+
+[example_close_fraction]
+
+[/ TODO: link to floating-point algorithm explanation /]
+
+[endsect]
+
+[section:boost_level_equal =BOOST_=[~level]=_EQUAL=]
+
+=BOOST_EQUAL(=[~lhs], [~rhs]=)= compares the two arguments with
+`operator==`.  The diagnostic message is constructed with `operator<<`
+on the two arguments.
+
+[operator_warning =BOOST_EQUAL= `operator==`]
+
+[heading Examples]
+
+[example_equal]
+[example_equal_custom_compare]
+
+[endsect]
+
+[section =BOOST_=[~level]=_EQUAL_COLLECTIONS=]
+
+=BOOST_=[~level]=_EQUAL_COLLECTIONS(=[~lhs_begin], [~lhs_end], [~rhs_begin], [~rhs_end]=)=
+compares two collections for equality.  Two collections are considered
+equal if they have the same number of elements and the elements compare
+equal by `operator==`.  The elements are obtained through the supplied
+iterators on the collections.  The diagnostic message is constructed from
+applying `operator<<` to each of the elements in the collections.
+
+[operator_warning_for =BOOST_EQUAL_COLLECTIONS= `operator==` element type in the collection]
+
+[heading Example]
+
+[example_equal_collections]
+
+[endsect]
+
+[section:boost_level_exception =BOOST_=[~level]=_EXCEPTION=]
+
+=BOOST_=[~level]=_EXCEPTION(=[~expression], [~exception], [~predicate]=)=
+asserts that when [~expression] throws an exception of type [~exception],
+the [~predicate] applied to the instance of the exception returns =true=.
+This is used to verify not only that an exception of the correct type was
+thrown, but that the contents of the thrown exception meet the expectations
+of the predicate.
+
+The [~predicate] can return =bool=, or __predicate_result__ which allows
+the predicate to build up a detailed failure message.
+
+[heading Example]
+
+[example_exception]
+
+[endsect]
+
+[section:boost_fail =BOOST_FAIL=]
+
+=BOOST_FAIL(=[~message]=)= always fails and emits the given
+[~message] at the =REQUIRE= assertion level.  Other assertion macros
+are generally preferred over =BOOST_FAIL= because they emit better
+diagnostics in the case of failure.
+
+There are two situations
+where you might be tempted to use =BOOST_FAIL=: testing the situations
+where the system under test will throw exceptions or comparing against
+the values computed by the system under test.
+For testing exception generation, use __boost_require_throw__,
+__boost_require_no_throw__ or __boost_require_exception__.
+For testing against values computed by the system under test, use the
+comparing assertions.
+
+[heading Example]
+
+[example_fail]
+
+[endsect]
+
+[section =BOOST_=[~level]=_GE=]
+
+=BOOST_=[~level]=_GE(=[~lhs], [~rhs]=)= asserts that [~lhs] is greater
+than or equal to [~rhs].  The comparison is made by applying `operator>=`
+to both arguments.  The diagnostic message is constructed from applying
+`operator<<` to the two arguments.
+
+[operator_warning =BOOST_=[~level]=_GE= `operator>=`]
+
+[heading Example]
+
+[example_ge]
+
+[endsect]
+
+[section =BOOST_=[~level]=_GT=]
+
+=BOOST_=[~level]=_GT(=[~lhs], [~rhs]=)= asserts that [~lhs] is greater than [~rhs].
+The comparison is made by applying `operator>` to both arguments.
+The diagnostic message is constructed from applying `operator<<` to the two arguments.
+
+[operator_warning =BOOST_=[~level]=_GT= `operator>`]
+
+[heading Example]
+
+[example_gt]
+
+[endsect]
+
+[section =BOOST_=[~level]=_LE=]
+
+=BOOST_=[~level]=_LE(=[~lhs], [~rhs]=)= asserts that [~lhs] is less
+than or equal to [~rhs].  The comparison is made by applying `operator<=`
+to both arguments.  The diagnostic message is constructed from applying
+`operator<<` to the two arguments.
+
+[operator_warning =BOOST_=[~level]=_LE= `operator<=`]
+
+[heading Example]
+
+[example_le]
+
+[endsect]
+
+[section =BOOST_=[~level]=_LT=]
+
+=BOOST_=[~level]=_LT(=[~lhs], [~rhs]=)= asserts that [~lhs] is less
+than [~rhs].  The comparison is made by applying `operator<`
+to both arguments.  The diagnostic message is constructed from applying
+`operator<<` to the two arguments.
+
+[operator_warning =BOOST_=[~level]=_LT= `operator<`]
+
+[heading Example]
+
+[example_lt]
+
+[endsect]
+
+[section:boost_level_message =BOOST_=[~level]=_MESSAGE=]
+
+=BOOST_=[~level]=_MESSAGE(=[~predicate], [~message]=)= emits [~message]
+if the supplied [~predicate] evaluates to false.  The [~message] is
+applied to an output stream with `operator<<` and the argument can contain
+additional applications of `operator<<` for building up complex messages.
+The predicate can return =bool= or __predicate_result__.
+
+[heading Example]
+
+[example_message]
+
+[endsect]
+
+[section =BOOST_=[~level]=_NE=]
+
+=BOOST_=[~level]=_NE(=[~lhs], [~rhs]=)= asserts that [~lhs] is not equal
+to [~rhs].  The comparison is made by applying `operator!=`
+to both arguments.  The diagnostic message is constructed from applying
+`operator<<` to the two arguments.
+
+[operator_warning =BOOST_=[~level]=_NE= `operator!=`]
+
+[heading Example]
+
+[example_ne]
+
+[endsect]
+
+[section:boost_level_no_throw =BOOST_=[~level]=_NO_THROW=]
+
+=BOOST_=[~level]=_NO_THROW(=[~expression]=)= asserts that [~expression]
+does not throw an exception.
+
+[heading Example]
+
+[example_no_throw]
+
+[endsect]
+
+[section =BOOST_=[~level]=_PREDICATE=]
+
+=BOOST_=[~level]=_PREDICATE(=[~predicate], [~args]=)= asserts that the
+supplied [~predicate] applied to [~args] evaluates to true.  The supplied
+[~predicate] must have a return type of =bool= and argument types that
+are compatible with the argument list [~args].  Because =BOOST_=[~level]=_PREDICATE=
+is a macro, the [~args] must be supplied as a sequence of parenthesized
+values, with no comma separating the values.
+
+[heading Example]
+
+[example_predicate]
+
+[endsect]
+
+[section =BOOST_=[~level]=_SMALL=]
+
+=BOOST_=[~level]=_SMALL(=[~value], [~tolerance]=)= checks that the [~value]
+is within [~tolerance] of zero.
+
+[heading Example]
+
+[example_small]
+
+[/ TODO: link to floating-point algorithm explanation /]
+
+[endsect]
+
+[section:boost_level_throw =BOOST_=[~level]=_THROW=]
+
+=BOOST_=[~level]=_THROW(=[~expression], [~exception]=)= asserts that
+[~expression] throws an exception of type [~exception] or a type
+derived from [~exception].
+
+[heading Example]
+
+[example_throw]
+
+[endsect]
+
+[section:boost_test_dont_print_log_value =BOOST_TEST_DONT_PRINT_LOG_VALUE=]
+
+=BOOST_TEST_DONT_PRINT_LOG_VALUE(=[~type]=)= instructs the test framework
+to ignore values of type [~type] when constructing diagnostic messages.
+It does this by defining an empty implementation of a print function
+specialized for [~type].  Because the specialization is inside an
+implementation namespace for __test__, the macro must be invoked at
+the global namespace scope.  Therefore, it cannot be used inside a test
+suite or any other namespace.
+
+[heading Example]
+
+[example_test_dont_print_log_value]
+
+[endsect]
+
+[endsect]

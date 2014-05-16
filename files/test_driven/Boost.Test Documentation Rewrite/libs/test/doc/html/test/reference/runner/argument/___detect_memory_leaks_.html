@@ -1,0 +1,113 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>--detect_memory_leaks</title>
+<link rel="stylesheet" href="../../../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../../../index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="up" href="../argument.html" title="Command Line Arguments">
+<link rel="prev" href="___detect_fp_exceptions_.html" title="--detect_fp_exceptions">
+<link rel="next" href="log_format.html" title="--log_format">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="___detect_fp_exceptions_.html"><img src="../../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../argument.html"><img src="../../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="log_format.html"><img src="../../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="test.reference.runner.argument.___detect_memory_leaks_"></a><a class="link" href="___detect_memory_leaks_.html" title="--detect_memory_leaks"><code class="literal">--detect_memory_leaks</code></a>
+</h5></div></div></div>
+<p>
+            If the execution environment supports the detection of memory leaks,
+            this argument controls whether or not the test runner reports memory
+            leaks. After running the tests, a memory leak report is issued showing
+            the allocation number and the amount of memory leaked.
+          </p>
+<p>
+            Values greater than <code class="literal">1</code> for this argument cause a trap
+            to the debugger for a particular memory allocation number. Currently,
+            this option is only implemented for Microsoft compilers.
+          </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Value
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Meaning
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">0</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Do not detect memory leaks.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <span class="bold"><strong><code class="literal">1</code></strong></span> (default)
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Detect memory leaks and issue a memory leak report.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <em class="replaceable"><code>number</code></em>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Break on allocation <em class="replaceable"><code>number</code></em>.
+                    </p>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+            <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TEST_DETECT_MEMORY_LEAKS</code>
+          </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="___detect_fp_exceptions_.html"><img src="../../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../argument.html"><img src="../../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="log_format.html"><img src="../../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

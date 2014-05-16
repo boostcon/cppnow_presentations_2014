@@ -1,0 +1,416 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Test Case Design and Maintenance</title>
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="up" href="../guide.html" title="User's Guide">
+<link rel="prev" href="compilation/shared_library.html" title="Shared Library">
+<link rel="next" href="acceptance_tests.html" title="Acceptance Tests and Unit Tests">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="compilation/shared_library.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../guide.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="acceptance_tests.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="test.guide.test_case_design"></a><a class="link" href="test_case_design.html" title="Test Case Design and Maintenance">Test Case Design and Maintenance</a>
+</h3></div></div></div>
+<p>
+        <a href="http://xunitpatterns.com/Goals%20of%20Test%20Automation.html" target="_top">xUnit
+        Patterns</a><a href="#ftn.test.guide.test_case_design.f0" class="footnote" name="test.guide.test_case_design.f0"><sup class="footnote">[2]</sup></a>, by Gerard Meszaros, presents several high level objectives for
+        automated tests and individual goals for achieving those objectives:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+            Objective: Tests should help us improve quality.
+            <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                  Goal: <a class="link" href="test_case_design.html#tests_as_specifications">Tests as specifications</a>
+                </li>
+<li class="listitem">
+                  Goal: <a class="link" href="test_case_design.html#bug_repellant">Bug repellant</a>
+                </li>
+<li class="listitem">
+                  Goal: <a class="link" href="test_case_design.html#defect_localization">Defect localization</a>
+                </li>
+</ul></div>
+          </li>
+<li class="listitem">
+            Objective: Tests should help us understand the system under test.
+            <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">
+                  Goal: <a class="link" href="test_case_design.html#tests_as_documentation">Tests as documentation</a>
+                </li></ul></div>
+          </li>
+<li class="listitem">
+            Objective: Tests should reduce, not increase, risk.
+            <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                  Goal: <a class="link" href="test_case_design.html#tests_as_safety_net">Tests as safety net</a>
+                </li>
+<li class="listitem">
+                  Goal: <a class="link" href="test_case_design.html#do_no_harm">Do No Harm</a>
+                </li>
+</ul></div>
+          </li>
+<li class="listitem">
+            Objective: Tests should be easy to run.
+            <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                  Goal: <a class="link" href="test_case_design.html#fully_automated_test">Fully Automated Test</a>
+                </li>
+<li class="listitem">
+                  Goal: <a class="link" href="test_case_design.html#self_checking_test">Self-Checking Test</a>
+                </li>
+<li class="listitem">
+                  Goal: <a class="link" href="test_case_design.html#repeatable_test">Repeatable Test</a>
+                </li>
+</ul></div>
+          </li>
+<li class="listitem">
+            Objective: Tests should be easy to write and maintain.
+            <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                  Goal: <a class="link" href="test_case_design.html#simple_tests">Simple Tests</a>
+                </li>
+<li class="listitem">
+                  Goal: <a class="link" href="test_case_design.html#expressive_tests">Expressive Tests</a>
+                </li>
+<li class="listitem">
+                  Goal: <a class="link" href="test_case_design.html#separation_of_concerns">Separation of Concerns</a>
+                </li>
+</ul></div>
+          </li>
+<li class="listitem">
+            Objective: Tests should require minimal maintenance as the system evolves
+            around them.
+            <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">
+                  Goal: <a class="link" href="test_case_design.html#robust_test">Robust Test</a>
+                </li></ul></div>
+          </li>
+</ul></div>
+<p>
+        In this section, we will discuss how the facilities in Boost.Test can support
+        these goals; see <span class="emphasis"><em>xUnit Patterns</em></span> for the description
+        and rationale of these goals.
+      </p>
+<a name="tests_as_specifications"></a><h5>
+<a name="test.guide.test_case_design.h0"></a>
+        <span class="phrase"><a name="test.guide.test_case_design.goal__tests_as_specifications"></a></span><a class="link" href="test_case_design.html#test.guide.test_case_design.goal__tests_as_specifications">Goal:
+        Tests as Specifications</a>
+      </h5>
+<p>
+        Tests can serve as specifications for the system under test if we write the
+        test for the system first, using test-driven development. We imagine the
+        perfect system that does exactly what we need and write a test as if that
+        system existed. In order to achieve a failing test, we write just enough
+        of the implementation to make the test compile.
+      </p>
+<p>
+        A good way to ensure that the implementation causes a test failure is for
+        called methods and functions to throw an exception indicating that the method
+        or function called is not implemented:
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">stdexcept</span><span class="special">&gt;</span>
+
+<span class="keyword">void</span> <span class="identifier">free_function</span><span class="special">()</span>
+<span class="special">{</span>
+    <span class="keyword">throw</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">runtime_error</span><span class="special">(</span><span class="string">"free_function not implemented."</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+        We get a failing test right away, while still satisfying just enough syntax
+        to satisfy the compiler.
+      </p>
+<a name="bug_repellant"></a><h5>
+<a name="test.guide.test_case_design.h1"></a>
+        <span class="phrase"><a name="test.guide.test_case_design.goal__bug_repellant"></a></span><a class="link" href="test_case_design.html#test.guide.test_case_design.goal__bug_repellant">Goal:
+        Bug Repellant</a>
+      </h5>
+<p>
+        It is well known that the longer a bug remains undetected in a software,
+        the more expensive it is to fix.<a href="#ftn.test.guide.test_case_design.f1" class="footnote" name="test.guide.test_case_design.f1"><sup class="footnote">[3]</sup></a> If we are practicing test-driven development, then we find bugs
+        in our implementation as soon as we code them. The time to find a bug in
+        this manner can be as little as seconds and was demonstrated in the tutorial
+        <a class="link" href="../tutorials/hello_test.html" title="Hello, Test!">"Hello, Test!"</a>.
+      </p>
+<p>
+        The easiest way to achieve this rapid feedback is to run the tests as part
+        of the build. The details vary depending on your build system.
+      </p>
+<p>
+        In Visual Studio 2012, this is most readily achieved by setting a post-build
+        build event as shown below. Because <code class="literal">$(TargetPath)</code> may
+        contain spaces, the variable is surrounded by double quotes to ensure that
+        the entire path to the executable is found. The description is given generically
+        using <code class="literal">$(TargetName)</code> so that this build event can be copied
+        to any test project's properties and be used without modification. Take care
+        that you define the build event for all configurations and all platforms
+        used by your build system so that the unit tests always run.
+      </p>
+<p>
+        <span class="inlinemediaobject"><img src="../../../src/user-vs2012-build-event.png" alt="user-vs2012-build-event"></span>
+      </p>
+<p>
+        If you are using a <code class="literal">Makefile</code> to compile your code, create
+        a phony target that depends on your unit test executable and specify the
+        command to execute your unit test and create the phony target if the test
+        passes. This will ensure that the unit tests continue to run as long as they
+        fail because the phony target will only be updated when the tests pass.
+      </p>
+<p>
+        If you are using Boost.Build and Jamfiles to compile your code, you can use
+        the rules in the <code class="literal">testing</code> module to incorporate your unit
+        tests into your build. The <code class="literal">unit-test</code> rule will build an
+        executable and run it, failing the build when the executable returns a non-zero
+        exit status. Other rules in the <code class="literal">testing</code> module may also
+        be useful.
+      </p>
+<a name="defect_localization"></a><h5>
+<a name="test.guide.test_case_design.h2"></a>
+        <span class="phrase"><a name="test.guide.test_case_design.goal__defect_localization"></a></span><a class="link" href="test_case_design.html#test.guide.test_case_design.goal__defect_localization">Goal: Defect
+        Localization</a>
+      </h5>
+<p>
+        If we keep our test cases focused on only a single behavior in our system
+        under test, then there is only a single cause for any particular unit test
+        to fail. We saw this in <a class="link" href="../tutorials/testing_with_exceptions.html" title="Testing with Exceptions">"Testing
+        With Exceptions"</a> when we added a new test case to <code class="literal">hello_world</code>
+        for a bad stream. By choosing <a href="http://c2.com/cgi/wiki?IntentionRevealingNames" target="_top">intention
+        revealing names</a> for our test cases, we can identify the source of
+        the failure simply by reading the name of the failed test case.
+      </p>
+<p>
+        Since each test case excercises only one scenario for the system under test,
+        we must make at least one test case for each possible scenario. We can use
+        the <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity" target="_top">cyclomatic
+        complexity</a> as a rough proxy for the number of tests cases needed
+        for any particular method or function to ensure that we have sufficient
+        <a href="http://en.wikipedia.org/wiki/Code_coverage" target="_top">coverage</a>
+        of the system under test.
+      </p>
+<a name="tests_as_documentation"></a><h5>
+<a name="test.guide.test_case_design.h3"></a>
+        <span class="phrase"><a name="test.guide.test_case_design.goal__tests_as_documentation"></a></span><a class="link" href="test_case_design.html#test.guide.test_case_design.goal__tests_as_documentation">Goal:
+        Tests as Documentation</a>
+      </h5>
+<p>
+        When confronted with a new software component or a new code base, how do
+        we understand its behavior? We can read the documentation, but ultimately
+        the behavior is defined by the code executed. Comments and documentation
+        can lag the actual implementation. Sometimes, the only answer to our questions
+        about a software component come from the implementation. If the component
+        is only available to us in binary form, we don't have the luxury of consulting
+        the source code in order to answer our questions.
+      </p>
+<p>
+        Unit tests can serve as a form of executable documentation for software components.
+        They tell us how the system responds to the scenarios orchestrated by the
+        test cases.
+      </p>
+<p>
+        When faced with a confusing aspect of a software component, we can answer
+        questions about the behavior of the component by writing a unit test that
+        describes our hypothesis about the component's behavior. If the unit test
+        passes, we have verified our hypothesis. If the unit test fails, our hypothesis
+        was incorrect; either way, we have learned something about the component.
+        We can use unit tests to document subtle and unexpected behaviors of components.
+        Unit tests are also the perfect documentation for a bug report on a component
+        maintained by others.
+      </p>
+<a name="tests_as_safety_net"></a><h5>
+<a name="test.guide.test_case_design.h4"></a>
+        <span class="phrase"><a name="test.guide.test_case_design.goal__tests_as_safety_net"></a></span><a class="link" href="test_case_design.html#test.guide.test_case_design.goal__tests_as_safety_net">Goal: Tests
+        as Safety Net</a>
+      </h5>
+<p>
+        When we start building a software system, we are able to keep all the details
+        of the system in our mind because the system is small. As the size of the
+        system increases, it becomes harder and harder to keep all the details of
+        the system in mind as we make modifications. A comprehensive suite of unit
+        tests over the system give us an automated regression test that gives us
+        the confidence of knowing that our changes are not introducing any problems
+        elsewhere in the code.
+      </p>
+<a name="do_no_harm"></a><h5>
+<a name="test.guide.test_case_design.h5"></a>
+        <span class="phrase"><a name="test.guide.test_case_design.goal__do_no_harm"></a></span><a class="link" href="test_case_design.html#test.guide.test_case_design.goal__do_no_harm">Goal:
+        Do No Harm</a>
+      </h5>
+<p>
+        Automated tests should only reduce risk, not introduce risk into the system.
+        To achieve this, we want to keep all test code separated from production
+        code. The easiest way to do this is to put the system under test into a library
+        (static or shared) and link the test executable against the library. We saw
+        this in the tutorial <a class="link" href="../tutorials/hello_test.html" title="Hello, Test!">"Hello,
+        Test!"</a>, when we separated the system under test into the <code class="literal">hello</code>
+        library and the test code into <code class="literal">test_hello.cpp</code>.
+      </p>
+<a name="fully_automated_test"></a><h5>
+<a name="test.guide.test_case_design.h6"></a>
+        <span class="phrase"><a name="test.guide.test_case_design.goal__fully_automated_test"></a></span><a class="link" href="test_case_design.html#test.guide.test_case_design.goal__fully_automated_test">Goal: Fully
+        Automated Test</a>
+      </h5>
+<p>
+        Boost.Test supports fully automated tests by allowing us to supply the inputs
+        to the system under test in each test case in order to drive the system into
+        the scenario of interest. Test cases should never rely on user input, or
+        they will not be fully automated tests that can run unattended.
+      </p>
+<a name="self_checking_test"></a><h5>
+<a name="test.guide.test_case_design.h7"></a>
+        <span class="phrase"><a name="test.guide.test_case_design.goal__self_checking_test"></a></span><a class="link" href="test_case_design.html#test.guide.test_case_design.goal__self_checking_test">Goal: Self-Checking
+        Test</a>
+      </h5>
+<p>
+        Boost.Test supports self-checking tests through its rich set of <a class="link" href="../reference/assertion.html" title="Test Assertions">assertions</a>.
+        Each test case supplies the inputs to the system under test and validates
+        the behavior of the system using assertions. Self-checking tests report only
+        bad news and good news results in no notifications. The default output from
+        the test runner only reports failing tests and a summary of all tests executed.
+        The test runner also returns a non-zero status code when a test fails, allowing
+        easy failure of <a href="http://en.wikipedia.org/wiki/Continuous_integration" target="_top">continuous
+        integration</a> builds.
+      </p>
+<a name="repeatable_test"></a><h5>
+<a name="test.guide.test_case_design.h8"></a>
+        <span class="phrase"><a name="test.guide.test_case_design.goal__repeatable_test"></a></span><a class="link" href="test_case_design.html#test.guide.test_case_design.goal__repeatable_test">Goal:
+        Repeatable Test</a>
+      </h5>
+<p>
+        We should get the same results from automated tests every time we run them,
+        provided the implementation of the system under test has not changed between
+        runs. In the context of unit testing, this implies that a test case must
+        control all the collaborators that can influence the system.
+      </p>
+<p>
+        The most troublesome collaborators are among the following: * current date
+        and time * device input * file system * system services (Windows registry,
+        networking, etc.) * C style apis
+      </p>
+<p>
+        In the book "Working Effectively with Legacy Code", Michael Feathers
+        described a number of techniques for decoupling the system under test from
+        such troublesome collaborators that can cause unit tests to spuriously fail.
+        All the techniques are variations on a theme: introduce a level of indirection
+        to decouple the system under test from a collaborator. C++ offers <a href="http://en.wikipedia.org/wiki/Template_metaprogramming#Static_polymorphism" target="_top">static
+        polymorphism</a> via templates as well as the usual dynamic polymorphism
+        via interfaces to decouple a system under test from a collaborator.
+      </p>
+<a name="simple_tests"></a><h5>
+<a name="test.guide.test_case_design.h9"></a>
+        <span class="phrase"><a name="test.guide.test_case_design.goal__simple_tests"></a></span><a class="link" href="test_case_design.html#test.guide.test_case_design.goal__simple_tests">Goal:
+        Simple Tests</a>
+      </h5>
+<p>
+        We keep tests simple by exercising only one scenario for each test case.
+        Simple test cases read linearly through the phases of setup, exercise and
+        verify. Trying to exercise too much functionality in a single test case can
+        introduce unnecessary complexity into the test.
+      </p>
+<p>
+        Duplication between test cases can make tests hard to read by distracting
+        us from the steady rhythm of setup, exercise and verify of test cases. You
+        may find it useful to apply the <a href="http://en.wikipedia.org/wiki/Rule_of_three_(computer_programming)" target="_top">rule
+        of three</a> when writing test cases to decide when to extract duplication
+        into a fixture.
+      </p>
+<a name="expressive_tests"></a><h5>
+<a name="test.guide.test_case_design.h10"></a>
+        <span class="phrase"><a name="test.guide.test_case_design.goal__expressive_tests"></a></span><a class="link" href="test_case_design.html#test.guide.test_case_design.goal__expressive_tests">Goal:
+        Expressive Tests</a>
+      </h5>
+<p>
+        Sometimes low-level setup details get in the way of a test reading clearly.
+        This could be the result of a complicated data structure needed in order
+        to exercise the system down a particular code path. Similarly, the verification
+        of a result produced by the system under test may involve a series of assertions
+        that make the test hard to follow. Boost.Test provides fixtures as a way
+        to localize these distracting details by extracting setup and assertion methods
+        into the fixture.
+      </p>
+<p>
+        Over time we build up a series of methods in the fixture that allow us to
+        express domain concepts succinctly and clearly in the tests, making them
+        more expressive of the scenario in the domain. Fixtures can be combined through
+        aggregation or inheritance in order to express combinations and hierarchies
+        of domain concepts.
+      </p>
+<a name="separation_of_concerns"></a><h5>
+<a name="test.guide.test_case_design.h11"></a>
+        <span class="phrase"><a name="test.guide.test_case_design.goal__separation_of_concerns"></a></span><a class="link" href="test_case_design.html#test.guide.test_case_design.goal__separation_of_concerns">Goal:
+        Separation of Concerns</a>
+      </h5>
+<p>
+        We keep test code separated from production code with the packaging mechanisms
+        provided by C++. Production code is supplied to the test executable as a
+        library, either static or dynamic. The test code resides in separate source
+        files from the production code. The production code consumed by the test
+        code is compiled with the exact same preprocessor settings as the production
+        code to ensure that tests do not influence the production code.
+      </p>
+<p>
+        We keep concerns separated in our tests by testing each concern in its own
+        test case. Each test case exercises a single scenario and our tests exercise
+        the responsibilities or classes individually. If we are practicing test-driven
+        development, we keep the <a href="http://en.wikipedia.org/wiki/Single_responsibility_principle" target="_top">single
+        responsibility principle</a> in mind as we are creating the system to
+        satisfy the evolving tests. When our tests start involving more than one
+        concern, it can be a sign that our system under test is covering more than
+        one responsibility.
+      </p>
+<a name="robust_test"></a><h5>
+<a name="test.guide.test_case_design.h12"></a>
+        <span class="phrase"><a name="test.guide.test_case_design.goal__robust_test"></a></span><a class="link" href="test_case_design.html#test.guide.test_case_design.goal__robust_test">Goal:
+        Robust Test</a>
+      </h5>
+<p>
+        Test cases are robust when small changes to the system under test result
+        in a small number of test cases failing. If a small change to the system
+        results in many test cases failing, then our tests are not robust. If our
+        tests cases do not sufficiently isolate the system under test from its collaborators,
+        then a change to one part of the system can cause tests on seemingly unrelated
+        parts of the system to fail. If we have repeated assertions in many test
+        cases for the same system under test, then many test cases can fail if that
+        single assertion fails. Each of these situations is a case of overlap between
+        test cases; in the first case, the overlap is between the parts of the production
+        code unrelated to the system under test that we exercise and in the second
+        case, the overlap is between test cases on the system under test.
+      </p>
+<div class="footnotes">
+<br><hr style="width:100; text-align:left;margin-left: 0">
+<div id="ftn.test.guide.test_case_design.f0" class="footnote"><p><a href="#test.guide.test_case_design.f0" class="para"><sup class="para">[2] </sup></a>
+          The term <span class="emphasis"><em>xUnit</em></span> is a generic term for unit testing
+          frameworks, such as jUnit. The advice in <span class="emphasis"><em>xUnit Patterns</em></span>
+          applies equally well to Boost.Test.
+        </p></div>
+<div id="ftn.test.guide.test_case_design.f1" class="footnote"><p><a href="#test.guide.test_case_design.f1" class="para"><sup class="para">[3] </sup></a>
+          <a href="https://en.wikipedia.org/wiki/Software_testing#Economics" target="_top">Software
+          Testing: Economics</a>
+        </p></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="compilation/shared_library.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../guide.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="acceptance_tests.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,344 @@
+[/==============================================================================
+    Copyright (C) 2013 Richard Thomson
+
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
+    file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+===============================================================================/]
+
+[section:compilation Compilation and Usage Variants]
+
+__test__ is available in several forms:
+
+* a single, minimal header
+* a header-only form
+* a static library
+* a shared library
+
+The minimal header can be useful in situations where you don't already
+have the library built and want to quickly explore a test with a minimal
+amount of fuss.  Once you need to create multiple unit tests, you will
+quickly outgrow the minimal header.
+
+The header only form is useful when you don't want to be bothered with
+compiling the library.  Once you have multiple compilation units with
+unit tests in each compilation unit, you will grow tired of the compilation
+cost involved with the header only form of the framework.
+
+The static library form is the easiest to integrate into your build system
+as it doesn't require any installation of runtime files in order to execute
+your tests.  This runtime simplicity comes at the cost of increased link
+times and executable sizes.
+
+The dynamic library form requires the most effort for successful
+test execution, but provides faster link times than the static library,
+faster compile times than the header only form and provides all the features
+of the framework compared to the minimal header.
+
+[caution __test__ is not a thread-safe library.  Care should be taken when
+automated tests create multiple threads and interact with data structures
+passed to __test__ macros or functions.]
+
+[section:minimal_header Minimal Header]
+
+A lightweight, minimal version of the testing framework can be obtained
+by including =<boost/test/minimal.hpp>=.  This header provides only the
+following macros:
+
+[table
+[[Macro] [Meaning]]
+[[=BOOST_CHECK(=['expression]=)=]
+    [If ['expression] is false, the test fails and test execution continues.]]
+[[=BOOST_REQUIRE(=['expression]=)=]
+    [If ['expression] is false, the test fails and test execution terminates.]]
+[[=BOOST_ERROR(=['message]=)=]
+    [Report ['message], fail the test and continue test execution.]]
+[[=BOOST_FAIL(=['message]=)=]
+    [Report ['message], fail the test and terminate test execution.]]
+]
+
+The header supplies an implementation of =main= that executes a single
+test case by calling a free function named =test_main= with the following
+signature:
+
+```
+int test_main(int argc, char *argv[]);
+```
+
+The arguments =argc= and =argv= are passed to =test_main= from the
+implementation of =main= supplied by the test framework.  No command-line
+argument processing is performed by =main=.  A summary report of errors
+recorded by the test case is printed out after executing the test case.
+If any exception is thrown by the test case, it is caught by =main=
+and treated as an error from the test case.
+
+```
+#include <boost/test/minimal.hpp>
+
+int test_main(int argc, char *argv[])
+{
+    // test case
+}
+```
+
+[heading Example Source Code]
+
+* System under test:
+ * [@boost:/libs/test/doc/src/system_under_test/hello/hello.cpp hello.cpp]
+* An example of using the minimal test framework:
+ * [@boost:/libs/test/doc/src/examples/compilation/minimal/test_hello.cpp test_hello.cpp].
+
+[endsect]
+
+[section =main=]
+
+To use the implementation of =main= provided by __test__, exactly one
+source file must define __boost_test_main__ before including
+=<boost/test/unit_test.hpp>=.  If multiple source files define
+__boost_test_main__, then a multiply defined symbol error will occur
+during linking.
+
+If __boost_test_no_main__ is defined, then no implementation of =main=
+will be provided and the test executable must provide an initialization
+function.  The exact initialization function that must be provided varies
+depending on how the library is compiled.  The details are shown in the
+discussion of each compilation variation.
+
+When __test__ is compiled as a library, __boost_test_no_main__ must be
+defined when the library is compiled for it to work properly in those
+circumstances.
+
+[endsect]
+
+[section:header_only Header Only]
+
+The entire unit test framework can be incorporated into an executable by
+including the file =<boost/test/included/unit_test.hpp>=.  Because the
+entire implementation is incorporated into the source file including
+this header, only a single source file in the test executable can
+include this header.
+
+Additional source files must define __boost_test_no_lib__ before
+including =<boost/test/unit_test.hpp>= to prevent any automatic linking
+to a shared library.  If additional source files attempt to include
+=<boost/test/included/unit_test.hpp>=, a multiply defined symbol error
+will occur during linking.
+
+```
+// In exactly one source file:
+#include <boost/test/included/unit_test.hpp>
+
+// test cases (optional)
+```
+```
+// In additional source files
+#define BOOST_TEST_NO_LIB
+#include <boost/test/unit_test.hpp>
+
+// test cases
+```
+
+If __boost_test_no_main__ is defined, then an implementation of =main=
+must be provided that executes the test cases.  This is most readily
+done by delegating to __unit_test_main__.
+
+```
+// In exactly one source file
+#define BOOST_TEST_NO_MAIN
+#include <boost/test/unit_test.hpp>
+
+boost::unit_test::test_suite *init_function(int argc, char *argv[])
+{
+    // create test cases and suites and return a pointer to any enclosing
+    // suite, or 0.
+    return 0;
+}
+
+int main(int argc, char* argv[])
+{
+    return ::boost::unit_test::unit_test_main(&init_function, argc, argv);
+}
+```
+
+[heading Example Source Code]
+
+The [link test.tutorials tutorials] all use the header-only version of
+__test__.
+
+[endsect]
+
+[section Static Library]
+
+To build __test__ as a static library, first build the boost build tools,
+as described in the [@boost:/more/getting_started/index.html Getting Started]
+documentation.  After you have bootstrapped the build tools, build the test
+library with by invoking =b2= with arguments similar to the following:
+
+``b2 --with-test link=static``
+
+This will place the resulting libraries in =stage/lib= at the top level
+of the boost tree.
+
+In a static library configuration, __test__ is compiled into a single
+static library named =boost_unit_test_framework= and the test executable
+is linked against that library.
+Exactly one compilation unit in the test executable should define
+__boost_test_main__, in order run the tests.
+
+```
+// In exactly one source file
+#define BOOST_TEST_MAIN
+#include <boost/test/unit_test.hpp>
+
+// test cases (optional)
+```
+
+Additional source files simply include the main unit test header and
+define more test cases and/or suites.
+
+```
+// In additional source files
+#include <boost/test/unit_test.hpp>
+
+// test cases
+```
+
+To compile the library with no implementation of =main=, add
+__boost_test_no_main__ to the =cxxflags= property for b2:
+
+``b2 --with-test link=static define=BOOST_TEST_NO_MAIN``
+
+When the library is compiled with __boost_test_no_main__ defined, one
+source file must provide a definition for =main=.  The simplest is
+to delegate to __unit_test_main__ and provide an implementation of an
+initialization function that manually adds test cases and suites to the
+test tree.
+Any test cases or test suites added with
+__boost_auto_test_case__, __boost_fixture_test_case__,
+__boost_auto_test_suite__ or __boost_fixture_test_suite__ are automatically
+added.
+
+```
+// In exactly one source file
+#define BOOST_TEST_NO_MAIN
+#include <boost/test/unit_test.hpp>
+
+boost::unit_test::test_suite *init_function(int argc, char *argv[])
+{
+    // create test cases and suites and return a pointer to any enclosing
+    // suite, or 0.
+    return 0;
+}
+
+int main(int argc, char *argv[])
+{
+    return boost::unit_test::unit_test_main(init_function, argc, argv);
+}
+```
+
+[heading Example Source Code]
+
+* System under test:
+ * [@boost:/libs/test/doc/src/system_under_test/hello/hello.hpp hello.hpp]
+ * [@boost:/libs/test/doc/src/system_under_test/hello/hello.cpp hello.cpp].
+* An example of using the standard implementation of =main=:
+ * [@boost:/libs/test/doc/src/examples/compilation/static/main.cpp main.cpp]
+ * [@boost:/libs/test/doc/src/examples/compilation/static/test_hello.cpp test_hello.cpp].
+* An example of using a custom =main=:
+ * [@boost:/libs/test/doc/src/examples/compilation/static_main/main.cpp main.cpp]
+ * [@boost:/libs/test/doc/src/examples/compilation/static_main/test_hello.cpp test_hello.cpp].
+
+[endsect]
+
+[section Shared Library]
+
+To build __test__ as a shared library, first build the boost build tools,
+as described in the [@boost:/more/getting_started/index.html Getting Started]
+documentation.  After you have bootstrapped the build tools, build the test
+library with by invoking =b2= with arguments similar to the following:
+
+``b2 --with-test link=shared``
+
+This will place the resulting libraries in =stage/lib= at the top level
+of the boost tree.
+
+In a shared library configuration, __test__ is compiled into a single
+shared library named =boost_unit_test_framework= and the test executable
+is linked against that library to import symbols from the library.
+The __test__ shared library must
+be available to the runtime loader in order for the tests to execute.
+Every compilation unit that includes a header from __test__ must define
+__boost_test_dyn_link__ first so that declarations are properly annotated
+ as imported symbols.  When __boost_test_dyn_link__ is defined, __test__
+also defines __boost_test_alternative_init_api__.
+
+Exactly one compilation unit in the test executable should define
+__boost_test_main__, in order run the tests.
+
+```
+// In exactly one compilation unit
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MAIN
+#include <boost/test/unit_test.hpp>
+
+// test cases (optional)
+```
+
+Additional source files define __boost_test_dyn_link__, include the
+main unit test header and define more test cases and/or suites.
+
+```
+// In additional source files
+#define BOOST_TEST_DYN_LINK
+#include <boost/test/unit_test.hpp>
+
+// test cases
+```
+
+To compile the library with no implementation of =main=, add
+__boost_test_no_main__ to the =cxxflags= property for b2:
+
+``b2 --with-test link=shared define=BOOST_TEST_NO_MAIN``
+
+When the library is compiled with __boost_test_no_main__ defined, one
+source file must provide a definition for =main=.  The simplest is
+to delegate to __unit_test_main__ and provide an implementation of an
+initialization function that manually adds test cases and suites to the
+test tree.
+Any test cases or test suites added with
+__boost_auto_test_case__, __boost_fixture_test_case__,
+__boost_auto_test_suite__ or __boost_fixture_test_suite__ are automatically
+added.
+
+```
+// In exactly one source file
+#define BOOST_TEST_NO_MAIN
+#include <boost/test/unit_test.hpp>
+
+bool init_function()
+{
+    // create test cases and suites and return a boolean indicating
+    // success (true) or failure (false).
+    return true;
+}
+
+int main(int argc, char* argv[])
+{
+    return ::boost::unit_test::unit_test_main(&init_function, argc, argv);
+}
+```
+
+[heading Example Source Code]
+
+* System under test:
+ * [@boost:/libs/test/doc/src/system_under_test/hello/hello.hpp hello.hpp]
+ * [@boost:/libs/test/doc/src/system_under_test/hello/hello.cpp hello.cpp]
+* An example of using the standard implementation of =main=:
+ * [@boost:/libs/test/doc/src/examples/compilation/dynamic/main.cpp main.cpp]
+ * [@boost:/libs/test/doc/src/examples/compilation/dynamic/test_hello.cpp test_hello.cpp].
+* An example of using a custom =main=:
+ * [@boost:/libs/test/doc/src/examples/compilation/dynamic_main/main.cpp main.cpp]
+ * [@boost:/libs/test/doc/src/examples/compilation/dynamic_main/test_hello.cpp test_hello.cpp].
+
+[endsect]
+
+[endsect]

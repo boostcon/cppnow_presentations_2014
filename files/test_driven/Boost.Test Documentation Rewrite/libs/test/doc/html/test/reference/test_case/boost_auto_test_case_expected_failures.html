@@ -1,0 +1,127 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>BOOST_AUTO_TEST_CASE_EXPECTED_FAILURES</title>
+<link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="up" href="../test_case.html" title="Test Cases">
+<link rel="prev" href="boost_auto_test_case.html" title="BOOST_AUTO_TEST_CASE">
+<link rel="next" href="boost_auto_test_case_template.html" title="BOOST_AUTO_TEST_CASE_TEMPLATE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="boost_auto_test_case.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../test_case.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="boost_auto_test_case_template.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="test.reference.test_case.boost_auto_test_case_expected_failures"></a><a class="link" href="boost_auto_test_case_expected_failures.html" title="BOOST_AUTO_TEST_CASE_EXPECTED_FAILURES"><code class="literal">BOOST_AUTO_TEST_CASE_EXPECTED_FAILURES</code></a>
+</h4></div></div></div>
+<p>
+          <code class="literal">BOOST_AUTO_TEST_CASE_EXPECTED_FAILURES(</code><em class="replaceable"><code>name</code></em>,
+          <em class="replaceable"><code>n</code></em><code class="literal">)</code> is used to decorate a
+          test case with an expected failure count of <em class="replaceable"><code>n</code></em>.
+          It should appear immediately preceding the macro that defines the test
+          case, such as <a class="link" href="boost_auto_test_case.html" title="BOOST_AUTO_TEST_CASE"><code class="literal">BOOST_AUTO_TEST_CASE</code></a>
+          or <a class="link" href="boost_fixture_test_case.html" title="BOOST_FIXTURE_TEST_CASE"><code class="literal">BOOST_FIXTURE_TEST_CASE</code></a>.
+          It can be used for test cases declared at file scope or within a test suite.
+          This macro should only be used in the most exceptional of circumstances.
+          Unit tests are designed to provide a safety net of regression tests against
+          our code. If we allow tests to stay failing, we are less motivated to correct
+          them.
+        </p>
+<p>
+          As a temporary measure, we may wish to annotate certain tests as known
+          failures. The count <em class="replaceable"><code>n</code></em> is the number of expected
+          failed assertions during the execution of the test case. When using the
+          <a class="link" href="../assertion/levels.html" title="Assertion Levels"><code class="literal">CHECK</code></a>
+          level assertions, the total failure count can be larger than one since
+          the test case continues executing past a failed assertion. When using
+          <code class="literal">REQUIRE</code> level assertions, the total failure count will
+          only be one as execution of the test case terminates on the first failed
+          assertion.
+        </p>
+<p>
+          If <code class="literal">CHECK</code> level assertions are used and the number of
+          failures is less than or equal to <em class="replaceable"><code>n</code></em>, the test
+          runner will return a status code of <code class="literal">0</code>. If the number
+          of failures is greather than <em class="replaceable"><code>n</code></em>, the test runner
+          will return a status code of <code class="literal">201</code>. If <code class="literal">REQUIRE</code>
+          level assertions are used, the number of expected failures can be at most
+          one and the test runner will return a status code of <code class="literal">200</code>
+          when one failed assertion is found.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">BOOST_AUTO_TEST_CASE_EXPECTED_FAILURES</span><span class="special">(</span><span class="identifier">inserts_text_require_expected</span><span class="special">,</span> <span class="number">1</span><span class="special">)</span>
+<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span><span class="identifier">inserts_text_require_expected</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostringstream</span> <span class="identifier">dest</span><span class="special">;</span>
+
+    <span class="identifier">hello_world</span><span class="special">(</span><span class="identifier">dest</span><span class="special">);</span>
+
+    <span class="identifier">BOOST_REQUIRE_EQUAL</span><span class="special">(</span><span class="string">"scooby-doo"</span><span class="special">,</span> <span class="identifier">dest</span><span class="special">.</span><span class="identifier">str</span><span class="special">());</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            When using the compiler formatted test output, Visual Studio interprets
+            the failed assertion output as a detected error, it will fail the Post-Build
+            event mechanism recommended in <a class="link" href="../../guide/test_case_design.html" title="Test Case Design and Maintenance">Test
+            Case Design and Maintenance</a>.
+          </p></td></tr>
+</table></div>
+<h6>
+<a name="test.reference.test_case.boost_auto_test_case_expected_failures.h0"></a>
+          <span class="phrase"><a name="test.reference.test_case.boost_auto_test_case_expected_failures.example_source_code"></a></span><a class="link" href="boost_auto_test_case_expected_failures.html#test.reference.test_case.boost_auto_test_case_expected_failures.example_source_code">Example
+          Source Code</a>
+        </h6>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+              System under test:
+              <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                    <a href="../../../../../../../libs/test/doc/src/system_under_test/hello/hello.hpp" target="_top">hello.hpp</a>
+                  </li>
+<li class="listitem">
+                    <a href="../../../../../../../libs/test/doc/src/system_under_test/hello/hello.cpp" target="_top">hello.cpp</a>
+                  </li>
+</ul></div>
+            </li>
+<li class="listitem">
+              Tests:
+              <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">
+                    <a href="../../../../../../../libs/test/doc/src/examples/auto_test_case_expected_failures.cpp" target="_top">auto_test_case_expected_failures.cpp</a>
+                  </li></ul></div>
+            </li>
+</ul></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="boost_auto_test_case.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../test_case.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="boost_auto_test_case_template.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

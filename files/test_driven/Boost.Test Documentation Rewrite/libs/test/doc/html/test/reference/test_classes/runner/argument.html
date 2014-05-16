@@ -1,0 +1,1793 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Command Line Arguments</title>
+<link rel="stylesheet" href="../../../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../../../index.html" title="Chapter&#160;1.&#160;Boost.Test 1.22.0">
+<link rel="up" href="../runner.html" title="Test Runner">
+<link rel="prev" href="../runner.html" title="Test Runner">
+<link rel="next" href="output.html" title="Test Output">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../runner.html"><img src="../../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../runner.html"><img src="../../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="output.html"><img src="../../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="test.reference.test_classes.runner.argument"></a><a class="link" href="argument.html" title="Command Line Arguments">Command
+          Line Arguments</a>
+</h5></div></div></div>
+<div class="toc"><dl class="toc">
+<dt><span class="section"><a href="argument.html#test.reference.test_classes.runner.argument.auto_start_dbg"><code class="literal">--auto_start_dbg</code></a></span></dt>
+<dt><span class="section"><a href="argument.html#test.reference.test_classes.runner.argument.___break_exec_path_"><code class="literal">--break_exec_path</code></a></span></dt>
+<dt><span class="section"><a href="argument.html#test.reference.test_classes.runner.argument.___build_info_"><code class="literal">--build_info</code></a></span></dt>
+<dt><span class="section"><a href="argument.html#test.reference.test_classes.runner.argument.___catch_system_errors_"><code class="literal">--catch_system_errors</code></a></span></dt>
+<dt><span class="section"><a href="argument.html#test.reference.test_classes.runner.argument.___color_output_"><code class="literal">--color_output</code></a></span></dt>
+<dt><span class="section"><a href="argument.html#test.reference.test_classes.runner.argument.___detect_fp_exceptions_"><code class="literal">--detect_fp_exceptions</code></a></span></dt>
+<dt><span class="section"><a href="argument.html#test.reference.test_classes.runner.argument.___detect_memory_leaks_"><code class="literal">--detect_memory_leaks</code></a></span></dt>
+<dt><span class="section"><a href="argument.html#test.reference.test_classes.runner.argument.log_format"><code class="literal">--log_format</code></a></span></dt>
+<dt><span class="section"><a href="argument.html#test.reference.test_classes.runner.argument.___log_level_"><code class="literal">--log_level</code></a></span></dt>
+<dt><span class="section"><a href="argument.html#test.reference.test_classes.runner.argument.___log_sink_"><code class="literal">--log_sink</code></a></span></dt>
+<dt><span class="section"><a href="argument.html#test.reference.test_classes.runner.argument.___output_format_"><code class="literal">--output_format</code></a></span></dt>
+<dt><span class="section"><a href="argument.html#test.reference.test_classes.runner.argument.___random_"><code class="literal">--random</code></a></span></dt>
+<dt><span class="section"><a href="argument.html#test.reference.test_classes.runner.argument.report_format"><code class="literal">--report_format</code></a></span></dt>
+<dt><span class="section"><a href="argument.html#test.reference.test_classes.runner.argument.report_level"><code class="literal">--report_level</code></a></span></dt>
+<dt><span class="section"><a href="argument.html#test.reference.test_classes.runner.argument.___report_sink_"><code class="literal">--report_sink</code></a></span></dt>
+<dt><span class="section"><a href="argument.html#test.reference.test_classes.runner.argument.___result_code_"><code class="literal">--result_code</code></a></span></dt>
+<dt><span class="section"><a href="argument.html#test.reference.test_classes.runner.argument.run_test"><code class="literal">--run_test</code></a></span></dt>
+<dt><span class="section"><a href="argument.html#test.reference.test_classes.runner.argument.___save_pattern_"><code class="literal">--save_pattern</code></a></span></dt>
+<dt><span class="section"><a href="argument.html#test.reference.test_classes.runner.argument.___show_progress_"><code class="literal">--show_progress</code></a></span></dt>
+<dt><span class="section"><a href="argument.html#test.reference.test_classes.runner.argument.___use_alt_stack_"><code class="literal">--use_alt_stack</code></a></span></dt>
+</dl></div>
+<div class="table">
+<a name="test.reference.test_classes.runner.argument.command_line_argument_summary"></a><p class="title"><b>Table&#160;1.3.&#160;Command Line Argument Summary</b></p>
+<div class="table-contents"><table class="table" summary="Command Line Argument Summary">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Argument
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--auto_start_dbg</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Automatically attach debugger in case of system failure
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--break_exec_path</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Break execution path
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--build_info</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Print build information
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--catch_system_errors</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Catch system errors
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--color_output</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Produce color output
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--detect_fp_exceptions</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Detect floating-point exceptions
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--detect_memory_leaks</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Detect memory leaks
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--help</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Print out a summary of test runner options
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--log_format</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The format of the test log
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--log_level</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The level of logging reported
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--log_sink</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The log sink name
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--output_format</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The output format
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--random</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Random number seed
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--report_format</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The test results report format
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--report_level</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The test results report level
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--report_sink</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The report sink name
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--result_code</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Return result code
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--run_test</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Tests to run
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--save_pattern</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Save pattern
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--show_progress</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Show execution progress
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--use_alt_stack</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Use alternative stack
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="literal">--wait_for_debugger</code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Wait for the debugger to attach to the test runner.
+                    </p>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>
+            The functionality of each command-line option can also be invoked with
+            an environment variable. The description for each option gives the environment
+            variable associated with that option.
+          </p>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="test.reference.test_classes.runner.argument.auto_start_dbg"></a><a class="link" href="argument.html#test.reference.test_classes.runner.argument.auto_start_dbg" title="--auto_start_dbg"><code class="literal">--auto_start_dbg</code></a>
+</h6></div></div></div>
+<p>
+              This argument controls whether or not a debugger is attached to the
+              test runner when a fatal system error occurs. A fatal system error
+              includes Unix/POSIX signals, C++ exceptions and Win32 structured exceptions.
+            </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                      <p>
+                        Value
+                      </p>
+                    </th>
+<th>
+                      <p>
+                        Meaning
+                      </p>
+                    </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                      <p>
+                        <span class="bold"><strong><code class="literal">no</code></strong></span> (default)
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Do not attach a debugger to when a fatal system error occurs.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">yes</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Attach the default debugger when a fatal system error occurs.
+                      </p>
+                    </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+              <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TEST_AUTO_START_DBG</code>
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="test.reference.test_classes.runner.argument.___break_exec_path_"></a><a class="link" href="argument.html#test.reference.test_classes.runner.argument.___break_exec_path_" title="--break_exec_path"><code class="literal">--break_exec_path</code></a>
+</h6></div></div></div>
+<p>
+              When performing an exception safety test, this argument forces a break
+              into the debugger at the named exection <em class="replaceable"><code>path</code></em>
+              point within the test <em class="replaceable"><code>name</code></em>. The test must
+              be named exactly, no wildcards are supported.
+            </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                      <p>
+                        Value
+                      </p>
+                    </th>
+<th>
+                      <p>
+                        Meaning
+                      </p>
+                    </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                      <p>
+                        <em class="replaceable"><code>name</code></em><code class="literal">:</code><em class="replaceable"><code>path</code></em>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        For test case <em class="replaceable"><code>name</code></em>, break on execution
+                        path number <em class="replaceable"><code>path</code></em>.
+                      </p>
+                    </td>
+</tr></tbody>
+</table></div>
+<p>
+              <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TEST_BREAK_EXEC_PATH</code>
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="test.reference.test_classes.runner.argument.___build_info_"></a><a class="link" href="argument.html#test.reference.test_classes.runner.argument.___build_info_" title="--build_info"><code class="literal">--build_info</code></a>
+</h6></div></div></div>
+<p>
+              This argument causes the test runner to report information about the
+              build environment before running the tests. If the argument is specified
+              but no value is given, then a value of <code class="literal">yes</code> is assumed.
+            </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                      <p>
+                        Value
+                      </p>
+                    </th>
+<th>
+                      <p>
+                        Meaning
+                      </p>
+                    </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                      <p>
+                        <span class="bold"><strong><code class="literal">no</code></strong></span> (default)
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Do not report build information.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">yes</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Report build information.
+                      </p>
+                    </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+              <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TEST_BUILD_INFO</code>
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="test.reference.test_classes.runner.argument.___catch_system_errors_"></a><a class="link" href="argument.html#test.reference.test_classes.runner.argument.___catch_system_errors_" title="--catch_system_errors"><code class="literal">--catch_system_errors</code></a>
+</h6></div></div></div>
+<p>
+              This argument controls whether or not the test runner catches fatal
+              system errors.
+            </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                      <p>
+                        Value
+                      </p>
+                    </th>
+<th>
+                      <p>
+                        Meaning
+                      </p>
+                    </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">no</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Do not handle fatal system errors.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <span class="bold"><strong><code class="literal">yes</code></strong></span> (default)
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Handle fatal system errors.
+                      </p>
+                    </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+              <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TEST_CATCH_SYSTEM_ERRORS</code>
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="test.reference.test_classes.runner.argument.___color_output_"></a><a class="link" href="argument.html#test.reference.test_classes.runner.argument.___color_output_" title="--color_output"><code class="literal">--color_output</code></a>
+</h6></div></div></div>
+<p>
+              On systems that support colored text output, this argument controls
+              whether or not the test runner will color the output. This argument
+              does nothing on systems that do not support colored text output.
+            </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                      <p>
+                        Value
+                      </p>
+                    </th>
+<th>
+                      <p>
+                        Meaning
+                      </p>
+                    </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                      <p>
+                        <span class="bold"><strong><code class="literal">no</code></strong></span> (default)
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Do not color test runner output.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">yes</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Color test runner output, if supported.
+                      </p>
+                    </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+              <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TEST_COLOR_OUTPUT</code>
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="test.reference.test_classes.runner.argument.___detect_fp_exceptions_"></a><a class="link" href="argument.html#test.reference.test_classes.runner.argument.___detect_fp_exceptions_" title="--detect_fp_exceptions"><code class="literal">--detect_fp_exceptions</code></a>
+</h6></div></div></div>
+<p>
+              If the execution environment supoprts floating-point exceptions, this
+              argument controls whether or not the test runner will detect floating-point
+              exceptions.
+            </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                      <p>
+                        Value
+                      </p>
+                    </th>
+<th>
+                      <p>
+                        Meaning
+                      </p>
+                    </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                      <p>
+                        <span class="bold"><strong><code class="literal">no</code></strong></span> (default)
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Do not detect floating-point exceptions.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">yes</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Detect floating-point exceptions, if supported.
+                      </p>
+                    </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+              <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TEST_DETECT_FP_EXCEPTIONS</code>
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="test.reference.test_classes.runner.argument.___detect_memory_leaks_"></a><a class="link" href="argument.html#test.reference.test_classes.runner.argument.___detect_memory_leaks_" title="--detect_memory_leaks"><code class="literal">--detect_memory_leaks</code></a>
+</h6></div></div></div>
+<p>
+              If the execution environment supports the detection of memory leaks,
+              this argument controls whether or not the test runner reports memory
+              leaks. After running the tests, a memory leak report is issued showing
+              the allocation number and the amount of memory leaked.
+            </p>
+<p>
+              Values greater than <code class="literal">1</code> for this argument cause a
+              trap to the debugger for a particular memory allocation number. Currently,
+              this option is only implemented for Microsoft compilers.
+            </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                      <p>
+                        Value
+                      </p>
+                    </th>
+<th>
+                      <p>
+                        Meaning
+                      </p>
+                    </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">0</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Do not detect memory leaks.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <span class="bold"><strong><code class="literal">1</code></strong></span> (default)
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Detect memory leaks and issue a memory leak report.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <em class="replaceable"><code>number</code></em>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Break on allocation <em class="replaceable"><code>number</code></em>.
+                      </p>
+                    </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+              <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TEST_DETECT_MEMORY_LEAKS</code>
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="test.reference.test_classes.runner.argument.log_format"></a><a class="link" href="argument.html#test.reference.test_classes.runner.argument.log_format" title="--log_format"><code class="literal">--log_format</code></a>
+</h6></div></div></div>
+<p>
+              This argument controls the format of the test runner output. The value
+              is case insensitive.
+            </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                      <p>
+                        Value
+                      </p>
+                    </th>
+<th>
+                      <p>
+                        Meaning
+                      </p>
+                    </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                      <p>
+                        <span class="bold"><strong><code class="literal">HRF</code></strong></span> (default)
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Human readable format output.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">XML</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        XML format output.
+                      </p>
+                    </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+              <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TEST_LOG_FORMAT</code>
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="test.reference.test_classes.runner.argument.___log_level_"></a><a class="link" href="argument.html#test.reference.test_classes.runner.argument.___log_level_" title="--log_level"><code class="literal">--log_level</code></a>
+</h6></div></div></div>
+<p>
+              This argument controls the level of test runner output. The values
+              are cumulative, with each increase in log level including all messages
+              at lower levels. By default, only errors are reported.
+            </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                      <p>
+                        Value
+                      </p>
+                    </th>
+<th>
+                      <p>
+                        Meaning
+                      </p>
+                    </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">nothing</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Do not report any information.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">fatal_error</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Report all user or system fatal errors, such as memory access
+                        violation.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">system_error</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Report system non-fatal errors, such as timeout or floating-point
+                        exception.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">cpp_exception</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Report uncaught C++ exceptions.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <span class="bold"><strong><code class="literal">error</code></strong></span>
+                        (default)
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Report test failures.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">warning</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Report test warnings.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">message</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Report test messages; see <a class="link" href="../../../../"><code class="literal">BOOST_TEST_MESSAGE</code></a>.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">test_suite</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Report entering and leaving every test case and test suite.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">success</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Report all successful assertions.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">all</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Report everything.
+                      </p>
+                    </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+              <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TEST_LOG_LEVEL</code>
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="test.reference.test_classes.runner.argument.___log_sink_"></a><a class="link" href="argument.html#test.reference.test_classes.runner.argument.___log_sink_" title="--log_sink"><code class="literal">--log_sink</code></a>
+</h6></div></div></div>
+<p>
+              This argument controls the destination, or sink, of the test runner
+              log.
+            </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                      <p>
+                        Value
+                      </p>
+                    </th>
+<th>
+                      <p>
+                        Meaning
+                      </p>
+                    </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                      <p>
+                        <span class="bold"><strong><code class="literal">stdout</code></strong></span>
+                        (default)
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        The test runner log is sent to the standard output stream.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">stderr</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        The test runner log is sent to the standard error stream.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <em class="replaceable"><code>file</code></em>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        The test runner log is sent to the file <em class="replaceable"><code>file</code></em>.
+                      </p>
+                    </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+              <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TEST_LOG_SINK</code>
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="test.reference.test_classes.runner.argument.___output_format_"></a><a class="link" href="argument.html#test.reference.test_classes.runner.argument.___output_format_" title="--output_format"><code class="literal">--output_format</code></a>
+</h6></div></div></div>
+<p>
+              This argument combines <a class="link" href="../../../../"><code class="literal">--log_format</code></a>
+              and <a class="link" href="../../../../"><code class="literal">--report_format</code></a>.
+            </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                      <p>
+                        Value
+                      </p>
+                    </th>
+<th>
+                      <p>
+                        Meaning
+                      </p>
+                    </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                      <p>
+                        <span class="bold"><strong><code class="literal">HRF</code></strong></span> (default)
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Human readable format output.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">XML</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        XML format output.
+                      </p>
+                    </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+              <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TEST_OUTPUT_FORMAT</code>
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="test.reference.test_classes.runner.argument.___random_"></a><a class="link" href="argument.html#test.reference.test_classes.runner.argument.___random_" title="--random"><code class="literal">--random</code></a>
+</h6></div></div></div>
+<p>
+              This argument controls whether or not the test runner will execute
+              tests in a random order. This argument can also provide a seed for
+              the random number generator used to run tests in a random order.
+            </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                      <p>
+                        Value
+                      </p>
+                    </th>
+<th>
+                      <p>
+                        Meaning
+                      </p>
+                    </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                      <p>
+                        <span class="bold"><strong><code class="literal">0</code></strong></span> (default)
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Run tests in registration order.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">1</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Run tests in a random order, using the current time as the
+                        seed.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <em class="replaceable"><code>n</code></em>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Run tests in a random order, using <em class="replaceable"><code>n</code></em>
+                        as the seed.
+                      </p>
+                    </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+              <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TEST_RANDOM</code>
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="test.reference.test_classes.runner.argument.report_format"></a><a class="link" href="argument.html#test.reference.test_classes.runner.argument.report_format" title="--report_format"><code class="literal">--report_format</code></a>
+</h6></div></div></div>
+<p>
+              This argument controls the format of the test report.
+            </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                      <p>
+                        Value
+                      </p>
+                    </th>
+<th>
+                      <p>
+                        Meaning
+                      </p>
+                    </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                      <p>
+                        <span class="bold"><strong><code class="literal">HRF</code></strong></span> (default)
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Human readable format output.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">XML</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        XML format output.
+                      </p>
+                    </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+              <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TEST_REPORT_FORMAT</code>
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="test.reference.test_classes.runner.argument.report_level"></a><a class="link" href="argument.html#test.reference.test_classes.runner.argument.report_level" title="--report_level"><code class="literal">--report_level</code></a>
+</h6></div></div></div>
+<p>
+              This argument controls the level of the test report. The levels are
+              cumulative, with each successive level incorporating the output of
+              all the previous levels.
+            </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                      <p>
+                        Value
+                      </p>
+                    </th>
+<th>
+                      <p>
+                        Meaning
+                      </p>
+                    </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">no</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        No test report.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <span class="bold"><strong><code class="literal">confirm</code></strong></span>
+                        (default)
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Confirmation test report.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">short</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Short test report.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">detailed</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Detailed test report.
+                      </p>
+                    </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+              <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TEST_REPORT_LEVEL</code>
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="test.reference.test_classes.runner.argument.___report_sink_"></a><a class="link" href="argument.html#test.reference.test_classes.runner.argument.___report_sink_" title="--report_sink"><code class="literal">--report_sink</code></a>
+</h6></div></div></div>
+<p>
+              This argument controls the destination, or sink, of the test runner
+              report.
+            </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                      <p>
+                        Value
+                      </p>
+                    </th>
+<th>
+                      <p>
+                        Meaning
+                      </p>
+                    </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">stdout</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        The test report is sent to the standard output stream.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <span class="bold"><strong><code class="literal">stderr</code></strong></span>
+                        (default)
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        The test report is sent to the standard error stream.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <em class="replaceable"><code>file</code></em>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        The test report is sent to the file <em class="replaceable"><code>file</code></em>.
+                      </p>
+                    </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+              <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TEST_REPORT_SINK</code>
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="test.reference.test_classes.runner.argument.___result_code_"></a><a class="link" href="argument.html#test.reference.test_classes.runner.argument.___result_code_" title="--result_code"><code class="literal">--result_code</code></a>
+</h6></div></div></div>
+<p>
+              This argument controls whether or not the test runner returns an exit
+              code corresponding to a summary of the test execution or zero. The
+              summary result code is determined as follows:
+            </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                      <p>
+                        Result Code
+                      </p>
+                    </th>
+<th>
+                      <p>
+                        Description
+                      </p>
+                    </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                      <p>
+                        0 (<code class="literal">boost::exit_success</code>)
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        All executed tests passed.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        200 (<code class="literal">boost::exit_exception_failure</code>)
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Failure due to uncaught exception.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        201 (<code class="literal">boost::exit_test_failure</code>)
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        One or more executed tests failed.
+                      </p>
+                    </td>
+</tr>
+</tbody>
+</table></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                      <p>
+                        Value
+                      </p>
+                    </th>
+<th>
+                      <p>
+                        Meaning
+                      </p>
+                    </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">no</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Always return zero.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <span class="bold"><strong><code class="literal">yes</code></strong></span> (default)
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Return a status code indicating the summary of the tests
+                        executed.
+                      </p>
+                    </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+              <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TEST_RESULT_CODE</code>
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="test.reference.test_classes.runner.argument.run_test"></a><a class="link" href="argument.html#test.reference.test_classes.runner.argument.run_test" title="--run_test"><code class="literal">--run_test</code></a>
+</h6></div></div></div>
+<p>
+              This argument controls which test cases will be executed. The value
+              is a comma separated list of test specifiers. Test cases are arranged
+              as leaves on a tree structure, with every test case belonging to a
+              test suite. The test runner always creates a master test suite. Named
+              test suites are children of the master test suite or another named
+              test suite. Any test case that is not the child of a named test suite
+              is a child of the unnamed master test suite.
+            </p>
+<p>
+              Test specifiers select test cases or suites by naming the path from
+              the unnamed master test suite to the case or suite, similar to a full
+              path to a file in a hierarchical directory structure. A test specifier
+              is one or more path specifiers, separated by a slash (<code class="literal">/</code>).
+              A test specifier begins at the master test suite and proceeds down
+              the test tree, naming suites or test cases.
+            </p>
+<p>
+              The argument <a class="link" href="../../../../"><code class="literal">--report_level</code></a>
+              set to <code class="literal">detailed</code> can be used to output the names
+              of all the test suites and test cases within those test suites.
+            </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                      <p>
+                        Path Specifier
+                      </p>
+                    </th>
+<th>
+                      <p>
+                        Tests Selected
+                      </p>
+                    </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                      <p>
+                        <em class="replaceable"><code>name</code></em>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        The test case or suite named <em class="replaceable"><code>name</code></em>.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">*</code><em class="replaceable"><code>name</code></em>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        All test cases or suites whose name ends in <em class="replaceable"><code>name</code></em>.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <em class="replaceable"><code>name</code></em><code class="literal">*</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        All test cases or suites whose name begins with <em class="replaceable"><code>name</code></em>.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">*</code><em class="replaceable"><code>name</code></em><code class="literal">*</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        All test cases or suites whose name contains <em class="replaceable"><code>name</code></em>.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">*</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        All test cases or suites.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <em class="replaceable"><code>spec1</code></em><code class="literal">,</code><em class="replaceable"><code>spec2</code></em><code class="literal">,</code><em class="replaceable"><code>...</code></em>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        The test cases or suites with the given specifier.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <em class="replaceable"><code>spec1</code></em><code class="literal">/</code><em class="replaceable"><code>spec2</code></em>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        The test cases or suites matched by <em class="replaceable"><code>spec2</code></em>
+                        in the test suite matched by <em class="replaceable"><code>spec1</code></em>.
+                      </p>
+                    </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+              <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TESTS_TO_RUN</code>
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="test.reference.test_classes.runner.argument.___save_pattern_"></a><a class="link" href="argument.html#test.reference.test_classes.runner.argument.___save_pattern_" title="--save_pattern"><code class="literal">--save_pattern</code></a>
+</h6></div></div></div>
+<p>
+              This argument informs the test runner of a boolean value used to create
+              or save a test pattern for file-based testing. The test case uses the
+              boolean value to determine whether or not it writes the test pattern
+              by exercising the system under test or reads the test pattern for comparison
+              against the values produced by the system under test. The <code class="literal">output_test_stream</code>
+              class provides a facility for recording and matching against save patterns.
+            </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                      <p>
+                        Value
+                      </p>
+                    </th>
+<th>
+                      <p>
+                        Meaning
+                      </p>
+                    </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                      <p>
+                        <span class="bold"><strong><code class="literal">no</code></strong></span> (default)
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Match against a saved pattern.
+                      </p>
+                    </td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">yes</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Save a pattern for matching.
+                      </p>
+                    </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+              <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TEST_SAVE_PATTERN</code>
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="test.reference.test_classes.runner.argument.___show_progress_"></a><a class="link" href="argument.html#test.reference.test_classes.runner.argument.___show_progress_" title="--show_progress"><code class="literal">--show_progress</code></a>
+</h6></div></div></div>
+<p>
+              This parameter instructs the test runner to print progress through
+              the test cases. The test runner has no way of determining the length
+              of time each test case will consume; the progress percentage is determined
+              by counting test cases.
+            </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                      <p>
+                        Value
+                      </p>
+                    </th>
+<th>
+                      <p>
+                        Meaning
+                      </p>
+                    </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                      <p>
+                        <span class="bold"><strong><code class="literal">no</code> (default)</strong></span>
+                        [Do not show test execution progress.
+                      </p>
+                    </td>
+<td class="auto-generated">&#160;</td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">yes</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Show test execution progress.
+                      </p>
+                    </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+              <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TEST_SHOW_PROGRESS</code>
+            </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="test.reference.test_classes.runner.argument.___use_alt_stack_"></a><a class="link" href="argument.html#test.reference.test_classes.runner.argument.___use_alt_stack_" title="--use_alt_stack"><code class="literal">--use_alt_stack</code></a>
+</h6></div></div></div>
+<p>
+              This parameter instructs the test runner to use an alternate stack
+              for signals processing on platforms where this is supported.
+            </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                      <p>
+                        Value
+                      </p>
+                    </th>
+<th>
+                      <p>
+                        Meaning
+                      </p>
+                    </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                      <p>
+                        <span class="bold"><strong><code class="literal">no</code> (default)</strong></span>
+                        [Do not use an alternate stack.
+                      </p>
+                    </td>
+<td class="auto-generated">&#160;</td>
+</tr>
+<tr>
+<td>
+                      <p>
+                        <code class="literal">yes</code>
+                      </p>
+                    </td>
+<td>
+                      <p>
+                        Use an alternate stack, where supported.
+                      </p>
+                    </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+              <span class="bold"><strong>Environment variable</strong></span>: <code class="literal">BOOST_TEST_USE_ALT_STACK</code>
+            </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../runner.html"><img src="../../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../runner.html"><img src="../../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="output.html"><img src="../../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

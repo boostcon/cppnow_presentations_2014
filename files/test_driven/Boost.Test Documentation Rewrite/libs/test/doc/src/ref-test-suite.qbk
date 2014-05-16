@@ -1,0 +1,114 @@
+[/==============================================================================
+    Copyright (C) 2013 Richard Thomson
+
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
+    file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+===============================================================================/]
+
+[section:test_suite Test Suites]
+
+A test suite is an ordered collection of test cases and other test suites.
+The test cases in a suite are executed in the order in which they are
+added to the suite.  When test cases are automatically registered, they
+are added to the test suite in the order of their definition in the source
+file.
+
+[section:boost_auto_test_suite =BOOST_AUTO_TEST_SUITE=]
+
+The =BOOST_AUTO_TEST_SUITE(=[~name]=)= macro defines an automatically
+registered test suite named [~name] and opens a namespace named [~name].
+
+A test suite can be nested
+within another test suite.  Each test suite begun with
+=BOOST_AUTO_TEST_SUITE= must be ended with [link
+test.reference.test_suite.boost_auto_test_suite_end =BOOST_AUTO_TEST_SUITE_END=]
+The new test suite is registered within its enclosing test suite, or the
+master test suite if there is no enclosing test suite.
+
+[heading Example Source Code]
+
+* Tutorials:
+ * [link test.tutorials.running_selected_tests Running Selected Tests]
+* System under test:
+ * [@boost:/libs/test/doc/src/tutorials/running_selected_tests/sut/hello.hpp hello.hpp]
+ * [@boost:/libs/test/doc/src/tutorials/running_selected_tests/sut/hello.cpp hello.cpp]
+* Tests:
+ * [@boost:/libs/test/doc/src/tutorials/running_selected_tests/test/test_hello.cpp test_hello.cpp]
+
+[endsect]
+
+[section:boost_auto_test_suite_end =BOOST_AUTO_TEST_SUITE_END=]
+
+The =BOOST_AUTO_TEST_SUITE_END()= macro ends the test suite most recently
+defined with [link test.reference.test_suite.boost_auto_test_suite =BOOST_AUTO_TEST_SUITE=]
+or [link test.reference.test_suite.boost_fixture_test_suite =BOOST_FIXTURE_TEST_SUITE=].
+The corresponding namespace created when the test suite was defined is
+closed by =BOOST_AUTO_TEST_SUITE_END=.
+
+[heading Example Source Code]
+
+* Tutorials:
+ * [link test.tutorials.running_selected_tests Running Selected Tests]
+* System under test:
+ * [@boost:/libs/test/doc/src/tutorials/running_selected_tests/sut/hello.hpp hello.hpp]
+ * [@boost:/libs/test/doc/src/tutorials/running_selected_tests/sut/hello.cpp hello.cpp]
+* Tests:
+ * [@boost:/libs/test/doc/src/tutorials/running_selected_tests/test/test_hello.cpp test_hello.cpp]
+
+[endsect]
+
+[section:boost_fixture_test_suite =BOOST_FIXTURE_TEST_SUITE=]
+
+The =BOOST_FIXTURE_TEST_SUITE(=[~suite], [~fixture]=)= macro begins the
+test suite named [~suite] and uses [~fixture] as a test fixture to be
+used as the base class of all test case classes created in the suite with
+=BOOST_AUTO_TEST_CASE=.
+
+[heading Example Source Code]
+
+* Tutorials:
+ * [link test.tutorials.running_selected_tests Running Selected Tests]
+* System under test:
+ * [@boost:/libs/test/doc/src/tutorials/running_selected_tests/sut/hello.hpp hello.hpp]
+ * [@boost:/libs/test/doc/src/tutorials/running_selected_tests/sut/hello.cpp hello.cpp]
+* Tests:
+ * [@boost:/libs/test/doc/src/tutorials/running_selected_tests/test/test_hello.cpp test_hello.cpp]
+
+[endsect]
+
+[section:boost_test_module =BOOST_TEST_MODULE=]
+
+The =BOOST_TEST_MODULE= macro is used to define the name of the master
+test suite.  If =BOOST_TEST_MODULE= is defined, it should be defined in
+exactly one source file.  It can be defined to a list of preprocessor
+tokens or a string literal.  If a string literal is used, surrounding
+quotation marks (="=), will not appear in the name of the master test
+suite.
+
+[example_test_module]
+
+[heading Example Source Code]
+* Tests:
+ * [@boost:/libs/test/doc/src/examples/assertions.cpp assertions.cpp]
+
+[endsect]
+
+[section:boost_test_suite =BOOST_TEST_SUITE=]
+
+The =BOOST_TEST_SUITE(=[~name]=)= macro is used to create a new test suite
+named [~name].  The new suite must be added to the master test suite in
+order for any test cases in the suite to be executed.
+
+[register_test_suite]
+
+[heading Example Source Code]
+
+* System under test:
+ * [@boost:/libs/test/doc/src/system_under_test/hello/hello.hpp hello.hpp]
+ * [@boost:/libs/test/doc/src/system_under_test/hello/hello.cpp hello.cpp]
+* Tests:
+ * [@boost:/libs/test/doc/src/examples/manual_registration.cpp manual_registration.cpp]
+
+[endsect]
+
+[endsect]

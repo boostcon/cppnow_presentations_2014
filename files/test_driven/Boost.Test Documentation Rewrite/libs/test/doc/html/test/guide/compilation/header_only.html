@@ -1,0 +1,109 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Header Only</title>
+<link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="up" href="../compilation.html" title="Compilation and Usage Variants">
+<link rel="prev" href="_main_.html" title="main">
+<link rel="next" href="static_library.html" title="Static Library">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="_main_.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../compilation.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="static_library.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="test.guide.compilation.header_only"></a><a class="link" href="header_only.html" title="Header Only">Header Only</a>
+</h4></div></div></div>
+<p>
+          The entire unit test framework can be incorporated into an executable by
+          including the file <code class="literal">&lt;boost/test/included/unit_test.hpp&gt;</code>.
+          Because the entire implementation is incorporated into the source file
+          including this header, only a single source file in the test executable
+          can include this header.
+        </p>
+<p>
+          Additional source files must define <a class="link" href="../../reference/configuration_macros.html#test.reference.compilation.boost_test_no_lib"><code class="literal">BOOST_TEST_NO_LIB</code></a>
+          before including <code class="literal">&lt;boost/test/unit_test.hpp&gt;</code> to
+          prevent any automatic linking to a shared library. If additional source
+          files attempt to include <code class="literal">&lt;boost/test/included/unit_test.hpp&gt;</code>,
+          a multiply defined symbol error will occur during linking.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// In exactly one source file:</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">test</span><span class="special">/</span><span class="identifier">included</span><span class="special">/</span><span class="identifier">unit_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="comment">// test cases (optional)</span>
+</pre>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// In additional source files</span>
+<span class="preprocessor">#define</span> <span class="identifier">BOOST_TEST_NO_LIB</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">test</span><span class="special">/</span><span class="identifier">unit_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="comment">// test cases</span>
+</pre>
+<p>
+        </p>
+<p>
+          If <a class="link" href="../../reference/configuration_macros.html#test.reference.compilation.boost_test_no_main"><code class="literal">BOOST_TEST_NO_MAIN</code></a>
+          is defined, then an implementation of <code class="literal">main</code> must be provided
+          that executes the test cases. This is most readily done by delegating to
+          <a class="link" href="../../reference/test_classes/unit_test_main.html" title="unit_test_main"><code class="literal">unit_test_main</code></a>.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// In exactly one source file</span>
+<span class="preprocessor">#define</span> <span class="identifier">BOOST_TEST_NO_MAIN</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">test</span><span class="special">/</span><span class="identifier">unit_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">test_suite</span> <span class="special">*</span><span class="identifier">init_function</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">argc</span><span class="special">,</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">argv</span><span class="special">[])</span>
+<span class="special">{</span>
+    <span class="comment">// create test cases and suites and return a pointer to any enclosing</span>
+    <span class="comment">// suite, or 0.</span>
+    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">argc</span><span class="special">,</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">argv</span><span class="special">[])</span>
+<span class="special">{</span>
+    <span class="keyword">return</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">unit_test_main</span><span class="special">(&amp;</span><span class="identifier">init_function</span><span class="special">,</span> <span class="identifier">argc</span><span class="special">,</span> <span class="identifier">argv</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+<h6>
+<a name="test.guide.compilation.header_only.h0"></a>
+          <span class="phrase"><a name="test.guide.compilation.header_only.example_source_code"></a></span><a class="link" href="header_only.html#test.guide.compilation.header_only.example_source_code">Example
+          Source Code</a>
+        </h6>
+<p>
+          The <a class="link" href="../../tutorials.html" title="Tutorials">tutorials</a> all use the header-only
+          version of Boost.Test.
+        </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="_main_.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../compilation.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="static_library.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

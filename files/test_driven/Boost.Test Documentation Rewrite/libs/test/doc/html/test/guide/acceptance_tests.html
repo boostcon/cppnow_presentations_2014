@@ -1,0 +1,77 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Acceptance Tests and Unit Tests</title>
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Test">
+<link rel="up" href="../guide.html" title="User's Guide">
+<link rel="prev" href="test_case_design.html" title="Test Case Design and Maintenance">
+<link rel="next" href="testing_file_io.html" title="Testing File I/O">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="test_case_design.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../guide.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="testing_file_io.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="test.guide.acceptance_tests"></a><a class="link" href="acceptance_tests.html" title="Acceptance Tests and Unit Tests">Acceptance Tests and Unit
+      Tests</a>
+</h3></div></div></div>
+<p>
+        Unit testing helps us to find bugs "in the small"; little implementation
+        details that we got wrong while we were building a function, a method or
+        a class. When we test each class as an isolated unit, we can miss errors
+        in the way two classes interact or in the way a whole ensemble of classes
+        cooperate in an integrated system.
+      </p>
+<p>
+        An acceptance test is an automated test that exercises our system as an integrated
+        whole and not as a collection of isolated units. In a unit test, we decouple
+        ourselves from the execution environment in order to test a piece of code
+        in isolation. In an acceptance test, we run the whole system and provide
+        controlled inputs to the system. This may consist of prepared input data
+        files, prepared input databases and so-on.
+      </p>
+<p>
+        Using these two forms of automated testing, we can use them as a vise to
+        squeeze bugs between the two forms of automated tests. Unit tests push from
+        below and acceptance tests push from above.
+      </p>
+<p>
+        While the facilities in Boost.Test can be used to create an automated acceptance
+        test, the tools are fairly low-level for the kinds of high-level criteria
+        that an acceptance test would use. Acceptance tests are usually defined by
+        the <a href="http://en.wikipedia.org/wiki/Product_owner#Roles" target="_top">product
+        owner</a> or customer and will describe acceptance criteria in the language
+        closest to the problem domain and farthest away from the details of the implementation.
+      </p>
+<p>
+        A better approach for automated acceptance tests would be a tool such as
+        <a href="http://www.fitnesse.org" target="_top">FitNesse</a> that is designed for
+        automated acceptance testing.
+      </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Richard Thomson<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="test_case_design.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../guide.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="testing_file_io.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

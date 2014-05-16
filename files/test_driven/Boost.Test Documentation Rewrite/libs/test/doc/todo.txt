@@ -1,0 +1,5 @@
+- Document floating-point comparison algorithms
+- BOOST_REQUIRE_CLOSE
+- BOOST_REQUIRE_CLOSE_FRACTION
+- BOOST_REQUIRE_SMALL
+- --run_test comma and slash confusion
