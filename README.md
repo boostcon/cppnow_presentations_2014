@@ -18,7 +18,6 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
 * Removing undefined behavior from integer operations: the bounded::integer library | [OPD File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/optimization_boost_asio.opd?raw=true) 
 * [Value Semantics and Range Algorithms - Composability and Efficiency](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/range_algos.pdf?raw=true)
 * Preparing the C++11 Library AFIO for Boost Peer Review
-* Grill the Committee
  
 ## Wednesday, May 14
  
@@ -59,7 +58,7 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
 * 0xBADC0DE 
 * [Expected — An Exception-friendly Error Monad](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/expected.pdf?raw=true)
 * Lifetime and Usage of Global, Thread-local, and Static Data
-* Functional Data Structures in C++ 
+* [Functional Data Structures in C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/functional-data-structures.pdf?raw=true) | [Keynote File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/functional-data-structures.key?raw=true)
 * Asynchronous Programming Using Boost.MetaStateMachine and the Upcoming Asynchronous Library 
 * Ownership of Memory in C++
  
