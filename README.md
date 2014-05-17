@@ -15,14 +15,14 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
 * ConceptClang: Theoretical Advances with Full C++ Concepts 
 * Generic Programming of Generic Spaces: Compile-Time Geometric Algebra with C++11
 * [Test-Driven Development With Boost.Test and Turtle Mock, Part I/II](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/test_driven/test_driven.pdf?raw=true) | [Code](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/test_driven/)
-* Removing undefined behavior from integer operations: the bounded::integer library | [OPD File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/optimization_boost_asio.opd?raw=true) 
+* [Removing undefined behavior from integer operations: the bounded::integer library](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/bounded_integer.pdf?raw=true) | [OPD File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/bounded_integer.opd?raw=true) 
 * [Value Semantics and Range Algorithms - Composability and Efficiency](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/range_algos.pdf?raw=true)
 * Preparing the C++11 Library AFIO for Boost Peer Review
  
 ## Wednesday, May 14
  
 * [MPL11: A New Metaprogramming Library for C++11](https://ldionne.github.io/mpl11-cppnow-2014)
-* [The Optimization of a Boost.Asio-Based Networking Server](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/optimization_boost_asio.pdf?raw=true) | [Keynote File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/optimization_boost_asio.pdf?raw=true)
+* [The Optimization of a Boost.Asio-Based Networking Server](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/optimization_boost_asio.pdf?raw=true) | [Keynote File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/optimization_boost_asio.key?raw=true)
 * [Undefined Behavior in C++; what is it, and why should I care](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/Undefined-Behavior.pdf?raw=true)
 * Mach7: The Design and Evolution of a Pattern Matching Library for C++
 * [Practical Type Erasure: A boost::any Based Configuration Framework](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/PracticalTypeErasureSlides.pdf?raw=true)  | [LibreOffice File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/PracticalTypeErasureSlides.odp?raw=true)
