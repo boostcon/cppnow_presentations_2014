@@ -59,7 +59,7 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
 * [Expected — An Exception-friendly Error Monad](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/expected.pdf?raw=true)
 * Lifetime and Usage of Global, Thread-local, and Static Data
 * [Functional Data Structures in C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/functional-data-structures.pdf?raw=true) | [Keynote File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/functional-data-structures.key?raw=true)
-* Asynchronous Programming Using Boost.MetaStateMachine and the Upcoming Asynchronous Library 
+* [Asynchronous Programming Using Boost.MetaStateMachine and the Upcoming Asynchronous Library](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/AsyncTalkCppNow14.key?raw=true)
 * Ownership of Memory in C++
  
 ## Saturday, May 17
