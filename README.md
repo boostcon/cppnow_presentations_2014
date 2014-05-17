@@ -55,7 +55,7 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
 * How to Design C++ Implementations of Complex Combinatorial Algorithms 
 * [Intro to Functional Programming in C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/intro-to-functional-programming-in-cpp.pdf?raw=true)
 * [Managing Object Lifetimes](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/Managing-Object-Lifetimes.pdf?raw=true)
-* 0xBADC0DE 
+* [0xBADC0DE](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/0xBADC0DE.pdf?raw=true)
 * [Expected — An Exception-friendly Error Monad](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/expected.pdf?raw=true)
 * [Lifetime and Usage of Global, Thread-local, and Static Data](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/LifetimeRev2.pdf?raw=true)
 * [Functional Data Structures in C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/functional-data-structures.pdf?raw=true) | [Keynote File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/functional-data-structures.key?raw=true)
