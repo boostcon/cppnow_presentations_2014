@@ -53,7 +53,7 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
 * Value Semantics: It ain't about the syntax! 
 * Create Your Own Refactoring Tool with Clang
 * How to Design C++ Implementations of Complex Combinatorial Algorithms 
-* Intro to Functional Programming in C++ 
+* [Intro to Functional Programming in C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/intro-to-functional-programming-in-cpp.pdf?raw=true)
 * Managing Object Lifetimes
 * 0xBADC0DE 
 * [Expected — An Exception-friendly Error Monad](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/expected.pdf?raw=true)
