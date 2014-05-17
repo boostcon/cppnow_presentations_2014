@@ -57,7 +57,7 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
 * [Managing Object Lifetimes](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/Managing-Object-Lifetimes.pdf?raw=true)
 * 0xBADC0DE 
 * [Expected — An Exception-friendly Error Monad](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/expected.pdf?raw=true)
-* Lifetime and Usage of Global, Thread-local, and Static Data
+* [Lifetime and Usage of Global, Thread-local, and Static Data](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/LifetimeRev2.pdf?raw=true)
 * [Functional Data Structures in C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/functional-data-structures.pdf?raw=true) | [Keynote File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/functional-data-structures.key?raw=true)
 * [Asynchronous Programming Using Boost.MetaStateMachine and the Upcoming Asynchronous Library](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/AsyncTalkCppNow14.pdf?raw=true)
 * Ownership of Memory in C++
