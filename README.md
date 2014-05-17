@@ -54,7 +54,7 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
 * Create Your Own Refactoring Tool with Clang
 * How to Design C++ Implementations of Complex Combinatorial Algorithms 
 * [Intro to Functional Programming in C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/intro-to-functional-programming-in-cpp.pdf?raw=true)
-* Managing Object Lifetimes
+* [Managing Object Lifetimes](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/Managing-Object-Lifetimes.pdf?raw=true)
 * 0xBADC0DE 
 * [Expected — An Exception-friendly Error Monad](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/expected.pdf?raw=true)
 * Lifetime and Usage of Global, Thread-local, and Static Data
