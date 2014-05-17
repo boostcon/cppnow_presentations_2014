@@ -1,0 +1,772 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<!-- License: https://creativecommons.org/licenses/by/4.0/ -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>C++11 in Space Plasma Model Development</title>
+<!-- metadata -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="generator" content="S5" />
+<meta name="version" content="S5 1.1" />
+<meta name="presdate" content="20050728" />
+<meta name="author" content="Ilja Honkonen" />
+<meta name="company" content="NASA/GSFC" />
+<meta name="license" content="https://creativecommons.org/licenses/by/4.0/" />
+<!-- configuration parameters -->
+<meta name="defaultView" content="slideshow" />
+<meta name="controlVis" content="hidden" />
+<!-- style sheet links -->
+<link rel="stylesheet" href="ui/default/slides.css" type="text/css" media="projection" id="slideProj" />
+<link rel="stylesheet" href="ui/default/outline.css" type="text/css" media="screen" id="outlineStyle" />
+<link rel="stylesheet" href="ui/default/print.css" type="text/css" media="print" id="slidePrint" />
+<link rel="stylesheet" href="ui/default/opera.css" type="text/css" media="projection" id="operaFix" />
+<!-- S5 JS -->
+<script src="ui/default/slides.js" type="text/javascript"></script>
+</head>
+
+<body>
+
+<div class="layout">
+<div id="controls"><!-- DO NOT EDIT --></div>
+<div id="currentSlide"><!-- DO NOT EDIT --></div>
+<div id="header"></div>
+<div id="footer">
+<h1>2014-05-14</h1>
+<h2>C++11 in plasma modeling<a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="CC BY" style="border-width:0" src="cc_by.png" width="81" height="31" /></a></h2>
+</div>
+
+</div>
+
+
+<div class="presentation">
+<div class="slide">
+<h1>C++11 in Space Plasma Model Development</h1>
+<h2>Ilja Honkonen (ilja.j.honkonen@nasa.gov)</h2>
+<h3>NASA Goddard Space Flight Center*</h3>
+<h4>*not a civil servant</h4>
+</div>
+
+<div class="slide">
+<h1>Overview</h1>
+<ul>
+<li>Introduction</li>
+<ul><li>Plasma physics</li></ul>
+<ul><li>Computational modeling of plasma</li></ul>
+<li>Algorithms, methods & optimizations</li>
+<li>Model coupling and frameworks</li>
+<li>Variadic templates in model development</li>
+</ul>
+
+<div class="slide">
+<h1>Basics of plasma</h1>
+<ul>
+<li>States of matter: plasma, gas, liquid, solid</li>
+<li>Plasma: fraction of charged/neutral particles = 0.01 - 100 %</li>
+<ul><li>Charged particle: e, p, # bound electrons != # protons in nucleus</li></ul>
+<li>EM force on particle: F = q(E + v &times; B)</li>
+<ul><li>q: total particle charge, v: particle velocity</li></ul>
+<ul><li>E, B: electric, magnetic field at particle position</li></ul>
+<li>Collective electromagnetic behavior</li>
+<ul><li>Waves (many types) in a collisionless system</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Motivation: Plasma</h1>
+<ul>
+<li>99.999 % of observable matter by volume</li>
+<li>Parameter range &gt;&gt; other states</li>
+<li>Density: 1e1 - 1e31 # / m&sup3;</li>
+<ul><li>Intergalactic space, center of the sun</li></ul>
+<!--li>Temperature: 1e1 - 1e8 K</li>
+<ul><li>Intergalactic space, center of a large star</li></ul-->
+<li>Magnetic field: 1e-10 - 1e11 T</li>
+<ul><li>Intergalactic space, magnetar</li></ul>
+<li>Time: 1e-9 - 1e5 Hz</li>
+<ul><li>11 year solar cycle, electron oscillation</li></ul>
+<li>Space: 1e1 - 1e13 - &#8230; m</li>
+<ul><li>Charge separation, heliosphere, &#8230;</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Motivation: Modeling</h1>
+<ul>
+<li>Challenging (phys., comp. phys., comp. sci.)</li>
+<li>No direct measurements outside solar system</li>
+<ul><li>Direct measurements inside sparse, expensive, laggy</li></ul>
+<li>Understanding/predicting hazards</li>
+<ul><li>1989 blackout due to geomagnetic storm affected millions in Quebec</li></ul>
+<ul><li>High particle energies (&gt;&gt; fusion reactor) measured regularly around geostationary orbit</li></ul>
+<li>Exponential increase in computational power for decades</li>
+<ul><li>New bottlenecks: development, verification, validation</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Numerical modeling (of space plasma)</h1>
+<ul>
+<li>Solving &gt;= 1 equation(s) in a volume of &gt;= 1 dim(s)</li>
+<ul><li>time, ordinary space, velocity space, frequency</li></ul>
+<li>Analytic solution not known or does not exist</li>
+<ul><li>True solution approximated numerically</li></ul>
+<li>Equations, variables and volume mostly continuous</li>
+<ul><li>Must be discretized</li></ul>
+<li>Many analogies to Conway's Game of Life</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Numerical modeling (of space plasma)</h1>
+<ul>
+<li>Volume: grid of cells</li>
+<ul><li>Chess board, hexagonal, triangular</li></ul>
+<li>Variables: one or more instance in each cell</li>
+<ul><li>is_alive, density, temperature, velocity grid</li></ul>
+<li>Equations: solver function(s)</li>
+<ul><li>Applied to every cell at each time step/iteration</li></ul>
+<ul><li>Next cell state from itself and N neighbors</li></ul>
+<ul><ul><li>N = 2, 4, 8, 26, &#8230;</li></ul></ul>
+<li>In practice art of optimization</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Computational complexity</h1>
+<ul>
+<li>Modeling Earth's magnetosphere</li>
+<ul><li>Space dominated by earth's magnetic field instead of sun's</li></ul>
+<ul><ul><li>Wikipedia file Magnetosphere_rendition.jpg</li></ul></ul>
+</ul>
+<p align = "middle"><img alt="Magnetosphere" style="border-width:0" src="Magnetosphere_rendition.jpg" width="70%" height="50%" /></p>
+</div>
+
+<div class="slide">
+<h1>Computational complexity</h1>
+<ul>
+<li>Modeling Earth's magnetosphere:</li>
+<ul><li>Density 1e6 # / m&sup3;</li></ul>
+<ul><ul><li>"extremely high" vacuum: &lt; 1e10 # / m&sup3;</li></ul></ul>
+<ul><li>Volume 1e9*1e8*1e8 m&sup3; = 1e25 m&sup3;</li></ul>
+<ul><li>N-body problem with N = 1e31</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Computational complexity</h1>
+<ul>
+<li>Modeling Earth's magnetosphere: 1e31-body problem</li>
+<li>Memory required:</li>
+<ul><li>6d, floats/doubles =&gt; 1e32 B</li></ul>
+<ul><li>Quantum holographic memory: 1e1 B / #</li></ul>
+<ul><li>Si: 1e-23 g / # =&gt; 1e24 B / g</li></ul>
+<ul><li>1e32 B data =&gt; 1e8 g memory (ISS 4e8 g)</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Computational complexity</h1>
+<ul>
+<li>Memory required: tons</li>
+<li>FLOPs required:</li>
+<ul><li>Highest frequency: 1e5 Hz, simulated time: 1e5 s (24h)</li></ul>
+<ul><li>Particle propagations: 1e41, FLOPs: 1e42</li></ul>
+<ul><li>Sum of Top500 in 2015: 1e18 FLOPs/s</li></ul>
+<ul><li>Increase in 20 years: 1e6 x</li></ul>
+<ul><li>Time to solution in 2065: 32 years, 2075: 12 days, 2085: 17 min</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Computational complexity</h1>
+<ul>
+<li>FLOPs required: maybe in 2075</li>
+<li>Energy required:</li>
+<ul><li>Best in Green500: 1e10 FLOPs / J</li></ul>
+<ul><li>1e42 FLOPs =&gt; 1e32 J</li></ul>
+<ul><li>Sun's luminocity: 1e27 J / s</li></ul>
+<ul><li>Simulation speed: real-time</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Computational complexity</h1>
+<ul>
+<li>FLOPs required: maybe in 2075</li>
+<li>Energy required: too much in 2015</li>
+<ul><li>Theoretical minimum at 1e2 K: 1e-21 J / bit flip</li></ul>
+<ul><li>1e42 FLOPs * 1e3 flips =&gt; 1e24 J</li></ul>
+<ul><li>Solar constant: 1e3 J / s / m^2</li></ul>
+<ul><li>Total energy to Earth: 1e17 J / s</li></ul>
+<ul><li>Simulation speed: 1e-2 x real-time</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Computational complexity</h1>
+<ul>
+<li>FLOPs required: maybe in 2075</li>
+<li>Energy required: maybe in 2075</li>
+<li>Heliosphere?</li>
+<ul><li>Increase in volume: 1e2 x</li></ul>
+<ul><li>Increase in density: 1e10, 1e20 x</li></ul>
+<ul><li>Highest frequency: 1e5, 1e10 x</li></ul>
+<ul><li>Energy required: 1e4, 1e9 x sun</li></ul>
+<ul><li>Without considering quantum physical effects</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Physical approximations</h1>
+<ul>
+<li>Solve fewer particles</li>
+<ul><li>Typically 1e-20 x, the more the better</li></ul>
+<li>Neglect electron physics</li>
+<ul><li>Comp. complexity for ions 1e-(3+3^dims) x</li></ul>
+<li>Magnetized fluid (collisional)</li>
+<ul><li>No particles: neglects a lot of physics</li></ul>
+<ul><li>Light: 2nd decade of real-time space weather forecasting</li></ul>
+<li>Last two not optimizations</li>
+<ul><li>Certain results always wrong</li></ul>
+<li>My research: change approx. during simulation</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Advanced algorithms: grid / mesh</h1>
+<ul>
+<li>Discrete version of the simulated volume</li>
+<ul><li>Consists of e.g. rectangular, hexagonal cells</li></ul>
+<li>Not always an optimization</li>
+<ul><li>Good gridding can reduce number of cells by 1e10 x</li></ul>
+<li>Tradeoffs between time to solution, dev. complexity</li>
+<ul><li>Cubic, logically cartesian, unstructured</li></ul>
+<li>Adaptive mesh refinement</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Advanced algorithms: grid / mesh</h1>
+<ul>
+<li>Adaptive mesh refinement</li>
+<li>Canonical Game of Life example (1. solve, 2. adapt, goto 1.)</li>
+</ul>
+<p align = "middle"><img alt="AMR Example" style="border-width:0" src="amr.gif" width="50%" height="50%" /></p>
+</div>
+
+<div class="slide">
+<h1>Advanced algorithms: grid / mesh</h1>
+<ul>
+<li>Adaptive mesh refinement</li>
+<ul><li><pre>
+      __ __     __ _ _
+From:|  |  |to:|  |_|_|or back
+     |__|__|   |__|_|_|
+</pre></li></ul>
+<ul><li>Resolution where needed/wanted at run-time</li></ul>
+<li>Grid-"free" methods</li>
+<ul><li>No GoL analogy</li></ul>
+<ul><li>Cells/parcels/particles move and change neighbors</li></ul>
+<ul><li>Best for moving systems</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Advanced algorithms: solvers</h1>
+<ul>
+<li>Higher-order</li>
+<ul><li>Error decreases faster with decreasing &Delta;x (cell size)</li></ul>
+<ul><li>For &Delta;t (time step size): longer step with few iterations / (sub)step</li></ul>
+<ul><li>Increase amount of cell data and/or number of required neighbors' data</li></ul>
+<li>Implicit</li>
+<ul><li>f(t=1) = f(t=0) + f(t=1)</li></ul>
+<ul><li>Can increase &Delta;t by 1e3 x</li></ul>
+<li>Substepping (in time)</li>
+<ul><li>Size of &Delta;t varies with x and t</li></ul>
+<ul><li>Locally time step (close to) max everywhere</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Advanced algorithms: concurrency</h1>
+<ul>
+<li>Distributed memory</li>
+<li>GoL example (1. solve, 2. update, goto 1.):</li>
+</ul>
+<p align = "middle"><img alt="MPI example" style="border-width:0" src="mpi.gif" width="70%" height="50%" /></p>
+</div>
+
+<div class="slide">
+<h1>Distributed memory concurrency</h1>
+<ul>
+<li>Problem-dependent parameters</li>
+<ul><li>Copy distance (i.e. shape): solver</li></ul>
+<ul><ul><li>Order of spatial solver</li></ul></ul>
+<ul><li>Copy frequency: problem, solver</li></ul>
+<ul><ul><li>Order of temporal solver</li></ul></ul>
+<ul><ul><li>Number of substeps and/or iterations</li></ul></ul>
+</div>
+
+<div class="slide">
+<h1>Distributed memory concurrency</h1>
+<ul>
+<li>Distributed memory</li>
+<ul><li>Message Passing Interface</li></ul>
+<ul><ul><li>MPI_Send(buf, count, type, receiver, ...)</li></ul></ul>
+<ul><ul><li>MPI_Recv(buf, count, type, sender, ...)</li></ul></ul>
+<ul><ul><li>Note: both processes must know count</li></ul></ul>
+<ul><li>Up to around 1e4 x speedup vs. PC (on large supercomp.)</li></ul>
+<ul><ul><li>Scalable alogorithms</li></ul></ul>
+<ul><ul><li>Overlapping computation and communication</li></ul></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Advanced algorithms: concurrency</h1>
+<ul>
+<li>Distributed memory: MPI</li>
+<li>Shared memory</li>
+<ul><li>ATM at most 10 x speedup vs MPI on PC</li></ul>
+<ul><li>OpenMP, ..., C++11</li></ul>
+<ul><li>Becoming more important</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Shared memory concurrency</h1>
+<ul>
+<li>GoL example: 1 equation, 1+1 variables</li>
+<ul><li>Get number of live neighbors</li></ul>
+<ul><li>Wait for above in neighbors</li></ul>
+<ul><li>Set new state</li></ul>
+<ul><li>Wait for above in neighbors</li></ul>
+<ul><li>Repeat</li></ul>
+<li>OpenMP designed for finishing each step in all cells</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Shared memory concurrency</h1>
+<ul>
+<li>Challenges:</li>
+<ul><li>N equations</li></ul>
+<ul><li>M total variables</li></ul>
+<ul><li>Asymmetric data dependencies</li></ul>
+<ul><li>Different neighborhoods</li></ul>
+<ul><li>Varying step lengths</li></ul>
+<ul><li>Varying number of iteration / step</li></ul>
+<ul><li>Varying number of FLOPs / iteration</li></ul>
+<li>OpenMP not suitable, TBB (where applicable) seems too low level</li>
+<li>Maybe build on "thread-safe and thread-neutral bags"?</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Shared memory concurrency</h1>
+<ul>
+<li>Write-time task graph</li>
+<ul><li>Get live neighbors before setting new state</li></ul>
+<li>Compile-time task graph</li>
+<ul><li>E.g.: dimensionality, coupling, order of solver</li></ul>
+<li>Run-time task graph</li>
+<ul><li>Solve, wait neighbors, apply solution, wait neighbors, repeat</li></ul>
+<ul><ul><li>Adapt grid, balance load, change solver</li></ul></ul>
+<li>1e6 iterations of above, very small tasks, etc.</li>
+<ul><li>Cannot constantly recreate run-time task graph</li></ul>
+<ul><li>Write and compile-time likely not premature optimization</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Advanced algorithms: Load balancing</h1>
+<ul>
+<li>A.k.a. domain decomposition</li>
+<li>GoL test (1. solve, 2. adapt, 3. balance, 4. update, goto 1.):</li>
+</ul>
+<p align = "middle"><img alt="Load balancing example" style="border-width:0" src="amr_mpi.gif" width="70%" height="50%" /></p>
+</div>
+
+<div class="slide">
+<h1>Advanced algorithms: Load balancing</h1>
+<ul>
+<li>Cell size can vary by 1e3 x</li>
+<li>Number of substeps / cell can vary by 1e3 x</li>
+<li>FLOPs / cell (/ iteration) / (sub)step can vary by 1e3 x</li>
+<li>Have to balance costs: updates, memory, FLOPs</li>
+<ul><li>Including balancing itself</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Frameworks</h1>
+<ul>
+<li>Several simulations interact</li>
+<ul><li>"Everything before times N (or N&sup2;, or N log N)"</li></ul>
+<ul><li>Example from http://dx.doi.org/10.5194/gmd-3-87-2010</li></ul>
+</ul>
+<p align="middle"><img alt="Image from http://dx.doi.org/10.5194/gmd-3-87-2010" style="border-width:0" src="frameworks.svg" width="50%" height="50%" /></p>
+</div>
+
+<div class="slide">
+<h1>Frameworks</h1>
+<ul>
+<li>Several simulations interact</li>
+<li>&gt; 1 model required for bigger picture</li>
+<ul><li>Unless old codes merged, etc.</li></ul>
+<li>Each model self-contained with different:</li>
+<ul><li>Equations, (phys., comp.) assumptions, solvers, developers</li></ul>
+<ul><li>Some were written before OO programming existed</li></ul>
+<li>So far seen much more in weather/climate modeling</li>
+<li>Model coupling a data sharing problem (sw dev pov)</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Frameworks: pros</h1>
+<ul>
+<li>Minimize changes to existing models</li>
+<ul><li>Allows separate executables (mixed langs.)</li></ul>
+<ul><li>Components do not need as many features</li></ul>
+<li>Data broker between models</li>
+<ul><li>Transfer intermediate repr. between processes</li></ul>
+<ul><li>Call models to push/pull data to/from intermediate format</li></ul>
+<li>Interpolate data between different grids</li>
+<li>Best for coupling write-only codes</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Frameworks: cons</h1>
+<ul>
+<li>Additional layer of indirection</li>
+<li>Prevent compile-time type checking</li>
+<li>Intermediate representation of coupled data</li>
+<ul><li>&gt;= 1 extra copy of coupled variables</li></ul>
+<ul><li>Conversion code in &gt;= 2 x separate programs</li></ul>
+<li>Sometimes only 1 model / process</li>
+<ul><li>If global variables, separate executables, etc.</li></ul>
+<ul><li>&gt;= 1 extra transfer of data</li></ul>
+<li>Can be avoided with C++11</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Motivation: C++11</h1>
+<ul>
+<li>Generic programming without run-time overhead</li>
+<li>Implement, test, verify, validate each model separately</li>
+<li>Combine models without modifying any existing code</li>
+<ul><li>Previous testing, verification, validation still valid</li></ul>
+<ul><li>Couple by only writing new code, save on testing, ...</li></ul>
+<ul><li>At best zero-copy and zero-transfer code coupling</li></ul>
+<li>Enabled by variadic templates of C++11</li>
+<ul><li>Or made easy enough even for me</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>C++11: Variadic templates</h1>
+<ul>
+<li>Compile-time number of template parameters</li>
+<ul><li>Not write-time</li></ul>
+<li>Program printing all given types (some syntax omitted):
+<pre>
+template &lt;class... Types&gt; class Print;
+
+template &lt;class First, class... Rest&gt; class Print
+    cout &lt;&lt; typeid(First).name() &lt;&lt; " ";
+    Print&lt;Rest...&gt;()();
+
+template &lt;class Last&gt; class Print
+    cout &lt;&lt; typeid(Last).name() &lt;&lt; endl;
+</pre></li>
+<li><pre>Print&lt;char, int, double, vector&lt;char&gt;&gt;()();</pre></li>
+<ul><li>Output (GCC 4.8.2 Macports): c i d St6vectorIcSaIcEE</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Reminder about abstractions</h1>
+<ul>
+<li>Solver</li>
+<ul><li>Takes N cells' data, outputs the next state of one of them</li></ul>
+<li>Grid</li>
+<ul><li>Discrete version of simulated volume consisting of cells</li></ul>
+<ul><li>Handles neighbor logic, data transfers between processes, etc.</li></ul>
+<li>Cell</li>
+<ul><li>Stores together all variables at a certain location (data locality)</li></ul>
+<ul><li>Very powerful abstraction with C++11</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Generic simulation cell method</h1>
+<ul>
+<li>Each variable given as a template parameter
+<pre>Cell&lt;Is_Alive, Live_Neighbors&gt; cell1, cell2;</pre>
+</li>
+<li>Variable is a class that defines only the type of data (as data_type)</li>
+<ul><li>Otherwise empty i.e. no internal run-time state, methods, etc.</li></ul>
+<ul><li>Variables from canonical GoL example:
+<pre>
+struct Is_Alive { using data_type = bool; };
+struct Live_Neighbors { using data_type = int; };
+</pre>
+</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Generic simulation cell method</h1>
+<ul>
+<li>Serial implementation of generic cell almost trivial:
+<pre>
+template &lt;class Var&gt; class Cell&lt;Var&gt;{
+    typename Var::data_type data;
+    typename Var::data_type& operator[](Var&amp;)
+        return this-&gt;data;
+}
+
+template &lt;
+    class Current, class... Rest
+&gt; class Cell &lt;Current, Rest...&gt;
+    : public Cell&lt;Rest...&gt;
+{
+    typename Current::data_type data;
+    using Cell&lt;Rest...&gt;::operator[];
+    typename Current::data_type& operator[](Current&amp;)
+        return this-&gt;data;
+}
+</pre></li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Generic simulation cell method</h1>
+<ul>
+<li>At each level of recursive inheritance:</li>
+<ul><li>Space allocated for type of current variable</li></ul>
+<ul><li>Access to that memory provided via operator[]</li></ul>
+<li>Variable's data accessed by [] with class as argument</li>
+<ul><li>GoL example:<pre>
+auto&amp; cell_data = grid[cell_id];
+if (cell_data[Live_Neighbors()] == 3) {
+    cell_data[Is_Alive()] = true;
+} else if (cell_data[Live_Neighbors()] != 2) {
+    cell_data[Is_Alive()] = false;
+}
+</pre></li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Generic simulation cell method</h1>
+<ul>
+<li>Variadic templates allow arbitrary, compile-time number of variables</li>
+<ul><li>1024 minimum recommended by standard</li></ul>
+<li>Cell class doesn't restrict the types or names of its variables</li>
+<li>Models using different variables cannot affect each other</li>
+<ul><li>Exception: default constructed cell assigned in each init</li></ul>
+<ul><li>Extremely modular code, completely test each part separately</li></ul>
+<li>Negligible impact on performance</li>
+<ul><li>GoL speed diff to plain struct{bool, int} &lt; 1 %</li></ul>
+<ul><li>Difference to struct{int, bool} &gt 10 % (both above)</li></ul>
+<ul><li>3e4 steps, 100&sup2; compile-time grid, periodic boundaries</li></ul>
+<ul><li>1.4s GCC 4.8.2, 3.5s Clang 3.4, 6s ICC 14.0.2</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Generic simulation cell method</h1>
+<ul>
+<li>Template args to solvers allow models combined by copy&amp;paste:
+<pre>
+template &lt;class Is_Alive_T, ...&gt; solve(...){
+    ...
+    auto&amp; cell_data = grid[cell_id];
+    if (cell_data[Live_Neighbors_T()] == 3) {
+        cell_data[Is_Alive_T()] = true;
+    } else if (cell_data[Live_Neighbors_T()] != 2) {
+        cell_data[Is_Alive_T()] = false;
+    }
+    ...
+}
+</pre></li>
+<li>Also solvers do not restrict the types or names of variables</li>
+<ul><li>Can be reused easily</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Generic simulation cell method</h1>
+<ul>
+<li>Main program decides which variables to have and use:
+<pre>
+using Cell = gensimcell::Cell&lt;
+    gol::Is_Alive, gol::Live_Neighbors,
+    advection::Density, advection::Density_Flux,
+    ...
+&gt;;
+
+int main() {
+    ...
+    gol::solve&lt;
+        Cell, gol::Is_Alive, gol::Live_Neighbors
+    &gt;(inner_cells, grid);
+    advection::solve&lt;
+        Cell, advection::Density,
+        advection::Density_Flux, advection::Velocity
+    &gt;(time_step, inner_cells, grid);
+    ...
+}
+</pre></li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Generic simulation cell method</h1>
+<ul>
+<li>Large parts of main() identical between all models</li>
+<ul><li>MPI init, grid init, remote neighbor cell updates with MPI</li></ul>
+<li>Rest follow the same pattern</li>
+<ul><li>Start transfers of remote neighbor data</li></ul>
+<ul><li>Solve inner cells</li></ul>
+<ul><li>Wait for receives of remote neighbor data</li></ul>
+<ul><li>Solve outer cells</li></ul>
+<ul><li>Apply solution in inner cells</li></ul>
+<ul><li>Wait for sends of remote neighbor data</li></ul>
+<ul><li>Apply solution in outer cells</li></ul>
+<li>Differing code can be copy&amp;pasted to create any combination of separate models</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Generic simulation cell method</h1>
+<ul>
+<li>Differing code can be copy&amp;pasted to create any combination of separate models</li>
+<ul><li>Result will just work if pieces implemented correctly</li></ul>
+<ul><li>Can proceed directly to coupling, physics or optimization</li></ul>
+<ul><li>Combining N models requires O(1) modified code, O(N) copy&amp;pasting</li></ul>
+<li>Simple coupling is simple
+<pre>
+particle::solve&lt;             particle::solve&lt;
+    Cell,                       Cell,
+    particle::Velocity, =>      advection::Velocity,
+    ...                         ...
+&gt;(dt, cells, grid)           &gt;(dt, cells, grid)
+</pre></li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Generic simulation cell class</h1>
+<ul>
+<li>Support for MPI programs</li>
+<ul><li>Functionality divided between grid and its cells</li></ul>
+<ul><li>Grid decides when to send (between neighbors on different processes)</li></ul>
+<ul><li>Cell decides what to send (which variables)</li></ul>
+<li>User can choose on a per variables basis via cell class</li>
+<ul><li>Either for all cells or each one separately
+<pre>static void set_transfer_all(tribool, vars...)
+void set_transfer(bool, vars...)
+</pre></li></ul>
+<ul><li>Cell-by-cell if tribool value is neither true nor false</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Generic simulation cell class</h1>
+<ul>
+<li>Grid calls cells' get_mpi_datatype()</li>
+<ul><li>Reply consist of an address, type and count:
+<pre>
+std::tuple&lt;void*, int, MPI_Datatype&gt;
+</pre></li></ul>
+<ul><li>Includes only transferred variables</li></ul>
+<ul><li>All variables iterated over at compile-time
+<pre>
+class Cell&lt;
+  Current_Variable,
+  Rest_Of_Variables...
+&gt; {
+public:
+  get_mpi_datatype() {
+    ...
+    this-&gt;get_mpi_datatype_impl(...);
+    ...
+  }
+protected:
+  get_mpi_datatype_impl(...) {
+  ...
+</pre></li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Generic simulation cell class</h1>
+<ul>
+<li>Grid calls cells' get_mpi_datatype()</li>
+<ul><li>All variables iterated over at compile-time
+<pre>
+  ...
+protected:
+  get_mpi_datatype_impl(
+    index, addrs&amp;, cts&amp;, types&amp;
+  ) {
+    if (transferred) {
+      ... // fill next index of array
+      index++;
+    }
+    Cell&lt;
+      Rest_Of_Variables...
+    &gt;::get_mpi_datatype_impl(index, ...);
+  }
+}
+</pre></li></ul>
+<li>Insignificant impact on performance</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>TODO</h1>
+<ul>
+<li>Return a reference to several variables from operator ()</li>
+<ul><li><pre>
+template &lt;class All_Variables...&gt; class Cell {
+public:
+  template &lt;
+    class Requested_Variables...
+  &gt; std::tuple&lt;
+    Requested_Variables&amp;...
+  &gt; operator(const Requested_Variables&amp;...) {
+    std::tuple&lt;Requested_Variables&amp;...&gt; ret_val;
+    ...
+  }
+}
+</pre></li></ul>
+<li>Improve recursive usability with MPI</li>
+<ul><li>Optionally call set_transfer(...) for all variables of chosen variable, for all variables of all variables of current variable, etc.</li></ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Conclusions</h1>
+<ul>
+<li>Space plasma is very complex</li>
+<li>Computational modeling essential</li>
+<li>Approximations mandatory</li>
+<li>C++11 Variadic templates: very flexible model development</li>
+<ul><li>Generic, reusable, readable high-performance code</li></ul>
+<li>WIP code at github.com/nasailja/gensimcell</li>
+</ul>
+<p>Questions?</p>
+<p>Financial support by NASA Postdoctoral Program</p>
+</div>
+
+</div> <!-- presentation -->
+
+</body>
+</html>

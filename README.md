@@ -27,7 +27,7 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
 * Mach7: The Design and Evolution of a Pattern Matching Library for C++
 * [Practical Type Erasure: A boost::any Based Configuration Framework](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/PracticalTypeErasureSlides.pdf?raw=true)  | [LibreOffice File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/PracticalTypeErasureSlides.odp?raw=true)
 * [A Tutorial Introduction to C++11/14 Part I/II](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/tutorial_intro_cpp_11_14.pdf?raw=true)
-* C++11 in Space Plasma Model Development 
+* [C++11 in Space Plasma Model Development](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/esitys/) (Requires Java)
 * [C++11 Library Design](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/cxx11-library-design.pdf?raw=true) | [PPTX File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/cxx11-library-design.pptx?raw=true)
 * Goals for Better Code: Implement Complete Types 
 * Multiplatform C++ 
