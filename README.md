@@ -49,7 +49,7 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
  
 ## Friday, May 16
  
-* Iterators May Stay 
+* [Iterators May Stay](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/CppNow2014Ranges.pdf?raw=true) | [LibreOffice File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/CppNow2014Ranges.opd?raw=true)
 * Value Semantics: It ain't about the syntax! 
 * [Create Your Own Refactoring Tool with Clang](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/Create-Your-Own-Refactoring-Tool-with-Clang.pdf?raw=true)
 * How to Design C++ Implementations of Complex Combinatorial Algorithms 
