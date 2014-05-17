@@ -2,7 +2,7 @@
 
 * [Library in a Week Repo](https://github.com/JeffGarland/liaw2014.git)
 
-Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending on your browser you may need to right click on the link and select save.
+Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending on your browser, you may need to right click on the link and select save.
 
 
 ## Tuesday, May 13
@@ -66,7 +66,7 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
  
 * The Future of Accelerator Programming in C++ 
 * [Functional Reactive Programming - Cleanly Abstracted Interactivity](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/Coroutines-Fibers-Threads.pdf?raw=true)
-* Disambiguation: The Black Technology
+* [Disambiguation: The Black Technology](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/disambiguation.pdf?raw=true)
 * My Thoughts on Large Code Base Change Ripple Management in C++ | [Position Paper](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/large_code_base_change_ripple_in_cpp.pdf?raw=true)
 * Future of Boost
 
