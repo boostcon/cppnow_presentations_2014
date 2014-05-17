@@ -10,7 +10,7 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
 * [Library in a Week - c++ templating engine](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/liaw_template_engine_day1.pdf?raw=true)
 * Keynote: Axiomatic Programming: From Euclidean Deductions to C++ Templates and Beyond
 * C++14: Through the Looking Glass 
-* Coroutines, Fibers, and Threads, Oh My 
+* [Coroutines, Fibers, and Threads, Oh My](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/Coroutines-Fibers-Threads.pdf?raw=true)
 * The Canonical Class
 * ConceptClang: Theoretical Advances with Full C++ Concepts 
 * Generic Programming of Generic Spaces: Compile-Time Geometric Algebra with C++11
