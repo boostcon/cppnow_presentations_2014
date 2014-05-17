@@ -44,7 +44,7 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
 * Accelerator Programming with C++ AMP
 * [Designing XML API for Modern C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/designing-xml-api-for-modern-c++.pdf?raw=true)
 * [Modern C++ as Concurrent Assembly](https://github.com/diegoperini/cppnow2014-doppl)
-* Understanding &&
+* [Understanding &&](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/UnderstandingRValueRef_rev7.pdf?raw=true)
 * Boost Library Incubator
  
 ## Friday, May 16
