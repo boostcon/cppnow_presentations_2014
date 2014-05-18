@@ -39,7 +39,7 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
 * [Interactive Metaprogramming Shell Based on Clang](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/2014_cppnow_metashell.pdf?raw=true)
 * [libcppa: Type-safe Messaging Systems in C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/libcppa_part1.pdf?raw=true)  | [Part II](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/libcppa_part2.pdf?raw=true)
 * [Unicode in C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/unicode-cpp.pdf?raw=true) | [PPTX File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/unicode-cpp.pptx?raw=true)
-* CppComponents: A Modern Portable C++11 Component System 
+* [CppComponents: A Modern Portable C++11 Component System](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/cppnow2014_bandela_presentation.pdf?raw=true)
 * UI. Aesthetics. C++ 
 * Accelerator Programming with C++ AMP
 * [Designing XML API for Modern C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/designing-xml-api-for-modern-c++.pdf?raw=true)
