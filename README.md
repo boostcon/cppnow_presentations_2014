@@ -64,7 +64,7 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
  
 ## Saturday, May 17
  
-* The Future of Accelerator Programming in C++ 
+* [The Future of Accelerator Programming in C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/CppNow2014_Future_of_Accelerator_Programming.pdf?raw=true)
 * [Functional Reactive Programming - Cleanly Abstracted Interactivity](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/Functional-Reactive-Programming.pdf?raw=true)
 * [Disambiguation: The Black Technology](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/disambiguation.pdf?raw=true)
 * [My Thoughts on Large Code Base Change Ripple Management in C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/change_ripple.pdf?raw=true) | [Position Paper](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/large_code_base_change_ripple_in_cpp.pdf?raw=true)
