@@ -52,7 +52,7 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
 * [Iterators May Stay](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/CppNow2014Ranges.pdf?raw=true) | [LibreOffice File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/CppNow2014Ranges.opd?raw=true)
 * Value Semantics: It ain't about the syntax! 
 * [Create Your Own Refactoring Tool with Clang](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/Create-Your-Own-Refactoring-Tool-with-Clang.pdf?raw=true)
-* How to Design C++ Implementations of Complex Combinatorial Algorithms 
+* [How to Design C++ Implementations of Complex Combinatorial Algorithms](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/How_to_Design_C++_Implementations_of_Complex_Combinatorial_Algorithms.pdf?raw=true)
 * [Intro to Functional Programming in C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/intro-to-functional-programming-in-cpp.pdf?raw=true)
 * [Managing Object Lifetimes](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/Managing-Object-Lifetimes.pdf?raw=true)
 * [0xBADC0DE](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/0xBADC0DE.pdf?raw=true)
