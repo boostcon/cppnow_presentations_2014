@@ -30,7 +30,7 @@ Depending on your browser, you may need to right click on the link and select sa
 * [C++11 in Space Plasma Model Development](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/esitys.tar?raw=true) (Requires Java)
 * [C++11 Library Design](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/cxx11-library-design.pdf?raw=true) | [PPTX File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/cxx11-library-design.pptx?raw=true)
 * Goals for Better Code: Implement Complete Types 
-* Multiplatform C++ 
+* [Multiplatform C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/2014_05_14_multiplatform_cpp.pdf?raw=true)
 * Octopus: A Policy-Driven Framework for CFD Simulations
  
 ## Thursday, May 15
