@@ -2,8 +2,8 @@
 
 * [Library in a Week Repo](https://github.com/JeffGarland/liaw2014.git)
 
-Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending on your browser, you may need to right click on the link and select save.
-
+Below are links to the pdfs / keynotes / OPDs in the files directory.  
+Depending on your browser, you may need to right click on the link and select save.
 
 ## Tuesday, May 13
 
@@ -13,7 +13,7 @@ Below are links to the pdfs / keynotes / OPDs in the files directory.  Depending
 * [Coroutines, Fibers, and Threads, Oh My](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/Coroutines-Fibers-Threads.pdf?raw=true)
 * The Canonical Class
 * ConceptClang: Theoretical Advances with Full C++ Concepts 
-* Generic Programming of Generic Spaces: Compile-Time Geometric Algebra with C++11
+* [Generic Programming of Generic Spaces: Compile-Time Geometric Algebra with C++11](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/generic_spaces.pdf?raw=true)
 * [Test-Driven Development With Boost.Test and Turtle Mock, Part I/II](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/test_driven/test_driven.pdf?raw=true) | [Code](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/test_driven/)
 * [Removing undefined behavior from integer operations: the bounded::integer library](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/bounded_integer.pdf?raw=true) | [LibreOffice File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/bounded_integer.opd?raw=true) 
 * [Value Semantics and Range Algorithms - Composability and Efficiency](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/range_algos.pdf?raw=true)
