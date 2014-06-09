@@ -40,7 +40,7 @@ Depending on your browser, you may need to right click on the link and select sa
 * [libcppa: Type-safe Messaging Systems in C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/libcppa_part1.pdf?raw=true)  | [Part II](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/libcppa_part2.pdf?raw=true)
 * [Unicode in C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/unicode-cpp.pdf?raw=true) | [PPTX File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/unicode-cpp.pptx?raw=true)
 * [CppComponents: A Modern Portable C++11 Component System](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/cppnow2014_bandela_presentation.pdf?raw=true)
-* UI. Aesthetics. C++ 
+* [UI. Aesthetics. C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/UI_Aesthetics_Cpp.pdf?raw=true) 
 * Accelerator Programming with C++ AMP
 * [Designing XML API for Modern C++](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/designing-xml-api-for-modern-c++.pdf?raw=true)
 * [Modern C++ as Concurrent Assembly](https://github.com/diegoperini/cppnow2014-doppl)
