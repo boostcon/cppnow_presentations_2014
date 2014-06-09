@@ -7,12 +7,12 @@ Depending on your browser, you may need to right click on the link and select sa
 
 ## Tuesday, May 13
 
-* [Library in a Week - c++ templating engine](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/liaw_template_engine_day1.pdf?raw=true)
+* [Library in a Week - C++ Templating Engine](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/liaw_template_engine_day1.pdf?raw=true)
 * Keynote: Axiomatic Programming: From Euclidean Deductions to C++ Templates and Beyond
 * C++14: Through the Looking Glass 
 * [Coroutines, Fibers, and Threads, Oh My](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/Coroutines-Fibers-Threads.pdf?raw=true)
 * The Canonical Class
-* ConceptClang: Theoretical Advances with Full C++ Concepts 
+* [ConceptClang: Theoretical Advances with Full C++ Concepts](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/ConceptClang.pdf?raw=true) | [PPTX](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/ConceptClang.pptx?raw=true)
 * [Generic Programming of Generic Spaces: Compile-Time Geometric Algebra with C++11](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/generic_spaces.pdf?raw=true)
 * [Test-Driven Development With Boost.Test and Turtle Mock, Part I/II](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/test_driven/test_driven.pdf?raw=true) | [Code](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/test_driven/)
 * [Removing undefined behavior from integer operations: the bounded::integer library](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/bounded_integer.pdf?raw=true) | [LibreOffice File](https://github.com/boostcon/cppnow_presentations_2014/blob/master/files/bounded_integer.opd?raw=true) 
